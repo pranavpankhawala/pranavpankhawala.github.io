@@ -1,78 +1,62 @@
 /* ===================================
-   Work Experience Timeline Styles
+   Horizontal Timeline Only
    =================================== */
 
-/* Timeline Controls */
+/* Hide timeline view toggle buttons */
 .timeline-controls {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    margin-bottom: 3rem;
-    flex-wrap: wrap;
+    display: none !important;
 }
 
-.timeline-view-btn {
-    padding: 0.75rem 1.5rem;
-    border-radius: 50px;
-    font-weight: 600;
-    background: var(--surface-elevated);
-    color: var(--text-primary);
-    border: 2px solid var(--border);
-    transition: all var(--transition-base);
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    cursor: pointer;
-}
-
-.timeline-view-btn:hover,
-.timeline-view-btn.active {
-    background: var(--gradient-primary);
-    color: white;
-    border-color: var(--primary-color);
-    transform: translateY(-2px);
-}
-
-/* Timeline Container */
-.timeline-container {
-    display: none;
-}
-
-.timeline-container.active {
-    display: block;
-}
-
-/* ===================================
-   Vertical Timeline
-   =================================== */
+/* Force display settings */
 .vertical-timeline {
-    position: relative;
-    padding: 2rem 0;
+    display: none !important;
 }
 
-.vertical-timeline::before {
+.horizontal-timeline {
+    display: block !important;
+    position: relative;
+    overflow-x: auto;
+    padding: 3rem 0;
+}
+
+.grid-timeline {
+    display: none !important;
+}
+
+/* Horizontal Timeline Styles */
+.horizontal-scroll {
+    display: flex;
+    gap: 2rem;
+    padding: 2rem 0;
+    position: relative;
+    min-width: min-content;
+}
+
+.horizontal-scroll::before {
     content: '';
     position: absolute;
-    left: 30px;
-    top: 0;
-    bottom: 0;
-    width: 2px;
+    top: 30px;
+    left: 0;
+    right: 0;
+    height: 2px;
     background: var(--gradient-primary);
 }
 
-.timeline-item {
+.horizontal-timeline .timeline-item {
+    padding: 0;
+    margin: 0;
+    flex: 0 0 400px;
     position: relative;
-    padding-left: 80px;
-    margin-bottom: 3rem;
 }
 
-.timeline-marker {
+.horizontal-timeline .timeline-marker {
     position: absolute;
-    left: 0;
     top: 0;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
-.timeline-icon {
+.horizontal-timeline .timeline-icon {
     width: 60px;
     height: 60px;
     border-radius: 50%;
@@ -87,11 +71,12 @@
     z-index: 2;
 }
 
-.timeline-content {
-    position: relative;
+.horizontal-timeline .timeline-content {
+    margin-top: 100px;
 }
 
-.timeline-card {
+.horizontal-timeline .timeline-card {
+    height: 100%;
     background: var(--surface-elevated);
     border-radius: var(--radius-lg);
     padding: 2rem;
@@ -100,31 +85,33 @@
     position: relative;
 }
 
-.timeline-card::before {
+.horizontal-timeline .timeline-card::before {
     content: '';
     position: absolute;
-    left: -20px;
-    top: 20px;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
     width: 0;
     height: 0;
-    border-top: 10px solid transparent;
-    border-bottom: 10px solid transparent;
-    border-right: 10px solid var(--border);
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid var(--border);
 }
 
-.timeline-card::after {
+.horizontal-timeline .timeline-card::after {
     content: '';
     position: absolute;
-    left: -17px;
-    top: 20px;
+    top: -17px;
+    left: 50%;
+    transform: translateX(-50%);
     width: 0;
     height: 0;
-    border-top: 10px solid transparent;
-    border-bottom: 10px solid transparent;
-    border-right: 10px solid var(--surface-elevated);
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid var(--surface-elevated);
 }
 
-.timeline-item:hover .timeline-card {
+.timeline-card:hover {
     transform: translateY(-5px);
     box-shadow: var(--shadow-lg);
     border-color: var(--primary-color);
@@ -237,88 +224,6 @@
     transform: translateY(-2px);
 }
 
-/* ===================================
-   Horizontal Timeline
-   =================================== */
-.horizontal-timeline {
-    position: relative;
-    overflow-x: auto;
-    padding: 3rem 0;
-}
-
-.horizontal-scroll {
-    display: flex;
-    gap: 2rem;
-    padding: 2rem 0;
-    position: relative;
-    min-width: min-content;
-}
-
-.horizontal-scroll::before {
-    content: '';
-    position: absolute;
-    top: 30px;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: var(--gradient-primary);
-}
-
-.horizontal-timeline .timeline-item {
-    padding: 0;
-    margin: 0;
-    flex: 0 0 400px;
-    position: relative;
-}
-
-.horizontal-timeline .timeline-marker {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-}
-
-.horizontal-timeline .timeline-content {
-    margin-top: 100px;
-}
-
-.horizontal-timeline .timeline-card {
-    height: 100%;
-}
-
-.horizontal-timeline .timeline-card::before,
-.horizontal-timeline .timeline-card::after {
-    display: none;
-}
-
-.horizontal-timeline .timeline-card::before {
-    content: '';
-    position: absolute;
-    top: -20px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 0;
-    height: 0;
-    border-left: 10px solid transparent;
-    border-right: 10px solid transparent;
-    border-bottom: 10px solid var(--border);
-    display: block;
-}
-
-.horizontal-timeline .timeline-card::after {
-    content: '';
-    position: absolute;
-    top: -17px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 0;
-    height: 0;
-    border-left: 10px solid transparent;
-    border-right: 10px solid transparent;
-    border-bottom: 10px solid var(--surface-elevated);
-    display: block;
-}
-
 /* Scrollbar Styling */
 .horizontal-timeline::-webkit-scrollbar {
     height: 8px;
@@ -338,95 +243,14 @@
     background: var(--secondary-color);
 }
 
-/* ===================================
-   Grid Timeline
-   =================================== */
-.grid-timeline {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: 2rem;
-}
-
-.grid-timeline .timeline-item {
-    padding: 0;
-    margin: 0;
-}
-
-.grid-timeline .timeline-marker {
-    position: absolute;
-    top: 1.5rem;
-    right: 1.5rem;
-    z-index: 3;
-}
-
-.grid-timeline .timeline-icon {
-    width: 50px;
-    height: 50px;
-    font-size: 1.25rem;
-    box-shadow: var(--shadow);
-}
-
-.grid-timeline .timeline-content {
-    height: 100%;
-}
-
-.grid-timeline .timeline-card {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-}
-
-.grid-timeline .timeline-card::before,
-.grid-timeline .timeline-card::after {
-    display: none;
-}
-
-.grid-timeline .timeline-body {
-    flex: 1;
-}
-
-/* ===================================
-   Responsive Design
-   =================================== */
-@media (max-width: 1024px) {
-    .vertical-timeline::before {
-        left: 20px;
-    }
-    
-    .timeline-item {
-        padding-left: 60px;
-    }
-    
-    .timeline-icon {
-        width: 50px;
-        height: 50px;
-        font-size: 1.25rem;
-    }
-}
-
+/* Responsive Design */
 @media (max-width: 768px) {
-    .timeline-controls {
-        flex-direction: column;
-        width: 100%;
+    .horizontal-scroll {
+        gap: 1rem;
     }
     
-    .timeline-view-btn {
-        width: 100%;
-        justify-content: center;
-    }
-    
-    .vertical-timeline::before {
-        left: 15px;
-    }
-    
-    .timeline-item {
-        padding-left: 50px;
-    }
-    
-    .timeline-icon {
-        width: 40px;
-        height: 40px;
-        font-size: 1rem;
+    .horizontal-timeline .timeline-item {
+        flex: 0 0 320px;
     }
     
     .timeline-header {
@@ -452,28 +276,11 @@
         flex-direction: column;
         gap: 0.5rem;
     }
-    
-    .horizontal-scroll {
-        gap: 1rem;
-    }
-    
-    .horizontal-timeline .timeline-item {
-        flex: 0 0 320px;
-    }
-    
-    .grid-timeline {
-        grid-template-columns: 1fr;
-    }
 }
 
 @media (max-width: 480px) {
     .timeline-card {
         padding: 1.5rem;
-    }
-    
-    .timeline-card::before,
-    .timeline-card::after {
-        display: none;
     }
     
     .responsibilities li {
@@ -486,52 +293,7 @@
     }
 }
 
-/* ===================================
-   Print Styles
-   =================================== */
-@media print {
-    .timeline-controls {
-        display: none;
-    }
-    
-    .horizontal-timeline,
-    .grid-timeline {
-        display: none;
-    }
-    
-    .vertical-timeline {
-        display: block !important;
-    }
-    
-    .timeline-item {
-        page-break-inside: avoid;
-        margin-bottom: 2rem;
-    }
-    
-    .timeline-card {
-        box-shadow: none;
-        border: 1px solid #ccc;
-    }
-}
-
-/* ===================================
-   Animation Enhancements
-   =================================== */
-.timeline-item {
-    animation: slideInLeft 0.6s ease-out;
-}
-
-@keyframes slideInLeft {
-    from {
-        opacity: 0;
-        transform: translateX(-30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
-}
-
+/* Animations */
 .horizontal-timeline .timeline-item {
     animation: slideInUp 0.6s ease-out;
 }
@@ -544,21 +306,6 @@
     to {
         opacity: 1;
         transform: translateY(0);
-    }
-}
-
-.grid-timeline .timeline-item {
-    animation: fadeInScale 0.6s ease-out;
-}
-
-@keyframes fadeInScale {
-    from {
-        opacity: 0;
-        transform: scale(0.9);
-    }
-    to {
-        opacity: 1;
-        transform: scale(1);
     }
 }
 
@@ -588,7 +335,19 @@
     box-shadow: 0 0 0 4px var(--background), 0 0 0 6px var(--primary-color);
 }
 
-[data-theme="dark"] .vertical-timeline::before,
 [data-theme="dark"] .horizontal-scroll::before {
     background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+}
+
+/* Print Styles */
+@media print {
+    .timeline-item {
+        page-break-inside: avoid;
+        margin-bottom: 2rem;
+    }
+    
+    .timeline-card {
+        box-shadow: none;
+        border: 1px solid #ccc;
+    }
 }
