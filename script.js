@@ -584,54 +584,54 @@ initFormValidation();
 // ===================================
 // Console Message (Easter Egg)
 // ===================================
-console.log(
-    '%c👨‍💻 Pranav Pankhawala',
-    'color: #2563eb; font-size: 24px; font-weight: bold;'
-);
-console.log(
-    '%cLooking for something? Feel free to reach out!',
-    'color: #6b7280; font-size: 14px;'
-);
-console.log(// ===================================
-    // Configuration & Constants
-    // ===================================
-    const CONFIG = {
-        typingSpeed: 100,
-        typingDelay: 2000,
-        emailServiceURL: 'https://formspree.io/f/YOUR_FORM_ID', // Replace with your Formspree ID
-        animationThreshold: 0.15,
-        particleCount: 50
-    };
+// console.log(
+//     '%c👨‍💻 Pranav Pankhawala',
+//     'color: #2563eb; font-size: 24px; font-weight: bold;'
+// );
+// console.log(
+//     '%cLooking for something? Feel free to reach out!',
+//     'color: #6b7280; font-size: 14px;'
+// );
+// console.log(// ===================================
+//     // Configuration & Constants
+//     // ===================================
+//     const CONFIG = {
+//         typingSpeed: 100,
+//         typingDelay: 2000,
+//         emailServiceURL: 'https://formspree.io/f/YOUR_FORM_ID', // Replace with your Formspree ID
+//         animationThreshold: 0.15,
+//         particleCount: 50
+//     };
     
-    const typingTexts = [
-        'Web Development',
-        'Machine Learning',
-        'IoT Systems',
-        'Full-Stack Applications',
-        'Data-Driven Solutions'
-    ];
+//     const typingTexts = [
+//         'Web Development',
+//         'Machine Learning',
+//         'IoT Systems',
+//         'Full-Stack Applications',
+//         'Data-Driven Solutions'
+//     ];
     
-    // ===================================
-    // DOM Elements
-    // ===================================
-    const DOM = {
-        loadingScreen: document.getElementById('loading-screen'),
-        navbar: document.getElementById('navbar'),
-        themeToggle: document.getElementById('themeToggle'),
-        mobileMenuToggle: document.getElementById('mobileMenuToggle'),
-        navMenu: document.getElementById('navMenu'),
-        navLinks: document.querySelectorAll('.nav-link'),
-        backToTop: document.getElementById('backToTop'),
-        contactForm: document.getElementById('contactForm'),
-        formStatus: document.getElementById('formStatus'),
-        resumeBtn: document.getElementById('resumeBtn'),
-        particles: document.getElementById('particles'),
-        typedText: document.querySelector('.typed-text'),
-        statNumbers: document.querySelectorAll('.stat-number'),
-        filterBtns: document.querySelectorAll('.filter-btn'),
-        projectCards: document.querySelectorAll('.project-card'),
-        skillItems: document.querySelectorAll('.skill-item')
-    };
+//     // ===================================
+//     // DOM Elements
+//     // ===================================
+//     const DOM = {
+//         loadingScreen: document.getElementById('loading-screen'),
+//         navbar: document.getElementById('navbar'),
+//         themeToggle: document.getElementById('themeToggle'),
+//         mobileMenuToggle: document.getElementById('mobileMenuToggle'),
+//         navMenu: document.getElementById('navMenu'),
+//         navLinks: document.querySelectorAll('.nav-link'),
+//         backToTop: document.getElementById('backToTop'),
+//         contactForm: document.getElementById('contactForm'),
+//         formStatus: document.getElementById('formStatus'),
+//         resumeBtn: document.getElementById('resumeBtn'),
+//         particles: document.getElementById('particles'),
+//         typedText: document.querySelector('.typed-text'),
+//         statNumbers: document.querySelectorAll('.stat-number'),
+//         filterBtns: document.querySelectorAll('.filter-btn'),
+//         projectCards: document.querySelectorAll('.project-card'),
+//         skillItems: document.querySelectorAll('.skill-item')
+//     };
     
     // ===================================
     // Initialization
@@ -1215,7 +1215,7 @@ console.log(// ===================================
     }
     '%c📧 pranav.pankhawala@gmail.com',
     'color: #2563eb; font-size: 14px;'
-);
+
 
 // ===================================
 // Service Worker Registration (PWA Support)
