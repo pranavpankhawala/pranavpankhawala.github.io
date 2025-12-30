@@ -4,7 +4,7 @@
 
 // Configuration
 const ADVANCED_CONFIG = {
-    enableCustomCursor: true,
+    enableCustomCursor: false,
     enableCommandPalette: true,
     enableKeyboardShortcuts: true,
     githubUsername: 'pranavpankhawala',
