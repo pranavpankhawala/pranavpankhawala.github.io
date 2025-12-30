@@ -3,7 +3,10 @@
 // ===================================
 
 document.addEventListener('DOMContentLoaded', () => {
-    initTimelineViews();
+    console.log('🔧 Initializing Timeline Views...');
+    setTimeout(() => {
+        initTimelineViews();
+    }, 500); // Wait for DOM to fully load
 });
 
 function initTimelineViews() {
@@ -13,13 +16,33 @@ function initTimelineViews() {
     const horizontalTimeline = document.querySelector('.horizontal-timeline');
     const gridTimeline = document.querySelector('.grid-timeline');
 
+    console.log('📊 Timeline Elements Found:', {
+        viewButtons: viewButtons.length,
+        timelineContainers: timelineContainers.length,
+        verticalTimeline: !!verticalTimeline,
+        horizontalTimeline: !!horizontalTimeline,
+        gridTimeline: !!gridTimeline
+    });
+
+    if (!viewButtons.length) {
+        console.error('❌ Timeline view buttons not found!');
+        return;
+    }
+
+    if (!verticalTimeline || !horizontalTimeline || !gridTimeline) {
+        console.error('❌ Timeline containers not found!');
+        return;
+    }
+
     // Clone timeline items for different views
     cloneTimelineItems();
 
     // View switcher
     viewButtons.forEach(button => {
-        button.addEventListener('click', () => {
+        button.addEventListener('click', (e) => {
+            e.preventDefault();
             const view = button.getAttribute('data-view');
+            console.log('🔄 Switching to view:', view);
 
             // Update active button
             viewButtons.forEach(btn => btn.classList.remove('active'));
@@ -33,17 +56,22 @@ function initTimelineViews() {
             switch (view) {
                 case 'vertical':
                     verticalTimeline.classList.add('active');
+                    console.log('✅ Vertical timeline activated');
                     break;
                 case 'horizontal':
                     horizontalTimeline.classList.add('active');
+                    console.log('✅ Horizontal timeline activated');
                     initHorizontalScroll();
                     break;
                 case 'grid':
                     gridTimeline.classList.add('active');
+                    console.log('✅ Grid timeline activated');
                     break;
             }
         });
     });
+
+    console.log('✅ Timeline views initialized successfully');
 }
 
 function cloneTimelineItems() {
@@ -51,21 +79,37 @@ function cloneTimelineItems() {
     const horizontalScroll = document.querySelector('.horizontal-scroll');
     const gridTimeline = document.querySelector('.grid-timeline');
 
-    if (!verticalItems.length || !horizontalScroll || !gridTimeline) return;
+    console.log('🔄 Cloning timeline items:', {
+        verticalItems: verticalItems.length,
+        horizontalScroll: !!horizontalScroll,
+        gridTimeline: !!gridTimeline
+    });
+
+    if (!verticalItems.length) {
+        console.error('❌ No timeline items found in vertical timeline!');
+        return;
+    }
+    
+    if (!horizontalScroll || !gridTimeline) {
+        console.error('❌ Horizontal or grid timeline containers not found!');
+        return;
+    }
 
     // Clone for horizontal timeline
     horizontalScroll.innerHTML = '';
-    verticalItems.forEach(item => {
+    verticalItems.forEach((item, index) => {
         const clone = item.cloneNode(true);
         horizontalScroll.appendChild(clone);
     });
+    console.log('✅ Cloned', verticalItems.length, 'items to horizontal timeline');
 
     // Clone for grid timeline
     gridTimeline.innerHTML = '';
-    verticalItems.forEach(item => {
+    verticalItems.forEach((item, index) => {
         const clone = item.cloneNode(true);
         gridTimeline.appendChild(clone);
     });
+    console.log('✅ Cloned', verticalItems.length, 'items to grid timeline');
 }
 
 function initHorizontalScroll() {
