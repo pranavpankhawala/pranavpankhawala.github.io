@@ -17,6 +17,9 @@
     position: relative;
     overflow-x: auto;
     padding: 3rem 0;
+    background: var(--surface-elevated);
+    border-radius: var(--radius-lg);
+    min-height: 500px; /* Ensure container is visible */
 }
 
 .grid-timeline {
@@ -27,9 +30,10 @@
 .horizontal-scroll {
     display: flex;
     gap: 2rem;
-    padding: 2rem 0;
+    padding: 2rem;
     position: relative;
     min-width: min-content;
+    min-height: 400px; /* Ensure visible */
 }
 
 .horizontal-scroll::before {
