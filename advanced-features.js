@@ -635,19 +635,55 @@ function initGitHubStats() {
     const statsHTML = `
         <div class="github-stats-container">
             <div class="github-stat-card" data-aos="fade-up">
-                <img src="https://github-readme-stats.vercel.app/api?username=${username}&show_icons=true&theme=${theme}&hide_border=true&bg_color=1a1a2e&title_color=00d9ff&icon_color=00d9ff&text_color=ffffff" alt="GitHub Stats" />
+                <img 
+                  src="https://github-readme-stats-sigma-five.vercel.app/api
+                  ?username=${username}
+                  &show_icons=true
+                  &theme=${theme}
+                  &hide_border=true
+                  &bg_color=1a1a2e
+                  &title_color=00d9ff
+                  &icon_color=00d9ff
+                  &text_color=ffffff
+                  &cache_seconds=86400"
+                  alt="GitHub Stats"
+                />
             </div>
+
             <div class="github-stat-card" data-aos="fade-up" data-aos-delay="100">
-                <img src="https://github-readme-streak-stats.herokuapp.com/?user=${username}&theme=${theme}&hide_border=true&background=1a1a2e&ring=00d9ff&fire=00d9ff&currStreakLabel=00d9ff" alt="GitHub Streak" />
+                <img 
+                  src="https://github-readme-streak-stats.herokuapp.com
+                  /?user=${username}
+                  &theme=${theme}
+                  &hide_border=true
+                  &background=1a1a2e
+                  &ring=00d9ff
+                  &fire=00d9ff
+                  &currStreakLabel=00d9ff"
+                  alt="GitHub Streak"
+                />
             </div>
+
             <div class="github-stat-card" data-aos="fade-up" data-aos-delay="200">
-                <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=${username}&layout=compact&theme=${theme}&hide_border=true&bg_color=1a1a2e&title_color=00d9ff&text_color=ffffff" alt="Top Languages" />
+                <img 
+                  src="https://github-readme-stats-sigma-five.vercel.app/api/top-langs
+                  ?username=${username}
+                  &layout=compact
+                  &theme=${theme}
+                  &hide_border=true
+                  &bg_color=1a1a2e
+                  &title_color=00d9ff
+                  &text_color=ffffff
+                  &cache_seconds=86400"
+                  alt="Top Languages"
+                />
             </div>
         </div>
     `;
 
     githubSection.innerHTML = statsHTML;
 }
+
 
 // ===================================
 // Utility Functions
