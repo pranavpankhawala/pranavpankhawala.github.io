@@ -3,1010 +3,665 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Pranav Pankhawala - Software Developer specializing in Web Development, Machine Learning, and IoT Systems">
+    <meta name="keywords" content="software developer, web development, machine learning, IoT, full-stack developer">
+    <meta name="author" content="Pranav Pankhawala">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Pranav Pankhawala - Software Developer">
+    <meta property="og:description" content="Building end-to-end applications, intelligent systems, and connected solutions">
+    <meta property="og:type" content="website">
+    
     <title>Pranav Pankhawala - Software Developer</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary-color: #2563eb;
-            --secondary-color: #1e40af;
-            --accent-color: #06b6d4;
-            --text-primary: #1f2937;
-            --text-secondary: #6b7280;
-            --background: #ffffff;
-            --surface: #f9fafb;
-            --border: #e5e7eb;
-            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-            --shadow-lg: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-        }
-
-        [data-theme="dark"] {
-            --text-primary: #f9fafb;
-            --text-secondary: #d1d5db;
-            --background: #111827;
-            --surface: #1f2937;
-            --border: #374151;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            line-height: 1.6;
-            color: var(--text-primary);
-            background: var(--background);
-            overflow-x: hidden;
-        }
-
-        /* Navigation */
-        .navbar {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            z-index: 1000;
-            padding: 1rem 0;
-            transition: all 0.3s ease;
-            border-bottom: 1px solid var(--border);
-        }
-
-        [data-theme="dark"] .navbar {
-            background: rgba(17, 24, 39, 0.95);
-        }
-
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .nav-logo {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            text-decoration: none;
-            color: var(--text-primary);
-            font-weight: 600;
-            font-size: 1.25rem;
-        }
-
-        .nav-logo img {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-        }
-
-        .nav-menu {
-            display: flex;
-            list-style: none;
-            gap: 2rem;
-            align-items: center;
-        }
-
-        .nav-link {
-            text-decoration: none;
-            color: var(--text-primary);
-            font-weight: 500;
-            transition: color 0.3s ease;
-            position: relative;
-        }
-
-        .nav-link:hover {
-            color: var(--primary-color);
-        }
-
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: -5px;
-            left: 0;
-            background-color: var(--primary-color);
-            transition: width 0.3s ease;
-        }
-
-        .nav-link:hover::after {
-            width: 100%;
-        }
-
-        .theme-toggle {
-            background: none;
-            border: 1px solid var(--border);
-            color: var(--text-primary);
-            padding: 0.5rem;
-            border-radius: 50%;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .theme-toggle:hover {
-            background: var(--surface);
-            border-color: var(--primary-color);
-            color: var(--primary-color);
-        }
-
-        .mobile-menu-toggle {
-            display: none;
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            color: var(--text-primary);
-            cursor: pointer;
-        }
-
-        /* Hero Section */
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 0 2rem;
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-            color: white;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse">ircle cx="25" cy="25" r="1" fill="white" opacity="0.1"/>ircle cx="75" cy="75" r="1" fill="white" opacity="0.1"/>ircle cx="50" cy="10" r="0.5" fill="white" opacity="0.05"/></pattern></defs><rect width="100%" height="100%" fill="url(%23grain)"/></svg>');
-            pointer-events: none;
-        }
-
-        .hero-content {
-            max-width: 800px;
-            z-index: 1;
-            position: relative;
-            animation: fadeInUp 1s ease-out;
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .hero h1 {
-            font-size: clamp(2.5rem, 5vw, 4rem);
-            font-weight: 700;
-            margin-bottom: 1rem;
-            background: linear-gradient(45deg, #ffffff, #e0e7ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .hero-subtitle {
-            font-size: clamp(1.125rem, 2.5vw, 1.5rem);
-            margin-bottom: 2rem;
-            opacity: 0.9;
-            font-weight: 400;
-        }
-
-        .hero-buttons {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            padding: 0.75rem 2rem;
-            border: none;
-            border-radius: 50px;
-            font-weight: 600;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            font-size: 1rem;
-        }
-
-        .btn-primary {
-            background: white;
-            color: var(--primary-color);
-            box-shadow: var(--shadow);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-lg);
-        }
-
-        .btn-secondary {
-            background: transparent;
-            color: white;
-            border: 2px solid white;
-        }
-
-        .btn-secondary:hover {
-            background: white;
-            color: var(--primary-color);
-        }
-
-        /* Sections */
-        .section {
-            padding: 5rem 0;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding-left: 2rem;
-            padding-right: 2rem;
-        }
-
-        .section-title {
-            text-align: center;
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 3rem;
-            color: var(--text-primary);
-        }
-
-        /* About Section */
-        .about {
-            background: var(--surface);
-        }
-
-        .about-content {
-            max-width: 800px;
-            margin: 0 auto;
-            text-align: center;
-        }
-
-        .about-title {
-            font-size: 1.5rem;
-            color: var(--primary-color);
-            margin-bottom: 1.5rem;
-            font-weight: 600;
-        }
-
-        .about-bio {
-            font-size: 1.125rem;
-            line-height: 1.8;
-            color: var(--text-secondary);
-            margin-bottom: 2rem;
-        }
-
-        .about-interests {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1rem;
-            margin-top: 2rem;
-        }
-
-        .interest-item {
-            background: var(--background);
-            padding: 1.5rem;
-            border-radius: 12px;
-            border: 1px solid var(--border);
-            text-align: left;
-            transition: all 0.3s ease;
-        }
-
-        .interest-item:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow);
-        }
-
-        .interest-item i {
-            color: var(--primary-color);
-            margin-right: 0.75rem;
-            font-size: 1.25rem;
-        }
-
-        /* Skills Section */
-        .skills {
-            background: var(--background);
-        }
-
-        .skills-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
-        }
-
-        .skill-category {
-            background: var(--surface);
-            padding: 2rem;
-            border-radius: 16px;
-            border: 1px solid var(--border);
-            transition: all 0.3s ease;
-        }
-
-        .skill-category:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow);
-        }
-
-        .skill-category-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: 1.5rem;
-            color: var(--primary-color);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .skill-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.75rem;
-        }
-
-        .skill-tag {
-            background: var(--background);
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-size: 0.875rem;
-            font-weight: 500;
-            border: 1px solid var(--border);
-            transition: all 0.3s ease;
-        }
-
-        .skill-tag:hover {
-            background: var(--primary-color);
-            color: white;
-            border-color: var(--primary-color);
-            transform: scale(1.05);
-        }
-
-        /* Projects Section */
-        .projects {
-            background: var(--surface);
-        }
-
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
-        }
-
-        .project-card {
-            background: var(--background);
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: var(--shadow);
-            transition: all 0.3s ease;
-            border: 1px solid var(--border);
-        }
-
-        .project-card:hover {
-            transform: translateY(-10px);
-            box-shadow: var(--shadow-lg);
-        }
-
-        .project-image {
-            height: 200px;
-            background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 3rem;
-            position: relative;
-        }
-
-        .project-content {
-            padding: 2rem;
-        }
-
-        .project-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 0.75rem;
-            color: var(--text-primary);
-        }
-
-        .project-description {
-            color: var(--text-secondary);
-            margin-bottom: 1.5rem;
-            line-height: 1.6;
-        }
-
-        .project-tech {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .tech-tag {
-            background: var(--primary-color);
-            color: white;
-            padding: 0.25rem 0.75rem;
-            border-radius: 12px;
-            font-size: 0.75rem;
-            font-weight: 500;
-        }
-
-        .project-links {
-            display: flex;
-            gap: 1rem;
-        }
-
-        .project-link {
-            color: var(--primary-color);
-            text-decoration: none;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 0.25rem;
-            transition: color 0.3s ease;
-        }
-
-        .project-link:hover {
-            color: var(--secondary-color);
-        }
-
-        /* Contact Section */
-        .contact {
-            background: var(--background);
-            text-align: center;
-        }
-
-        .contact-content {
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .contact-form {
-            background: var(--surface);
-            padding: 2.5rem;
-            border-radius: 16px;
-            margin-top: 3rem;
-            border: 1px solid var(--border);
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-            text-align: left;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-            color: var(--text-primary);
-        }
-
-        .form-group input,
-        .form-group textarea {
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            font-size: 1rem;
-            transition: border-color 0.3s ease;
-            background: var(--background);
-            color: var(--text-primary);
-        }
-
-        .form-group input:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: var(--primary-color);
-        }
-
-        .form-group textarea {
-            resize: vertical;
-            min-height: 120px;
-        }
-
-        .contact-info {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
-        }
-
-        .contact-item {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 1.5rem;
-            background: var(--surface);
-            border-radius: 12px;
-            border: 1px solid var(--border);
-            transition: all 0.3s ease;
-        }
-
-        .contact-item:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow);
-        }
-
-        .contact-item i {
-            font-size: 1.5rem;
-            color: var(--primary-color);
-            width: 40px;
-        }
-
-        /* Footer */
-        .footer {
-            background: var(--surface);
-            padding: 2rem 0;
-            text-align: center;
-            border-top: 1px solid var(--border);
-        }
-
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
-
-        .social-links {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            margin-bottom: 1rem;
-        }
-
-        .social-link {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
-            background: var(--primary-color);
-            color: white;
-            border-radius: 50%;
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-
-        .social-link:hover {
-            transform: translateY(-2px);
-            background: var(--secondary-color);
-        }
-
-        .footer-text {
-            color: var(--text-secondary);
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .nav-menu {
-                display: none;
-            }
-
-            .mobile-menu-toggle {
-                display: block;
-            }
-
-            .hero-buttons {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .btn {
-                justify-content: center;
-                width: 100%;
-                max-width: 250px;
-            }
-
-            .section {
-                padding: 3rem 0;
-                padding-left: 1rem;
-                padding-right: 1rem;
-            }
-
-            .section-title {
-                font-size: 2rem;
-            }
-
-            .contact-form {
-                padding: 1.5rem;
-            }
-
-            .contact-info {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* Animations */
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .fade-in {
-            animation: fadeIn 0.8s ease-out;
-        }
-
-        /* Scroll animations */
-        .reveal {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.6s ease;
-        }
-
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Smooth scrolling */
-        html {
-            scroll-behavior: smooth;
-        }
-    </style>
+    
+    <!-- Preload Critical Resources -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="https://avatars.githubusercontent.com/u/36548613?v=4">
 </head>
 <body>
-    <nav class="navbar">
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="loader">
+            <div class="loader-circle"></div>
+            <div class="loader-text">Loading</div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
         <div class="nav-container">
-            <a href="#" class="nav-logo">
-                <img src="https://avatars.githubusercontent.com/u/36548613?v=4" alt="Pranav Pankhawala">
-                Pranav
+            <a href="#home" class="nav-logo">
+                <img src="https://avatars.githubusercontent.com/u/36548613?v=4" alt="Pranav Pankhawala" loading="lazy">
+                <span>Pranav</span>
             </a>
-            <ul class="nav-menu">
+            <ul class="nav-menu" id="navMenu">
                 <li><a href="#home" class="nav-link">Home</a></li>
                 <li><a href="#about" class="nav-link">About</a></li>
                 <li><a href="#skills" class="nav-link">Skills</a></li>
                 <li><a href="#projects" class="nav-link">Projects</a></li>
+                <li><a href="#blog" class="nav-link">Blog</a></li>
                 <li><a href="#contact" class="nav-link">Contact</a></li>
+                <li><a href="#" class="nav-link nav-resume" id="resumeBtn">
+                    <i class="fas fa-download"></i> Resume
+                </a></li>
             </ul>
-            <button class="theme-toggle" id="themeToggle">
-                <i class="fas fa-moon"></i>
-            </button>
-            <button class="mobile-menu-toggle">
-                <i class="fas fa-bars"></i>
-            </button>
+            <div class="nav-actions">
+                <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
         </div>
     </nav>
 
+    <!-- Hero Section -->
     <section id="home" class="hero">
+        <div class="hero-background">
+            <div class="hero-particles" id="particles"></div>
+        </div>
         <div class="hero-content">
-            <h1>Hi, I'm <span style="background: linear-gradient(45deg, #ffd700, #ff6b6b); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Pranav Pankhawala</span></h1>
-            <p class="hero-subtitle">Software Developer · Web · ML · IoT</p>
-            <p class="hero-subtitle">Building end-to-end applications, intelligent systems, and connected solutions.</p>
-            <div class="hero-buttons">
-                <a href="#projects" class="btn btn-primary">
-                    <i class="fas fa-eye"></i> View Projects
-                </a>
-                <a href="#contact" class="btn btn-secondary">
-                    <i class="fas fa-envelope"></i> Get in Touch
-                </a>
+            <div class="hero-text">
+                <h1 class="hero-title">
+                    Hi, I'm <span class="gradient-text" data-text="Pranav Pankhawala">Pranav Pankhawala</span>
+                </h1>
+                <div class="hero-subtitle-wrapper">
+                    <p class="hero-subtitle">Software Developer</p>
+                    <div class="typing-container">
+                        <span class="typed-text"></span>
+                        <span class="cursor">|</span>
+                    </div>
+                </div>
+                <p class="hero-description">Building end-to-end applications, intelligent systems, and connected solutions.</p>
+                <div class="hero-buttons">
+                    <a href="#projects" class="btn btn-primary">
+                        <i class="fas fa-eye"></i>
+                        <span>View Projects</span>
+                    </a>
+                    <a href="#contact" class="btn btn-secondary">
+                        <i class="fas fa-envelope"></i>
+                        <span>Get in Touch</span>
+                    </a>
+                </div>
             </div>
-        </div>
-    </section>
-
-    <section id="about" class="section about reveal">
-        <div class="about-content">
-            <h2 class="section-title">About Me</h2>
-            <div class="about-title">Software Developer</div>
-            <p class="about-bio">Software developer with experience building web applications, data-driven solutions, and connected IoT systems.</p>
-            <p class="about-bio">Comfortable working across the stack from clean, responsive UIs to scalable backends and machine learning pipelines.</p>
-            <p class="about-bio">Enjoy exploring new technologies, experimenting with ML models, and designing secure, reliable systems. Outside of code, into fitness, structured training, and learning-driven side projects.</p>
-            <div class="about-interests">
-                <div class="interest-item">
-                    <i class="fas fa-code"></i>
-                    <div><strong>Web Development</strong><br>Full-stack applications and responsive interfaces</div>
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <div class="stat-number" data-count="50">0</div>
+                    <div class="stat-label">Projects Completed</div>
                 </div>
-                <div class="interest-item">
-                    <i class="fas fa-brain"></i>
-                    <div><strong>Machine Learning</strong><br>Data analysis and intelligent systems</div>
+                <div class="stat-item">
+                    <div class="stat-number" data-count="15">0</div>
+                    <div class="stat-label">Technologies</div>
                 </div>
-                <div class="interest-item">
-                    <i class="fas fa-network-wired"></i>
-                    <div><strong>IoT Systems</strong><br>Connected devices and smart solutions</div>
-                </div>
-                <div class="interest-item">
-                    <i class="fas fa-dumbbell"></i>
-                    <div><strong>Fitness</strong><br>Structured training and healthy lifestyle</div>
+                <div class="stat-item">
+                    <div class="stat-number" data-count="3">0</div>
+                    <div class="stat-label">Years Experience</div>
                 </div>
             </div>
         </div>
-    </section>
-
-    <section id="skills" class="section skills reveal">
-        <h2 class="section-title">Skills & Technologies</h2>
-        <div class="skills-grid">
-            <div class="skill-category">
-                <div class="skill-category-title">
-                    <i class="fas fa-globe"></i> Web Development
-                </div>
-                <div class="skill-list">
-                    <span class="skill-tag">HTML5</span>
-                    <span class="skill-tag">CSS3</span>
-                    <span class="skill-tag">JavaScript (ES6+)</span>
-                    <span class="skill-tag">Responsive UI</span>
-                    <span class="skill-tag">SPA Interactions</span>
-                    <span class="skill-tag">REST APIs</span>
-                </div>
+        <div class="scroll-indicator">
+            <div class="mouse">
+                <div class="wheel"></div>
             </div>
-            <div class="skill-category">
-                <div class="skill-category-title">
-                    <i class="fas fa-server"></i> Backend & Data
-                </div>
-                <div class="skill-list">
-                    <span class="skill-tag">Python</span>
-                    <span class="skill-tag">Flask</span>
-                    <span class="skill-tag">API Design</span>
-                    <span class="skill-tag">Data Processing</span>
-                    <span class="skill-tag">Database Design</span>
-                </div>
-            </div>
-            <div class="skill-category">
-                <div class="skill-category-title">
-                    <i class="fas fa-robot"></i> Machine Learning
-                </div>
-                <div class="skill-list">
-                    <span class="skill-tag">Supervised Learning</span>
-                    <span class="skill-tag">Model Training</span>
-                    <span class="skill-tag">Model Evaluation</span>
-                    <span class="skill-tag">Numerical Datasets</span>
-                    <span class="skill-tag">Data Visualization</span>
-                </div>
-            </div>
-            <div class="skill-category">
-                <div class="skill-category-title">
-                    <i class="fas fa-microchip"></i> IoT & Systems
-                </div>
-                <div class="skill-list">
-                    <span class="skill-tag">IoT Architectures</span>
-                    <span class="skill-tag">Device-to-Cloud</span>
-                    <span class="skill-tag">Networked Systems</span>
-                    <span class="skill-tag">Secure Systems</span>
-                    <span class="skill-tag">Industry Use Cases</span>
-                </div>
-            </div>
+            <p>Scroll Down</p>
         </div>
     </section>
 
-    <section id="projects" class="section projects reveal">
-        <h2 class="section-title">Featured Projects</h2>
-        <p style="text-align: center; color: var(--text-secondary); margin-bottom: 3rem;">A selection of my recent work in web development, machine learning, and IoT systems</p>
-        <div class="projects-grid">
-            <div class="project-card">
-                <div class="project-image">
-                    <i class="fas fa-chart-line"></i>
-                </div>
-                <div class="project-content">
-                    <h3 class="project-title">Interactive Dashboard Platform</h3>
-                    <p class="project-description">Responsive web dashboard integrating charts, KPIs, and configurable widgets for data visualization and monitoring.</p>
-                    <div class="project-tech">
-                        <span class="tech-tag">Python</span>
-                        <span class="tech-tag">Flask</span>
-                        <span class="tech-tag">Chart.js</span>
-                        <span class="tech-tag">JavaScript</span>
-                    </div>
-                    <div class="project-links">
-                        <a href="#" class="project-link">
-                            <i class="fab fa-github"></i> GitHub
-                        </a>
-                        <a href="#" class="project-link">
-                            <i class="fas fa-external-link-alt"></i> Live Demo
-                        </a>
-                    </div>
+    <!-- About Section -->
+    <section id="about" class="section about">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title" data-aos="fade-up">About Me</h2>
+                <div class="section-subtitle" data-aos="fade-up" data-aos-delay="100">
+                    Software Developer
                 </div>
             </div>
-            <div class="project-card">
-                <div class="project-image">
-                    <i class="fas fa-filter"></i>
-                </div>
-                <div class="project-content">
-                    <h3 class="project-title">Smart Data Screener</h3>
-                    <p class="project-description">Web tool to filter and rank entities (devices, signals, or assets) based on custom criteria and intelligent rules.</p>
-                    <div class="project-tech">
-                        <span class="tech-tag">Python</span>
-                        <span class="tech-tag">Flask</span>
-                        <span class="tech-tag">HTML</span>
-                        <span class="tech-tag">JavaScript</span>
-                    </div>
-                    <div class="project-links">
-                        <a href="#" class="project-link">
-                            <i class="fab fa-github"></i> GitHub
-                        </a>
-                        <a href="#" class="project-link">
-                            <i class="fas fa-external-link-alt"></i> Live Demo
-                        </a>
+            <div class="about-content">
+                <div class="about-text" data-aos="fade-right">
+                    <p class="about-bio">
+                        Software developer with experience building web applications, data-driven solutions, and connected IoT systems.
+                    </p>
+                    <p class="about-bio">
+                        Comfortable working across the stack from clean, responsive UIs to scalable backends and machine learning pipelines.
+                    </p>
+                    <p class="about-bio">
+                        Enjoy exploring new technologies, experimenting with ML models, and designing secure, reliable systems. Outside of code, into fitness, structured training, and learning-driven side projects.
+                    </p>
+                    <div class="about-cta">
+                        <a href="#contact" class="btn btn-outline">Let's Work Together</a>
                     </div>
                 </div>
-            </div>
-            <div class="project-card">
-                <div class="project-image">
-                    <i class="fas fa-tachometer-alt"></i>
-                </div>
-                <div class="project-content">
-                    <h3 class="project-title">Realtime Analytics Viewer</h3>
-                    <p class="project-description">Frontend for visualizing streaming or high-frequency data with trend analysis, alerts, and interactive controls.</p>
-                    <div class="project-tech">
-                        <span class="tech-tag">Python</span>
-                        <span class="tech-tag">JavaScript</span>
-                        <span class="tech-tag">Chart.js</span>
-                        <span class="tech-tag">WebSockets</span>
+                <div class="about-interests" data-aos="fade-left">
+                    <div class="interest-item">
+                        <div class="interest-icon">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <div class="interest-content">
+                            <h3>Web Development</h3>
+                            <p>Full-stack applications and responsive interfaces</p>
+                        </div>
                     </div>
-                    <div class="project-links">
-                        <a href="#" class="project-link">
-                            <i class="fab fa-github"></i> GitHub
-                        </a>
-                        <a href="#" class="project-link">
-                            <i class="fas fa-external-link-alt"></i> Live Demo
-                        </a>
+                    <div class="interest-item">
+                        <div class="interest-icon">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <div class="interest-content">
+                            <h3>Machine Learning</h3>
+                            <p>Data analysis and intelligent systems</p>
+                        </div>
+                    </div>
+                    <div class="interest-item">
+                        <div class="interest-icon">
+                            <i class="fas fa-network-wired"></i>
+                        </div>
+                        <div class="interest-content">
+                            <h3>IoT Systems</h3>
+                            <p>Connected devices and smart solutions</p>
+                        </div>
+                    </div>
+                    <div class="interest-item">
+                        <div class="interest-icon">
+                            <i class="fas fa-dumbbell"></i>
+                        </div>
+                        <div class="interest-content">
+                            <h3>Fitness</h3>
+                            <p>Structured training and healthy lifestyle</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="contact" class="section contact reveal">
-        <div class="contact-content">
-            <h2 class="section-title">Get In Touch</h2>
-            <p style="text-align: center; color: var(--text-secondary); margin-bottom: 3rem;">Feel free to reach out for collaborations or just a friendly hello</p>
-            <form class="contact-form" id="contactForm">
-                <div class="form-group">
-                    <label for="name">Your Name</label>
-                    <input type="text" id="name" name="name" required>
-                </div>
-                <div class="form-group">
-                    <label for="email">Your Email</label>
-                    <input type="email" id="email" name="email" required>
-                </div>
-                <div class="form-group">
-                    <label for="subject">Subject</label>
-                    <input type="text" id="subject" name="subject" required>
-                </div>
-                <div class="form-group">
-                    <label for="message">Message</label>
-                    <textarea id="message" name="message" required></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary" style="width: 100%;">
-                    <i class="fas fa-paper-plane"></i> Send Message
-                </button>
-            </form>
-            <div class="contact-info">
-                <div class="contact-item">
-                    <i class="fas fa-envelope"></i>
-                    <div>
-                        <strong>Email</strong><br>
-                        <a href="mailto:pranav.pankhawala@gmail.com" style="color: var(--text-primary); text-decoration: none;">pranav.pankhawala@gmail.com</a>
+    <!-- Skills Section -->
+    <section id="skills" class="section skills">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title" data-aos="fade-up">Skills & Technologies</h2>
+                <p class="section-description" data-aos="fade-up" data-aos-delay="100">
+                    A comprehensive toolkit for building modern applications
+                </p>
+            </div>
+            <div class="skills-grid">
+                <div class="skill-category" data-aos="fade-up" data-aos-delay="100">
+                    <div class="skill-category-header">
+                        <div class="skill-icon">
+                            <i class="fas fa-globe"></i>
+                        </div>
+                        <h3 class="skill-category-title">Web Development</h3>
+                    </div>
+                    <div class="skill-list">
+                        <div class="skill-item" data-level="90">
+                            <span class="skill-name">HTML5 & CSS3</span>
+                            <div class="skill-bar">
+                                <div class="skill-progress"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item" data-level="85">
+                            <span class="skill-name">JavaScript (ES6+)</span>
+                            <div class="skill-bar">
+                                <div class="skill-progress"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item" data-level="80">
+                            <span class="skill-name">Responsive Design</span>
+                            <div class="skill-bar">
+                                <div class="skill-progress"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item" data-level="75">
+                            <span class="skill-name">REST APIs</span>
+                            <div class="skill-bar">
+                                <div class="skill-progress"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="contact-item">
-                    <i class="fab fa-github"></i>
-                    <div>
-                        <strong>GitHub</strong><br>
-                        <a href="https://github.com/pranavpankhawala" target="_blank" style="color: var(--text-primary); text-decoration: none;">@pranavpankhawala</a>
+
+                <div class="skill-category" data-aos="fade-up" data-aos-delay="200">
+                    <div class="skill-category-header">
+                        <div class="skill-icon">
+                            <i class="fas fa-server"></i>
+                        </div>
+                        <h3 class="skill-category-title">Backend & Data</h3>
+                    </div>
+                    <div class="skill-list">
+                        <div class="skill-item" data-level="88">
+                            <span class="skill-name">Python</span>
+                            <div class="skill-bar">
+                                <div class="skill-progress"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item" data-level="82">
+                            <span class="skill-name">Flask</span>
+                            <div class="skill-bar">
+                                <div class="skill-progress"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item" data-level="78">
+                            <span class="skill-name">Data Processing</span>
+                            <div class="skill-bar">
+                                <div class="skill-progress"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item" data-level="75">
+                            <span class="skill-name">Database Design</span>
+                            <div class="skill-bar">
+                                <div class="skill-progress"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="skill-category" data-aos="fade-up" data-aos-delay="300">
+                    <div class="skill-category-header">
+                        <div class="skill-icon">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <h3 class="skill-category-title">Machine Learning</h3>
+                    </div>
+                    <div class="skill-list">
+                        <div class="skill-item" data-level="80">
+                            <span class="skill-name">Supervised Learning</span>
+                            <div class="skill-bar">
+                                <div class="skill-progress"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item" data-level="75">
+                            <span class="skill-name">Model Training</span>
+                            <div class="skill-bar">
+                                <div class="skill-progress"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item" data-level="72">
+                            <span class="skill-name">Data Visualization</span>
+                            <div class="skill-bar">
+                                <div class="skill-progress"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item" data-level="70">
+                            <span class="skill-name">Model Evaluation</span>
+                            <div class="skill-bar">
+                                <div class="skill-progress"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="skill-category" data-aos="fade-up" data-aos-delay="400">
+                    <div class="skill-category-header">
+                        <div class="skill-icon">
+                            <i class="fas fa-microchip"></i>
+                        </div>
+                        <h3 class="skill-category-title">IoT & Systems</h3>
+                    </div>
+                    <div class="skill-list">
+                        <div class="skill-item" data-level="78">
+                            <span class="skill-name">IoT Architecture</span>
+                            <div class="skill-bar">
+                                <div class="skill-progress"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item" data-level="75">
+                            <span class="skill-name">Device-to-Cloud</span>
+                            <div class="skill-bar">
+                                <div class="skill-progress"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item" data-level="70">
+                            <span class="skill-name">Secure Systems</span>
+                            <div class="skill-bar">
+                                <div class="skill-progress"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item" data-level="68">
+                            <span class="skill-name">Networked Systems</span>
+                            <div class="skill-bar">
+                                <div class="skill-progress"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- Projects Section -->
+    <section id="projects" class="section projects">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title" data-aos="fade-up">Featured Projects</h2>
+                <p class="section-description" data-aos="fade-up" data-aos-delay="100">
+                    A selection of my recent work in web development, machine learning, and IoT systems
+                </p>
+            </div>
+            
+            <!-- Project Filter -->
+            <div class="project-filter" data-aos="fade-up" data-aos-delay="150">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="web">Web</button>
+                <button class="filter-btn" data-filter="ml">Machine Learning</button>
+                <button class="filter-btn" data-filter="iot">IoT</button>
+            </div>
+
+            <div class="projects-grid">
+                <div class="project-card" data-aos="fade-up" data-aos-delay="200" data-category="web">
+                    <div class="project-image">
+                        <div class="project-overlay">
+                            <div class="project-links">
+                                <a href="#" class="project-link-icon" aria-label="View on GitHub">
+                                    <i class="fab fa-github"></i>
+                                </a>
+                                <a href="#" class="project-link-icon" aria-label="View live demo">
+                                    <i class="fas fa-external-link-alt"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="project-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">Interactive Dashboard Platform</h3>
+                        <p class="project-description">
+                            Responsive web dashboard integrating charts, KPIs, and configurable widgets for data visualization and monitoring.
+                        </p>
+                        <div class="project-tech">
+                            <span class="tech-tag">Python</span>
+                            <span class="tech-tag">Flask</span>
+                            <span class="tech-tag">Chart.js</span>
+                            <span class="tech-tag">JavaScript</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card" data-aos="fade-up" data-aos-delay="300" data-category="web ml">
+                    <div class="project-image">
+                        <div class="project-overlay">
+                            <div class="project-links">
+                                <a href="#" class="project-link-icon" aria-label="View on GitHub">
+                                    <i class="fab fa-github"></i>
+                                </a>
+                                <a href="#" class="project-link-icon" aria-label="View live demo">
+                                    <i class="fas fa-external-link-alt"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="project-icon">
+                            <i class="fas fa-filter"></i>
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">Smart Data Screener</h3>
+                        <p class="project-description">
+                            Web tool to filter and rank entities (devices, signals, or assets) based on custom criteria and intelligent rules.
+                        </p>
+                        <div class="project-tech">
+                            <span class="tech-tag">Python</span>
+                            <span class="tech-tag">Flask</span>
+                            <span class="tech-tag">HTML</span>
+                            <span class="tech-tag">JavaScript</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card" data-aos="fade-up" data-aos-delay="400" data-category="web iot">
+                    <div class="project-image">
+                        <div class="project-overlay">
+                            <div class="project-links">
+                                <a href="#" class="project-link-icon" aria-label="View on GitHub">
+                                    <i class="fab fa-github"></i>
+                                </a>
+                                <a href="#" class="project-link-icon" aria-label="View live demo">
+                                    <i class="fas fa-external-link-alt"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="project-icon">
+                            <i class="fas fa-tachometer-alt"></i>
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">Realtime Analytics Viewer</h3>
+                        <p class="project-description">
+                            Frontend for visualizing streaming or high-frequency data with trend analysis, alerts, and interactive controls.
+                        </p>
+                        <div class="project-tech">
+                            <span class="tech-tag">Python</span>
+                            <span class="tech-tag">JavaScript</span>
+                            <span class="tech-tag">Chart.js</span>
+                            <span class="tech-tag">WebSockets</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Blog Section -->
+    <section id="blog" class="section blog">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title" data-aos="fade-up">Latest Blog Posts</h2>
+                <p class="section-description" data-aos="fade-up" data-aos-delay="100">
+                    Thoughts on development, technology, and learning
+                </p>
+            </div>
+            <div class="blog-grid">
+                <article class="blog-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="blog-image">
+                        <div class="blog-category">Web Development</div>
+                        <div class="blog-icon">
+                            <i class="fas fa-code"></i>
+                        </div>
+                    </div>
+                    <div class="blog-content">
+                        <div class="blog-meta">
+                            <span class="blog-date">
+                                <i class="far fa-calendar"></i> Dec 15, 2024
+                            </span>
+                            <span class="blog-read-time">
+                                <i class="far fa-clock"></i> 5 min read
+                            </span>
+                        </div>
+                        <h3 class="blog-title">Building Responsive Dashboards with Modern CSS</h3>
+                        <p class="blog-excerpt">
+                            Exploring CSS Grid and Flexbox techniques for creating fluid, responsive dashboard layouts that adapt to any screen size.
+                        </p>
+                        <a href="#" class="blog-link">
+                            Read More <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </article>
+
+                <article class="blog-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="blog-image">
+                        <div class="blog-category">Machine Learning</div>
+                        <div class="blog-icon">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                    </div>
+                    <div class="blog-content">
+                        <div class="blog-meta">
+                            <span class="blog-date">
+                                <i class="far fa-calendar"></i> Dec 8, 2024
+                            </span>
+                            <span class="blog-read-time">
+                                <i class="far fa-clock"></i> 8 min read
+                            </span>
+                        </div>
+                        <h3 class="blog-title">Introduction to Supervised Learning Models</h3>
+                        <p class="blog-excerpt">
+                            A practical guide to understanding and implementing common supervised learning algorithms for real-world problems.
+                        </p>
+                        <a href="#" class="blog-link">
+                            Read More <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </article>
+
+                <article class="blog-card" data-aos="fade-up" data-aos-delay="400">
+                    <div class="blog-image">
+                        <div class="blog-category">IoT</div>
+                        <div class="blog-icon">
+                            <i class="fas fa-network-wired"></i>
+                        </div>
+                    </div>
+                    <div class="blog-content">
+                        <div class="blog-meta">
+                            <span class="blog-date">
+                                <i class="far fa-calendar"></i> Nov 30, 2024
+                            </span>
+                            <span class="blog-read-time">
+                                <i class="far fa-clock"></i> 6 min read
+                            </span>
+                        </div>
+                        <h3 class="blog-title">Securing IoT Device Communication</h3>
+                        <p class="blog-excerpt">
+                            Best practices for implementing secure device-to-cloud communication in IoT systems using modern protocols.
+                        </p>
+                        <a href="#" class="blog-link">
+                            Read More <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section contact">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title" data-aos="fade-up">Get In Touch</h2>
+                <p class="section-description" data-aos="fade-up" data-aos-delay="100">
+                    Let's discuss your project or just say hello
+                </p>
+            </div>
+            <div class="contact-wrapper">
+                <div class="contact-info-section" data-aos="fade-right">
+                    <h3>Contact Information</h3>
+                    <div class="contact-info-list">
+                        <div class="contact-info-item">
+                            <div class="contact-info-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div class="contact-info-content">
+                                <h4>Email</h4>
+                                <a href="mailto:pranav.pankhawala@gmail.com">pranav.pankhawala@gmail.com</a>
+                            </div>
+                        </div>
+                        <div class="contact-info-item">
+                            <div class="contact-info-icon">
+                                <i class="fab fa-github"></i>
+                            </div>
+                            <div class="contact-info-content">
+                                <h4>GitHub</h4>
+                                <a href="https://github.com/pranavpankhawala" target="_blank">@pranavpankhawala</a>
+                            </div>
+                        </div>
+                        <div class="contact-info-item">
+                            <div class="contact-info-icon">
+                                <i class="fab fa-linkedin"></i>
+                            </div>
+                            <div class="contact-info-content">
+                                <h4>LinkedIn</h4>
+                                <a href="https://linkedin.com/in/pranavpankhawala" target="_blank">pranavpankhawala</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <form class="contact-form" id="contactForm" data-aos="fade-left">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="name">Your Name *</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Your Email *</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="subject">Subject *</label>
+                        <input type="text" id="subject" name="subject" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message *</label>
+                        <textarea id="message" name="message" rows="5" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-submit">
+                        <span class="btn-text">Send Message</span>
+                        <span class="btn-loader">
+                            <i class="fas fa-spinner fa-spin"></i>
+                        </span>
+                    </button>
+                    <div class="form-status" id="formStatus"></div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
     <footer class="footer">
-        <div class="footer-content">
-            <div class="social-links">
-                <a href="https://github.com/pranavpankhawala" class="social-link" target="_blank">
-                    <i class="fab fa-github"></i>
-                </a>
-                <a href="mailto:pranav.pankhawala@gmail.com" class="social-link">
-                    <i class="fas fa-envelope"></i>
-                </a>
-                <a href="https://linkedin.com/in/pranavpankhawala" class="social-link" target="_blank">
-                    <i class="fab fa-linkedin"></i>
-                </a>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <img src="https://avatars.githubusercontent.com/u/36548613?v=4" alt="Pranav Pankhawala" loading="lazy">
+                    <h3>Pranav Pankhawala</h3>
+                    <p>Software Developer</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#skills">Skills</a></li>
+                        <li><a href="#projects">Projects</a></li>
+                        <li><a href="#blog">Blog</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-social">
+                    <h4>Follow Me</h4>
+                    <div class="social-links">
+                        <a href="https://github.com/pranavpankhawala" target="_blank" aria-label="GitHub">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="https://linkedin.com/in/pranavpankhawala" target="_blank" aria-label="LinkedIn">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                        <a href="mailto:pranav.pankhawala@gmail.com" aria-label="Email">
+                            <i class="fas fa-envelope"></i>
+                        </a>
+                    </div>
+                </div>
             </div>
-            <p class="footer-text">&copy; 2025 Pranav Pankhawala. Built with ❤️ and code.</p>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Pranav Pankhawala. Built with <i class="fas fa-heart"></i> and code.</p>
+            </div>
         </div>
     </footer>
 
-    <script>
-        // Theme Toggle
-        const themeToggle = document.getElementById('themeToggle');
-        const body = document.body;
-        
-        function initTheme() {
-            const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-            body.setAttribute('data-theme', savedTheme);
-            themeToggle.querySelector('i').className = savedTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
-        }
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop" aria-label="Back to top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
 
-        themeToggle.addEventListener('click', () => {
-            const currentTheme = body.getAttribute('data-theme');
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            body.setAttribute('data-theme', newTheme);
-            themeToggle.querySelector('i').className = newTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
-            localStorage.setItem('theme', newTheme);
-        });
-
-        initTheme();
-
-        // Smooth scrolling for nav links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
-
-        // Scroll animations
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('active');
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.reveal').forEach(el => {
-            observer.observe(el);
-        });
-
-        // Navbar scroll effect
-        window.addEventListener('scroll', () => {
-            const navbar = document.querySelector('.navbar');
-            if (window.scrollY > 100) {
-                navbar.style.background = 'rgba(255, 255, 255, 0.98)';
-                navbar.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.1)';
-            } else {
-                navbar.style.background = 'rgba(255, 255, 255, 0.95)';
-                navbar.style.boxShadow = 'none';
-            }
-        });
-
-        // Form handling
-        document.getElementById('contactForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            // Simple form validation
-            const formData = new FormData(this);
-            const name = formData.get('name');
-            const email = formData.get('email');
-            const message = formData.get('message');
-            
-            if (name && email && message) {
-                alert('Thank you for your message! I\'ll get back to you soon.');
-                this.reset();
-            } else {
-                alert('Please fill in all fields.');
-            }
-        });
-
-        // Mobile menu toggle (basic)
-        document.querySelector('.mobile-menu-toggle').addEventListener('click', () => {
-            const navMenu = document.querySelector('.nav-menu');
-            navMenu.style.display = navMenu.style.display === 'flex' ? 'none' : 'flex';
-        });
-    </script>
+    <!-- Scripts -->
+    <script src="script.js"></script>
 </body>
 </html>
