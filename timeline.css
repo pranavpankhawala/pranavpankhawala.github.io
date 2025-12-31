@@ -34,6 +34,21 @@
     position: relative;
     min-width: min-content;
     min-height: 400px; /* Ensure visible */
+    color: var(--text-primary); /* Ensure text color is set */
+}
+
+/* Ensure all text in horizontal timeline is visible */
+.horizontal-timeline,
+.horizontal-timeline * {
+    color: inherit;
+}
+
+.horizontal-timeline .timeline-item,
+.horizontal-timeline .timeline-content,
+.horizontal-timeline .timeline-card,
+.horizontal-timeline .timeline-header,
+.horizontal-timeline .timeline-body {
+    color: var(--text-primary, #1f2937);
 }
 
 .horizontal-scroll::before {
@@ -51,6 +66,7 @@
     margin: 0;
     flex: 0 0 400px;
     position: relative;
+    color: var(--text-primary); /* Ensure text color is set */
 }
 
 .horizontal-timeline .timeline-marker {
@@ -87,6 +103,7 @@
     border: 2px solid var(--border);
     transition: all var(--transition-base);
     position: relative;
+    color: var(--text-primary); /* Ensure text color is set */
 }
 
 .horizontal-timeline .timeline-card::before {
@@ -144,19 +161,20 @@
 
 .timeline-info {
     flex: 1;
+    color: var(--text-primary);
 }
 
 .job-title {
     font-size: 1.5rem;
     font-weight: 700;
-    color: var(--text-primary);
+    color: var(--text-primary, #1f2937) !important;
     margin-bottom: 0.25rem;
 }
 
 .company-name {
     font-size: 1.125rem;
     font-weight: 600;
-    color: var(--primary-color);
+    color: var(--primary-color, #2563eb) !important;
     margin-bottom: 0.75rem;
 }
 
@@ -165,7 +183,7 @@
     gap: 2rem;
     flex-wrap: wrap;
     font-size: 0.95rem;
-    color: var(--text-tertiary);
+    color: var(--text-tertiary, #9ca3af) !important;
 }
 
 .timeline-meta span {
@@ -180,6 +198,7 @@
 
 .timeline-body {
     margin-top: 1.5rem;
+    color: var(--text-primary);
 }
 
 .responsibilities {
@@ -193,7 +212,7 @@
     padding-left: 1.5rem;
     margin-bottom: 0.75rem;
     line-height: 1.6;
-    color: var(--text-secondary);
+    color: var(--text-secondary, #6b7280) !important;
 }
 
 .responsibilities li::before {
@@ -213,7 +232,7 @@
 .tech-stack .tech-tag {
     padding: 0.5rem 1rem;
     background: var(--surface);
-    color: var(--text-primary);
+    color: var(--text-primary, #1f2937) !important;
     border-radius: 20px;
     font-size: 0.875rem;
     font-weight: 600;

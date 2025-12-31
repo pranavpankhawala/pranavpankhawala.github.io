@@ -62,6 +62,9 @@ function setupTimeline() {
         console.log(`✓ Cloned item ${index + 1}`);
     });
     
+    // Force a reflow to ensure CSS is applied
+    horizontalScroll.offsetHeight;
+    
     // Hide vertical, show horizontal
     verticalTimeline.style.display = 'none';
     verticalTimeline.style.visibility = 'visible';
