@@ -633,34 +633,21 @@ function initGitHubStats() {
     const theme = ADVANCED_CONFIG.githubTheme;
 
     const statsHTML = `
-<div class="github-stats-container">
-    <div class="github-stat-card" data-aos="fade-up">
-        <img 
-          src="https://github-readme-stats-sigma-five.vercel.app/api?username=${username}&show_icons=true&theme=${theme}&hide_border=true&bg_color=1a1a2e&title_color=00d9ff&icon_color=00d9ff&text_color=ffffff&cache_seconds=86400"
-          alt="GitHub Stats"
-        />
-    </div>
-
-    <div class="github-stat-card" data-aos="fade-up" data-aos-delay="100">
-        <img 
-          src="https://github-readme-streak-stats.herokuapp.com/?user=${username}&theme=${theme}&hide_border=true&background=1a1a2e&ring=00d9ff&fire=00d9ff&currStreakLabel=00d9ff"
-          alt="GitHub Streak"
-        />
-    </div>
-
-    <div class="github-stat-card" data-aos="fade-up" data-aos-delay="200">
-        <img 
-          src="https://github-readme-stats-sigma-five.vercel.app/api/top-langs/?username=${username}&layout=compact&theme=${theme}&hide_border=true&bg_color=1a1a2e&title_color=00d9ff&text_color=ffffff&cache_seconds=86400"
-          alt="Top Languages"
-        />
-    </div>
-</div>
-`;
-
+        <div class="github-stats-container">
+            <div class="github-stat-card" data-aos="fade-up">
+                <img src="https://nirzak-github-readme-stats.vercel.app/api?username=${username}&show_icons=true&theme=${theme}&hide_border=true&bg_color=1a1a2e&title_color=00d9ff&icon_color=00d9ff&text_color=ffffff&cache_seconds=1800" alt="GitHub Stats" loading="lazy" onerror="this.onerror=null; this.src='https://github-stats.cachyos.org/api?username=${username}&show_icons=true&theme=${theme}&hide_border=true&bg_color=1a1a2e&title_color=00d9ff&icon_color=00d9ff&text_color=ffffff'" />
+            </div>
+            <div class="github-stat-card" data-aos="fade-up" data-aos-delay="100">
+                <img src="https://github-readme-streak-stats.herokuapp.com/?user=${username}&theme=${theme}&hide_border=true&background=1a1a2e&ring=00d9ff&fire=00d9ff&currStreakLabel=00d9ff" alt="GitHub Streak" loading="lazy" />
+            </div>
+            <div class="github-stat-card" data-aos="fade-up" data-aos-delay="200">
+                <img src="https://nirzak-github-readme-stats.vercel.app/api/top-langs?username=${username}&layout=compact&theme=${theme}&hide_border=true&bg_color=1a1a2e&title_color=00d9ff&text_color=ffffff&cache_seconds=1800" alt="Top Languages" loading="lazy" onerror="this.style.display='none'" />
+            </div>
+        </div>
+    `;
 
     githubSection.innerHTML = statsHTML;
 }
-
 
 // ===================================
 // Utility Functions
