@@ -34,21 +34,63 @@
     position: relative;
     min-width: min-content;
     min-height: 400px; /* Ensure visible */
-    color: var(--text-primary); /* Ensure text color is set */
+    color: var(--text-primary, #1f2937) !important; /* Ensure text color is set */
+}
+
+/* Force all text elements to be visible */
+.horizontal-scroll h1,
+.horizontal-scroll h2,
+.horizontal-scroll h3,
+.horizontal-scroll h4,
+.horizontal-scroll h5,
+.horizontal-scroll h6,
+.horizontal-scroll p,
+.horizontal-scroll span:not(.timeline-icon),
+.horizontal-scroll div:not(.timeline-icon),
+.horizontal-scroll li,
+.horizontal-scroll ul,
+.horizontal-scroll ol {
+    color: var(--text-primary, #1f2937) !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* Specific overrides for timeline elements */
+.horizontal-scroll .job-title {
+    color: var(--text-primary, #1f2937) !important;
+}
+
+.horizontal-scroll .company-name {
+    color: var(--primary-color, #2563eb) !important;
+}
+
+.horizontal-scroll .timeline-meta,
+.horizontal-scroll .timeline-meta * {
+    color: var(--text-tertiary, #9ca3af) !important;
+}
+
+.horizontal-scroll .responsibilities li {
+    color: var(--text-secondary, #6b7280) !important;
 }
 
 /* Ensure all text in horizontal timeline is visible */
-.horizontal-timeline,
-.horizontal-timeline * {
-    color: inherit;
+.horizontal-timeline {
+    color: var(--text-primary, #1f2937) !important;
 }
 
 .horizontal-timeline .timeline-item,
 .horizontal-timeline .timeline-content,
 .horizontal-timeline .timeline-card,
 .horizontal-timeline .timeline-header,
-.horizontal-timeline .timeline-body {
-    color: var(--text-primary, #1f2937);
+.horizontal-timeline .timeline-body,
+.horizontal-timeline p,
+.horizontal-timeline h3,
+.horizontal-timeline h4,
+.horizontal-timeline span,
+.horizontal-timeline li {
+    color: var(--text-primary, #1f2937) !important;
+    opacity: 1 !important;
+    visibility: visible !important;
 }
 
 .horizontal-scroll::before {
@@ -93,6 +135,9 @@
 
 .horizontal-timeline .timeline-content {
     margin-top: 100px;
+    color: var(--text-primary, #1f2937) !important;
+    opacity: 1 !important;
+    visibility: visible !important;
 }
 
 .horizontal-timeline .timeline-card {
@@ -103,7 +148,9 @@
     border: 2px solid var(--border);
     transition: all var(--transition-base);
     position: relative;
-    color: var(--text-primary); /* Ensure text color is set */
+    color: var(--text-primary, #1f2937) !important; /* Ensure text color is set */
+    opacity: 1 !important;
+    visibility: visible !important;
 }
 
 .horizontal-timeline .timeline-card::before {
@@ -143,6 +190,9 @@
     gap: 1.5rem;
     margin-bottom: 1.5rem;
     align-items: flex-start;
+    color: var(--text-primary, #1f2937) !important;
+    opacity: 1 !important;
+    visibility: visible !important;
 }
 
 .company-logo {
@@ -161,7 +211,9 @@
 
 .timeline-info {
     flex: 1;
-    color: var(--text-primary);
+    color: var(--text-primary, #1f2937) !important;
+    opacity: 1 !important;
+    visibility: visible !important;
 }
 
 .job-title {
@@ -198,7 +250,9 @@
 
 .timeline-body {
     margin-top: 1.5rem;
-    color: var(--text-primary);
+    color: var(--text-primary, #1f2937) !important;
+    opacity: 1 !important;
+    visibility: visible !important;
 }
 
 .responsibilities {
@@ -319,6 +373,7 @@
 /* Animations */
 .horizontal-timeline .timeline-item {
     animation: slideInUp 0.6s ease-out;
+    opacity: 1 !important; /* Ensure items are visible after animation */
 }
 
 @keyframes slideInUp {
@@ -330,6 +385,12 @@
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+/* Force visibility after animation completes */
+.horizontal-timeline .timeline-item,
+.horizontal-timeline .timeline-item * {
+    animation-fill-mode: forwards;
 }
 
 /* Timeline Icon Pulse Animation */

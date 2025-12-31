@@ -58,6 +58,30 @@ function setupTimeline() {
     // Clone all items
     verticalItems.forEach((item, index) => {
         const clone = item.cloneNode(true);
+        
+        // Force text visibility with inline styles as fallback
+        const textElements = clone.querySelectorAll('h3, h4, p, li, span, div, .job-title, .company-name, .timeline-meta, .responsibilities li');
+        textElements.forEach(el => {
+            // Only set if element has text content
+            if (el.textContent && el.textContent.trim()) {
+                if (el.classList.contains('job-title')) {
+                    el.style.color = '#1f2937';
+                } else if (el.classList.contains('company-name')) {
+                    el.style.color = '#2563eb';
+                } else if (el.classList.contains('timeline-meta') || el.closest('.timeline-meta')) {
+                    el.style.color = '#9ca3af';
+                } else if (el.tagName === 'LI' && el.closest('.responsibilities')) {
+                    el.style.color = '#6b7280';
+                } else if (el.classList.contains('tech-tag')) {
+                    el.style.color = '#1f2937';
+                } else {
+                    el.style.color = '#1f2937';
+                }
+                el.style.opacity = '1';
+                el.style.visibility = 'visible';
+            }
+        });
+        
         horizontalScroll.appendChild(clone);
         console.log(`✓ Cloned item ${index + 1}`);
     });
