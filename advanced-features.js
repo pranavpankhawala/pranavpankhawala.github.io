@@ -630,15 +630,33 @@ function initGitHubStats() {
     if (!githubSection) return;
 
     const username = ADVANCED_CONFIG.githubUsername;
-    const theme = ADVANCED_CONFIG.githubTheme;
 
     const statsHTML = `
         <div class="github-stats-container">
-            
-            <div class="github-stat-card" data-aos="fade-up" data-aos-delay="100">
-                <img src="https://github-readme-streak-stats.herokuapp.com/?user=${username}&theme=${theme}&hide_border=true&background=1a1a2e&ring=00d9ff&fire=00d9ff&currStreakLabel=00d9ff" alt="GitHub Streak" loading="lazy" />
+            <div class="github-stat-card" data-aos="fade-up">
+                <h3 style="color: var(--primary-color); margin-bottom: 1rem;">GitHub Activity</h3>
+                <img src="https://ghchart.rshah.org/00d9ff/${username}" alt="GitHub Contribution Chart" loading="lazy" style="width: 100%; height: auto; border-radius: 8px;" />
             </div>
-            
+            <div class="github-stat-card" data-aos="fade-up" data-aos-delay="100">
+                <img src="https://github-readme-streak-stats.herokuapp.com/?user=${username}&theme=tokyonight&hide_border=true&background=1a1a2e&ring=00d9ff&fire=00d9ff&currStreakLabel=00d9ff" alt="GitHub Streak" loading="lazy" />
+            </div>
+            <div class="github-stat-card" data-aos="fade-up" data-aos-delay="200">
+                <h3 style="color: var(--primary-color); margin-bottom: 1rem;">GitHub Profile</h3>
+                <a href="https://github.com/${username}" target="_blank" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 1rem 2rem; background: var(--gradient-primary); color: white; border-radius: 50px; text-decoration: none; font-weight: 600; transition: transform 0.3s;">
+                    <i class="fab fa-github" style="font-size: 1.5rem;"></i>
+                    View Full Profile
+                </a>
+                <div style="margin-top: 1.5rem; display: grid; gap: 0.75rem;">
+                    <div style="display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem; background: var(--surface); border-radius: 8px;">
+                        <i class="fas fa-code" style="color: var(--primary-color); font-size: 1.25rem;"></i>
+                        <span style="color: var(--text-secondary);">Browse Repositories</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem; background: var(--surface); border-radius: 8px;">
+                        <i class="fas fa-star" style="color: var(--primary-color); font-size: 1.25rem;"></i>
+                        <span style="color: var(--text-secondary);">View Contributions</span>
+                    </div>
+                </div>
+            </div>
         </div>
     `;
 
