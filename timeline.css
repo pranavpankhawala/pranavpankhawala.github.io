@@ -1,5 +1,5 @@
 /* ===================================
-   Horizontal Timeline Only
+   Horizontal Timeline for Experience & Education
    =================================== */
 
 /* Hide timeline view toggle buttons */
@@ -8,18 +8,20 @@
 }
 
 /* Force display settings */
-.vertical-timeline {
+.vertical-timeline,
+.vertical-timeline-education {
     display: none !important;
 }
 
-.horizontal-timeline {
+.horizontal-timeline,
+.horizontal-timeline-education {
     display: block !important;
     position: relative;
     overflow-x: auto;
     padding: 3rem 0;
     background: var(--surface-elevated);
     border-radius: var(--radius-lg);
-    min-height: 500px; /* Ensure container is visible */
+    min-height: 500px;
 }
 
 .grid-timeline {
@@ -27,98 +29,56 @@
 }
 
 /* Horizontal Timeline Styles */
-.horizontal-scroll {
+.horizontal-scroll,
+.horizontal-scroll-education {
     display: flex;
     gap: 2rem;
     padding: 2rem;
     position: relative;
     min-width: min-content;
-    min-height: 400px; /* Ensure visible */
-    color: var(--text-primary, #1f2937) !important; /* Ensure text color is set */
-}
-
-/* Force all text elements to be visible */
-.horizontal-scroll h1,
-.horizontal-scroll h2,
-.horizontal-scroll h3,
-.horizontal-scroll h4,
-.horizontal-scroll h5,
-.horizontal-scroll h6,
-.horizontal-scroll p,
-.horizontal-scroll span:not(.timeline-icon),
-.horizontal-scroll div:not(.timeline-icon),
-.horizontal-scroll li,
-.horizontal-scroll ul,
-.horizontal-scroll ol {
-    color: var(--text-primary, #1f2937) !important;
-    opacity: 1 !important;
-    visibility: visible !important;
-}
-
-/* Specific overrides for timeline elements */
-.horizontal-scroll .job-title {
+    min-height: 400px;
     color: var(--text-primary, #1f2937) !important;
 }
 
-.horizontal-scroll .company-name {
-    color: var(--primary-color, #2563eb) !important;
-}
-
-.horizontal-scroll .timeline-meta,
-.horizontal-scroll .timeline-meta * {
-    color: var(--text-tertiary, #9ca3af) !important;
-}
-
-.horizontal-scroll .responsibilities li {
-    color: var(--text-secondary, #6b7280) !important;
-}
-
-/* Ensure all text in horizontal timeline is visible */
-.horizontal-timeline {
-    color: var(--text-primary, #1f2937) !important;
-}
-
-.horizontal-timeline .timeline-item,
-.horizontal-timeline .timeline-content,
-.horizontal-timeline .timeline-card,
-.horizontal-timeline .timeline-header,
-.horizontal-timeline .timeline-body,
-.horizontal-timeline p,
-.horizontal-timeline h3,
-.horizontal-timeline h4,
-.horizontal-timeline span,
-.horizontal-timeline li {
-    color: var(--text-primary, #1f2937) !important;
-    opacity: 1 !important;
-    visibility: visible !important;
-}
-
-.horizontal-scroll::before {
+/* FIXED: Blue line stops before last item */
+.horizontal-scroll::before,
+.horizontal-scroll-education::before {
     content: '';
     position: absolute;
     top: 30px;
-    left: 0;
-    right: 0;
+    left: 200px; /* Start from center of first item */
+    right: 200px; /* Stop before center of last item */
     height: 2px;
     background: var(--gradient-primary);
 }
 
-.horizontal-timeline .timeline-item {
+/* Force text visibility */
+.horizontal-scroll *,
+.horizontal-scroll-education * {
+    color: var(--text-primary, #1f2937) !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.horizontal-timeline .timeline-item,
+.horizontal-timeline-education .timeline-item {
     padding: 0;
     margin: 0;
     flex: 0 0 400px;
     position: relative;
-    color: var(--text-primary); /* Ensure text color is set */
+    color: var(--text-primary);
 }
 
-.horizontal-timeline .timeline-marker {
+.horizontal-timeline .timeline-marker,
+.horizontal-timeline-education .timeline-marker {
     position: absolute;
     top: 0;
     left: 50%;
     transform: translateX(-50%);
 }
 
-.horizontal-timeline .timeline-icon {
+.horizontal-timeline .timeline-icon,
+.horizontal-timeline-education .timeline-icon {
     width: 60px;
     height: 60px;
     border-radius: 50%;
@@ -133,14 +93,16 @@
     z-index: 2;
 }
 
-.horizontal-timeline .timeline-content {
+.horizontal-timeline .timeline-content,
+.horizontal-timeline-education .timeline-content {
     margin-top: 100px;
     color: var(--text-primary, #1f2937) !important;
     opacity: 1 !important;
     visibility: visible !important;
 }
 
-.horizontal-timeline .timeline-card {
+.horizontal-timeline .timeline-card,
+.horizontal-timeline-education .timeline-card {
     height: 100%;
     background: var(--surface-elevated);
     border-radius: var(--radius-lg);
@@ -148,12 +110,11 @@
     border: 2px solid var(--border);
     transition: all var(--transition-base);
     position: relative;
-    color: var(--text-primary, #1f2937) !important; /* Ensure text color is set */
-    opacity: 1 !important;
-    visibility: visible !important;
+    color: var(--text-primary, #1f2937) !important;
 }
 
-.horizontal-timeline .timeline-card::before {
+.horizontal-timeline .timeline-card::before,
+.horizontal-timeline-education .timeline-card::before {
     content: '';
     position: absolute;
     top: -20px;
@@ -166,7 +127,8 @@
     border-bottom: 10px solid var(--border);
 }
 
-.horizontal-timeline .timeline-card::after {
+.horizontal-timeline .timeline-card::after,
+.horizontal-timeline-education .timeline-card::after {
     content: '';
     position: absolute;
     top: -17px;
@@ -190,9 +152,6 @@
     gap: 1.5rem;
     margin-bottom: 1.5rem;
     align-items: flex-start;
-    color: var(--text-primary, #1f2937) !important;
-    opacity: 1 !important;
-    visibility: visible !important;
 }
 
 .company-logo {
@@ -211,9 +170,6 @@
 
 .timeline-info {
     flex: 1;
-    color: var(--text-primary, #1f2937) !important;
-    opacity: 1 !important;
-    visibility: visible !important;
 }
 
 .job-title {
@@ -250,9 +206,6 @@
 
 .timeline-body {
     margin-top: 1.5rem;
-    color: var(--text-primary, #1f2937) !important;
-    opacity: 1 !important;
-    visibility: visible !important;
 }
 
 .responsibilities {
@@ -296,37 +249,43 @@
 
 .tech-stack .tech-tag:hover {
     background: var(--primary-color);
-    color: white;
+    color: white !important;
     border-color: var(--primary-color);
     transform: translateY(-2px);
 }
 
 /* Scrollbar Styling */
-.horizontal-timeline::-webkit-scrollbar {
+.horizontal-timeline::-webkit-scrollbar,
+.horizontal-timeline-education::-webkit-scrollbar {
     height: 8px;
 }
 
-.horizontal-timeline::-webkit-scrollbar-track {
+.horizontal-timeline::-webkit-scrollbar-track,
+.horizontal-timeline-education::-webkit-scrollbar-track {
     background: var(--surface);
     border-radius: 4px;
 }
 
-.horizontal-timeline::-webkit-scrollbar-thumb {
+.horizontal-timeline::-webkit-scrollbar-thumb,
+.horizontal-timeline-education::-webkit-scrollbar-thumb {
     background: var(--primary-color);
     border-radius: 4px;
 }
 
-.horizontal-timeline::-webkit-scrollbar-thumb:hover {
+.horizontal-timeline::-webkit-scrollbar-thumb:hover,
+.horizontal-timeline-education::-webkit-scrollbar-thumb:hover {
     background: var(--secondary-color);
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
-    .horizontal-scroll {
+    .horizontal-scroll,
+    .horizontal-scroll-education {
         gap: 1rem;
     }
     
-    .horizontal-timeline .timeline-item {
+    .horizontal-timeline .timeline-item,
+    .horizontal-timeline-education .timeline-item {
         flex: 0 0 320px;
     }
     
@@ -371,9 +330,10 @@
 }
 
 /* Animations */
-.horizontal-timeline .timeline-item {
+.horizontal-timeline .timeline-item,
+.horizontal-timeline-education .timeline-item {
     animation: slideInUp 0.6s ease-out;
-    opacity: 1 !important; /* Ensure items are visible after animation */
+    opacity: 1 !important;
 }
 
 @keyframes slideInUp {
@@ -385,12 +345,6 @@
         opacity: 1;
         transform: translateY(0);
     }
-}
-
-/* Force visibility after animation completes */
-.horizontal-timeline .timeline-item,
-.horizontal-timeline .timeline-item * {
-    animation-fill-mode: forwards;
 }
 
 /* Timeline Icon Pulse Animation */
@@ -419,7 +373,8 @@
     box-shadow: 0 0 0 4px var(--background), 0 0 0 6px var(--primary-color);
 }
 
-[data-theme="dark"] .horizontal-scroll::before {
+[data-theme="dark"] .horizontal-scroll::before,
+[data-theme="dark"] .horizontal-scroll-education::before {
     background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
 }
 
