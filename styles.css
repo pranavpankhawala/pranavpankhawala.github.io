@@ -1355,7 +1355,7 @@ button {
    =================================== */
 .back-to-top {
     position: fixed;
-    bottom: 2rem;
+    bottom: calc(2rem + 60px + 1rem);
     right: 2rem;
     width: 50px;
     height: 50px;
@@ -1457,6 +1457,11 @@ button {
     
     .form-row {
         grid-template-columns: 1fr;
+    }
+    
+    .back-to-top {
+        bottom: calc(1rem + 60px + 1rem);
+        right: 1rem;
     }
 }
 

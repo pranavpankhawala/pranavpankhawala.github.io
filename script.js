@@ -343,7 +343,8 @@ function initStatCounters() {
 }
 
 function animateCounter(element) {
-    const target = parseInt(element.getAttribute('data-count'));
+    const target = parseFloat(element.getAttribute('data-count'));
+    const suffix = element.getAttribute('data-suffix') || '';
     const duration = 2000;
     const increment = target / (duration / 16);
     let current = 0;
@@ -351,10 +352,17 @@ function animateCounter(element) {
     const timer = setInterval(() => {
         current += increment;
         if (current >= target) {
-            element.textContent = target + '+';
+            // Format the final value: if it's a decimal, show one decimal place, otherwise show integer
+            const finalValue = target % 1 === 0 ? target : target.toFixed(1);
+            element.textContent = finalValue + suffix;
             clearInterval(timer);
         } else {
-            element.textContent = Math.floor(current);
+            // During animation, show integer for whole numbers, or one decimal place for decimals
+            if (target % 1 === 0) {
+                element.textContent = Math.floor(current);
+            } else {
+                element.textContent = current.toFixed(1);
+            }
         }
     }, 16);
 }
