@@ -562,9 +562,47 @@ class TrialRegistrationSystem {
 // Initialize system
 document.addEventListener('DOMContentLoaded', () => {
     window.trialSystem = new TrialRegistrationSystem();
+    
+    // Attach click handlers to all project cards
+    attachProjectClickHandlers();
+    
     console.log('✅ Trial Registration System ready');
 });
 
+// Attach click handlers to project cards
+function attachProjectClickHandlers() {
+    const projectCards = document.querySelectorAll('.project-card');
+    
+    projectCards.forEach(card => {
+        // Make card clickable (excluding links inside)
+        card.style.cursor = 'pointer';
+        
+        card.addEventListener('click', (e) => {
+            // Don't trigger if clicking on GitHub/demo links
+            if (e.target.closest('.project-link-icon')) {
+                return;
+            }
+            
+            // Get project title
+            const projectTitle = card.querySelector('.project-title')?.textContent || 'Project';
+            
+            console.log(`Project clicked: ${projectTitle}`);
+            
+            // Track which project was clicked
+            if (window.trialSystem) {
+                window.trialSystem.trackEvent('project_card_clicked', {
+                    project_name: projectTitle
+                });
+            }
+            
+            // Open trial modal
+            window.openTrialModal();
+        });
+    });
+    
+    console.log(`✅ Attached trial triggers to ${projectCards.length} project cards`);
+}
+
 // Export for use globally
-window.openTrialModal = () => window.trialSystem.openModal();
-window.closeTrialModal = () => window.trialSystem.closeModal();
+window.openTrialModal = () => window.trialSystem?.openModal();
+window.closeTrialModal = () => window.trialSystem?.closeModal();
