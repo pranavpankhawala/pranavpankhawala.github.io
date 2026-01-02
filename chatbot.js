@@ -1,5 +1,5 @@
 // ===================================
-// AI Chatbot Configuration
+// AI Chatbot - Dynamic Data Extraction
 // ===================================
 
 const CHATBOT_CONFIG = {
@@ -9,143 +9,516 @@ const CHATBOT_CONFIG = {
     responseDelay: 500
 };
 
-// Comprehensive FAQ Database
-const FAQ_DATABASE = {
-    experience: {
-        keywords: ['experience', 'work', 'job', 'career', 'professional', 'worked', 'employment'],
-        responses: [
-            {
-                text: "Pranav has 3+ years of professional experience as a Software Developer, including:",
-                list: [
-                    "Senior Software Developer at Tech Innovators Inc. (2023-Present)",
-                    "Full Stack Developer at Digital Solutions Ltd. (2021-2022)",
-                    "ML Engineer Intern at AI Analytics Corp. (2021)"
-                ],
-                actions: [
-                    { text: "View Full Timeline", action: "scrollToSection", params: "experience" }
-                ]
-            }
-        ]
-    },
-    skills: {
-        keywords: ['skill', 'technology', 'tech stack', 'expertise', 'proficient', 'know', 'capable'],
-        responses: [
-            {
-                text: "Pranav's technical expertise includes:",
-                list: [
-                    "Web Development: HTML5, CSS3, JavaScript, React, Flask",
-                    "Backend: Python, Node.js, REST APIs, Database Design",
-                    "Machine Learning: Supervised Learning, Data Analysis, Model Training",
-                    "IoT Systems: IoT Architecture, Device-to-Cloud, Secure Systems"
-                ],
-                actions: [
-                    { text: "See Detailed Skills", action: "scrollToSection", params: "skills" }
-                ]
-            }
-        ]
-    },
-    projects: {
-        keywords: ['project', 'portfolio', 'work', 'built', 'created', 'developed', 'showcase'],
-        responses: [
-            {
-                text: "Here are some of Pranav's notable projects:",
-                list: [
-                    "Interactive Dashboard Platform - Real-time data visualization (Python, Flask, Chart.js)",
-                    "Smart Data Screener - Intelligent filtering and ranking system",
-                    "Realtime Analytics Viewer - Streaming data visualization with WebSockets"
-                ],
-                actions: [
-                    { text: "View All Projects", action: "scrollToSection", params: "projects" }
-                ]
-            }
-        ]
-    },
-    contact: {
-        keywords: ['contact', 'reach', 'email', 'phone', 'connect', 'message', 'talk', 'discuss'],
-        responses: [
-            {
-                text: "You can reach Pranav through:",
-                list: [
-                    "Email: pranav.pankhawala@gmail.com",
-                    "GitHub: @pranavpankhawala",
-                    "LinkedIn: pranavpankhawala"
-                ],
-                actions: [
-                    { text: "Send Message", action: "scrollToSection", params: "contact" },
-                    { text: "Schedule Meeting", action: "scheduleMeeting" }
-                ]
-            }
-        ]
-    },
-    education: {
-        keywords: ['education', 'degree', 'university', 'college', 'study', 'qualification'],
-        responses: [
-            {
-                text: "Pranav holds a Bachelor of Technology in Computer Science & Engineering (2017-2021) with First Class Honors (GPA: 8.5/10). He was actively involved in the Coding Club and participated in multiple hackathons.",
-                actions: [
-                    { text: "View Timeline", action: "scrollToSection", params: "experience" }
-                ]
-            }
-        ]
-    },
-    hire: {
-        keywords: ['hire', 'freelance', 'available', 'job', 'opportunity', 'work together', 'collaborate'],
-        responses: [
-            {
-                text: "Pranav is currently open to new opportunities! He specializes in full-stack development, ML solutions, and IoT systems. Would you like to:",
-                actions: [
-                    { text: "View Resume", action: "downloadResume" },
-                    { text: "Schedule Consultation", action: "scheduleMeeting" },
-                    { text: "Send Message", action: "scrollToSection", params: "contact" }
-                ]
-            }
-        ]
-    },
-    technologies: {
-        keywords: ['python', 'javascript', 'react', 'flask', 'node', 'database', 'api', 'docker', 'aws'],
-        responses: [
-            {
-                text: "Yes, Pranav has extensive experience with that technology! His tech stack includes:",
-                list: [
-                    "Languages: Python, JavaScript (ES6+), SQL",
-                    "Frameworks: Flask, React, Node.js",
-                    "Tools: Docker, AWS, Git, REST APIs",
-                    "Databases: PostgreSQL, MongoDB, Redis"
-                ],
-                actions: [
-                    { text: "See All Skills", action: "scrollToSection", params: "skills" }
-                ]
-            }
-        ]
-    },
-    blog: {
-        keywords: ['blog', 'article', 'write', 'post', 'content', 'tutorial'],
-        responses: [
-            {
-                text: "Pranav regularly writes about web development, machine learning, and IoT. Recent posts include:",
-                list: [
-                    "Building Responsive Dashboards with Modern CSS",
-                    "Introduction to Supervised Learning Models",
-                    "Securing IoT Device Communication"
-                ],
-                actions: [
-                    { text: "Read Blog", action: "scrollToSection", params: "blog" }
-                ]
-            }
-        ]
-    }
-};
-
-// ===================================
-// Chatbot State Management
-// ===================================
-
+// State Management
 let chatbotState = {
     isOpen: false,
     messageHistory: [],
     userName: null,
-    context: null
+    context: null,
+    portfolioData: null // Will store extracted data
 };
+
+// ===================================
+// Data Extraction from HTML
+// ===================================
+
+function extractPortfolioData() {
+    console.log('📊 Extracting portfolio data from HTML...');
+    
+    const data = {
+        experience: extractExperience(),
+        education: extractEducation(),
+        skills: extractSkills(),
+        projects: extractProjects(),
+        contact: extractContact(),
+        about: extractAbout(),
+        stats: extractStats()
+    };
+    
+    console.log('✅ Portfolio data extracted:', data);
+    return data;
+}
+
+function extractExperience() {
+    const experiences = [];
+    const experienceSection = document.querySelector('#experience .vertical-timeline');
+    
+    if (!experienceSection) return experiences;
+    
+    const items = experienceSection.querySelectorAll('.timeline-item');
+    items.forEach(item => {
+        const title = item.querySelector('.job-title')?.textContent.trim();
+        const company = item.querySelector('.company-name')?.textContent.trim();
+        const date = item.querySelector('.timeline-date')?.textContent.trim().replace(/\s+/g, ' ');
+        const location = item.querySelector('.timeline-location')?.textContent.trim().replace(/\s+/g, ' ');
+        const responsibilities = Array.from(item.querySelectorAll('.responsibilities li'))
+            .map(li => li.textContent.trim())
+            .filter(text => text.length > 0);
+        const technologies = Array.from(item.querySelectorAll('.tech-stack .tech-tag'))
+            .map(tag => tag.textContent.trim())
+            .filter(text => text.length > 0);
+        
+        if (title && company) {
+            experiences.push({
+                title,
+                company,
+                date: date || 'Present',
+                location: location || 'Pune, India',
+                responsibilities,
+                technologies
+            });
+        }
+    });
+    
+    return experiences;
+}
+
+function extractEducation() {
+    const education = [];
+    const educationSection = document.querySelector('#education .vertical-timeline-education');
+    
+    if (!educationSection) return education;
+    
+    const items = educationSection.querySelectorAll('.timeline-item');
+    items.forEach(item => {
+        const degree = item.querySelector('.job-title')?.textContent.trim();
+        const institution = item.querySelector('.company-name')?.textContent.trim();
+        const date = item.querySelector('.timeline-date')?.textContent.trim().replace(/\s+/g, ' ');
+        const details = Array.from(item.querySelectorAll('.responsibilities li'))
+            .map(li => li.textContent.trim())
+            .filter(text => text.length > 0);
+        const subjects = Array.from(item.querySelectorAll('.tech-stack .tech-tag'))
+            .map(tag => tag.textContent.trim())
+            .filter(text => text.length > 0);
+        
+        if (degree && institution) {
+            education.push({
+                degree,
+                institution,
+                date: date || '',
+                details,
+                subjects
+            });
+        }
+    });
+    
+    return education;
+}
+
+function extractSkills() {
+    const skills = {};
+    const skillCategories = document.querySelectorAll('.skill-category');
+    
+    skillCategories.forEach(category => {
+        const categoryName = category.querySelector('.skill-category-title')?.textContent.trim();
+        if (!categoryName) return;
+        
+        const skillItems = category.querySelectorAll('.skill-item');
+        const categorySkills = [];
+        
+        skillItems.forEach(item => {
+            const skillName = item.querySelector('.skill-name')?.textContent.trim();
+            const skillLevel = item.getAttribute('data-level') || '75';
+            
+            if (skillName) {
+                categorySkills.push({
+                    name: skillName,
+                    level: parseInt(skillLevel)
+                });
+            }
+        });
+        
+        if (categorySkills.length > 0) {
+            skills[categoryName] = categorySkills;
+        }
+    });
+    
+    return skills;
+}
+
+function extractProjects() {
+    const projects = [];
+    const projectCards = document.querySelectorAll('.project-card');
+    
+    projectCards.forEach(card => {
+        const title = card.querySelector('.project-title')?.textContent.trim();
+        const description = card.querySelector('.project-description')?.textContent.trim();
+        const technologies = Array.from(card.querySelectorAll('.tech-tag'))
+            .map(tag => tag.textContent.trim());
+        const category = card.getAttribute('data-category') || 'general';
+        
+        if (title) {
+            projects.push({
+                title,
+                description,
+                technologies,
+                category
+            });
+        }
+    });
+    
+    return projects;
+}
+
+function extractContact() {
+    const contact = {
+        email: '',
+        github: '',
+        linkedin: ''
+    };
+    
+    // Extract from contact section
+    const contactItems = document.querySelectorAll('.contact-info-item');
+    contactItems.forEach(item => {
+        const heading = item.querySelector('h4')?.textContent.trim().toLowerCase();
+        const link = item.querySelector('a');
+        
+        if (heading && link) {
+            if (heading.includes('email')) {
+                contact.email = link.textContent.trim() || link.href.replace('mailto:', '');
+            } else if (heading.includes('github')) {
+                contact.github = link.textContent.trim() || link.href;
+            } else if (heading.includes('linkedin')) {
+                contact.linkedin = link.textContent.trim() || link.href;
+            }
+        }
+    });
+    
+    return contact;
+}
+
+function extractAbout() {
+    const about = {
+        description: '',
+        interests: []
+    };
+    
+    const aboutBios = document.querySelectorAll('.about-bio');
+    const bioTexts = Array.from(aboutBios).map(bio => bio.textContent.trim());
+    about.description = bioTexts.join(' ');
+    
+    const interestItems = document.querySelectorAll('.interest-item');
+    interestItems.forEach(item => {
+        const title = item.querySelector('h3')?.textContent.trim();
+        const description = item.querySelector('p')?.textContent.trim();
+        
+        if (title) {
+            about.interests.push({ title, description });
+        }
+    });
+    
+    return about;
+}
+
+function extractStats() {
+    const stats = {};
+    const statItems = document.querySelectorAll('.stat-item');
+    
+    statItems.forEach(item => {
+        const number = item.querySelector('.stat-number')?.getAttribute('data-count') || 
+                      item.querySelector('.stat-number')?.textContent.trim();
+        const label = item.querySelector('.stat-label')?.textContent.trim();
+        
+        if (label && number) {
+            stats[label] = number;
+        }
+    });
+    
+    return stats;
+}
+
+// ===================================
+// Dynamic Response Generation
+// ===================================
+
+function generateDynamicResponse(message) {
+    const lowerMessage = message.toLowerCase();
+    const data = chatbotState.portfolioData;
+    
+    if (!data) {
+        return {
+            text: "I'm still loading Pranav's portfolio data. Please try again in a moment!"
+        };
+    }
+    
+    // Greetings
+    if (isGreeting(lowerMessage)) {
+        return {
+            text: `Hello! 👋 I'm here to help you learn about Pranav's experience, skills, and projects. I have access to real-time data from this portfolio. What would you like to know?`,
+            actions: [
+                { text: "View Experience", action: "scrollToSection", params: "experience" },
+                { text: "See Projects", action: "scrollToSection", params: "projects" }
+            ]
+        };
+    }
+    
+    // Name query
+    if (lowerMessage.includes('your name') || lowerMessage.includes('who are you')) {
+        return {
+            text: `I'm ${CHATBOT_CONFIG.name}, an AI assistant with real-time access to Pranav's portfolio. I can tell you about his ${data.experience.length} work experiences, ${data.education.length} educational qualifications, ${data.projects.length} projects, and expertise across ${Object.keys(data.skills).length} skill categories!`
+        };
+    }
+    
+    // Experience queries
+    if (containsAny(lowerMessage, ['experience', 'work', 'job', 'career', 'professional', 'worked', 'employment'])) {
+        return generateExperienceResponse(data.experience);
+    }
+    
+    // Education queries
+    if (containsAny(lowerMessage, ['education', 'degree', 'university', 'college', 'study', 'qualification', 'diploma', 'masters', 'bachelor'])) {
+        return generateEducationResponse(data.education);
+    }
+    
+    // Skills queries
+    if (containsAny(lowerMessage, ['skill', 'technology', 'tech', 'expertise', 'proficient', 'know', 'capable', 'programming'])) {
+        return generateSkillsResponse(data.skills);
+    }
+    
+    // Projects queries
+    if (containsAny(lowerMessage, ['project', 'portfolio', 'built', 'created', 'developed', 'showcase'])) {
+        return generateProjectsResponse(data.projects);
+    }
+    
+    // Contact queries
+    if (containsAny(lowerMessage, ['contact', 'reach', 'email', 'connect', 'message', 'talk', 'discuss'])) {
+        return generateContactResponse(data.contact);
+    }
+    
+    // About queries
+    if (containsAny(lowerMessage, ['about', 'who is', 'tell me about', 'interests', 'background'])) {
+        return generateAboutResponse(data.about);
+    }
+    
+    // Stats queries
+    if (containsAny(lowerMessage, ['stats', 'statistics', 'numbers', 'how many', 'count'])) {
+        return generateStatsResponse(data.stats);
+    }
+    
+    // Specific technology queries
+    const techKeywords = ['python', 'javascript', 'react', 'flask', 'node', 'machine learning', 'ml', 'iot', 'database'];
+    for (const tech of techKeywords) {
+        if (lowerMessage.includes(tech)) {
+            return generateTechnologyResponse(tech, data);
+        }
+    }
+    
+    // Default response with suggestions
+    return {
+        text: "I can help you with information about:",
+        list: [
+            `${data.experience.length} work experiences at various companies`,
+            `${data.education.length} educational qualifications`,
+            `${Object.keys(data.skills).length} skill categories with specific technologies`,
+            `${data.projects.length} featured projects`,
+            "Contact information and ways to connect",
+            "Background and interests"
+        ],
+        actions: [
+            { text: "View All Experience", action: "scrollToSection", params: "experience" },
+            { text: "Browse Projects", action: "scrollToSection", params: "projects" }
+        ]
+    };
+}
+
+// ===================================
+// Response Generators
+// ===================================
+
+function generateExperienceResponse(experiences) {
+    if (experiences.length === 0) {
+        return { text: "No work experience information is currently available." };
+    }
+    
+    const latestExp = experiences[0];
+    const responseList = experiences.map((exp, index) => {
+        const techList = exp.technologies.length > 0 
+            ? ` (Technologies: ${exp.technologies.slice(0, 3).join(', ')}${exp.technologies.length > 3 ? '...' : ''})` 
+            : '';
+        return `${exp.title} at ${exp.company} - ${exp.date}${techList}`;
+    });
+    
+    return {
+        text: `Pranav has ${experiences.length} professional experience${experiences.length > 1 ? 's' : ''}:`,
+        list: responseList,
+        actions: [
+            { text: "View Full Timeline", action: "scrollToSection", params: "experience" }
+        ]
+    };
+}
+
+function generateEducationResponse(education) {
+    if (education.length === 0) {
+        return { text: "No education information is currently available." };
+    }
+    
+    const responseList = education.map(edu => {
+        const gpaInfo = edu.details.find(d => d.toLowerCase().includes('gpa') || d.toLowerCase().includes('honors'));
+        return `${edu.degree} - ${edu.institution} (${edu.date})${gpaInfo ? ': ' + gpaInfo : ''}`;
+    });
+    
+    return {
+        text: `Pranav's educational background includes ${education.length} qualification${education.length > 1 ? 's' : ''}:`,
+        list: responseList,
+        actions: [
+            { text: "View Education Timeline", action: "scrollToSection", params: "education" }
+        ]
+    };
+}
+
+function generateSkillsResponse(skills) {
+    const categories = Object.keys(skills);
+    if (categories.length === 0) {
+        return { text: "No skills information is currently available." };
+    }
+    
+    const responseList = categories.map(category => {
+        const categorySkills = skills[category];
+        const topSkills = categorySkills
+            .sort((a, b) => b.level - a.level)
+            .slice(0, 3)
+            .map(s => s.name)
+            .join(', ');
+        return `${category}: ${topSkills}${categorySkills.length > 3 ? '...' : ''}`;
+    });
+    
+    return {
+        text: `Pranav has expertise across ${categories.length} skill categories:`,
+        list: responseList,
+        actions: [
+            { text: "See Detailed Skills", action: "scrollToSection", params: "skills" }
+        ]
+    };
+}
+
+function generateProjectsResponse(projects) {
+    if (projects.length === 0) {
+        return { text: "No projects information is currently available." };
+    }
+    
+    const responseList = projects.map(project => {
+        const techList = project.technologies.slice(0, 3).join(', ');
+        return `${project.title} - ${project.description.substring(0, 80)}... (${techList})`;
+    });
+    
+    return {
+        text: `Here are ${projects.length} featured projects:`,
+        list: responseList.slice(0, 3),
+        actions: [
+            { text: "View All Projects", action: "scrollToSection", params: "projects" }
+        ]
+    };
+}
+
+function generateContactResponse(contact) {
+    const contactList = [];
+    
+    if (contact.email) contactList.push(`Email: ${contact.email}`);
+    if (contact.github) contactList.push(`GitHub: ${contact.github}`);
+    if (contact.linkedin) contactList.push(`LinkedIn: ${contact.linkedin}`);
+    
+    return {
+        text: "You can reach Pranav through:",
+        list: contactList.length > 0 ? contactList : ["Contact information is being updated"],
+        actions: [
+            { text: "Send Message", action: "scrollToSection", params: "contact" }
+        ]
+    };
+}
+
+function generateAboutResponse(about) {
+    const interestsList = about.interests.map(interest => 
+        `${interest.title}: ${interest.description}`
+    );
+    
+    return {
+        text: about.description || "Pranav is a software developer with diverse interests and expertise.",
+        list: interestsList.length > 0 ? interestsList : undefined,
+        actions: [
+            { text: "Learn More", action: "scrollToSection", params: "about" }
+        ]
+    };
+}
+
+function generateStatsResponse(stats) {
+    const statsList = Object.entries(stats).map(([label, value]) => 
+        `${value}+ ${label}`
+    );
+    
+    return {
+        text: "Here are some key statistics:",
+        list: statsList.length > 0 ? statsList : ["Statistics are being calculated"],
+        actions: [
+            { text: "View Portfolio", action: "scrollToSection", params: "home" }
+        ]
+    };
+}
+
+function generateTechnologyResponse(tech, data) {
+    const techLower = tech.toLowerCase();
+    const relatedProjects = data.projects.filter(p => 
+        p.technologies.some(t => t.toLowerCase().includes(techLower)) ||
+        p.title.toLowerCase().includes(techLower) ||
+        p.description.toLowerCase().includes(techLower)
+    );
+    
+    const relatedExperience = data.experience.filter(exp =>
+        exp.technologies.some(t => t.toLowerCase().includes(techLower))
+    );
+    
+    const skillInfo = [];
+    Object.entries(data.skills).forEach(([category, skills]) => {
+        skills.forEach(skill => {
+            if (skill.name.toLowerCase().includes(techLower)) {
+                skillInfo.push(`${skill.name} (${skill.level}% proficiency) in ${category}`);
+            }
+        });
+    });
+    
+    const responseList = [];
+    
+    if (skillInfo.length > 0) {
+        responseList.push(...skillInfo);
+    }
+    
+    if (relatedProjects.length > 0) {
+        responseList.push(`Used in ${relatedProjects.length} project${relatedProjects.length > 1 ? 's' : ''}: ${relatedProjects.map(p => p.title).join(', ')}`);
+    }
+    
+    if (relatedExperience.length > 0) {
+        responseList.push(`Applied in ${relatedExperience.length} professional role${relatedExperience.length > 1 ? 's' : ''}`);
+    }
+    
+    if (responseList.length === 0) {
+        return {
+            text: `${tech} is mentioned in the portfolio. Let me show you where it appears.`,
+            actions: [
+                { text: "View Skills", action: "scrollToSection", params: "skills" },
+                { text: "View Projects", action: "scrollToSection", params: "projects" }
+            ]
+        };
+    }
+    
+    return {
+        text: `Here's what I found about ${tech}:`,
+        list: responseList,
+        actions: [
+            { text: "See Related Projects", action: "scrollToSection", params: "projects" }
+        ]
+    };
+}
+
+// ===================================
+// Utility Functions
+// ===================================
+
+function containsAny(text, keywords) {
+    return keywords.some(keyword => text.includes(keyword));
+}
+
+function isGreeting(message) {
+    const greetings = ['hi', 'hello', 'hey', 'good morning', 'good afternoon', 'good evening', 'greetings', 'hola', 'namaste'];
+    return greetings.some(greeting => message.startsWith(greeting) || message === greeting);
+}
 
 // ===================================
 // Chatbot Initialization
@@ -153,7 +526,12 @@ let chatbotState = {
 
 document.addEventListener('DOMContentLoaded', () => {
     initChatbot();
-    console.log('✅ Chatbot initialized successfully');
+    
+    // Extract portfolio data after a short delay to ensure DOM is ready
+    setTimeout(() => {
+        chatbotState.portfolioData = extractPortfolioData();
+        console.log('✅ Chatbot initialized with dynamic data');
+    }, 500);
 });
 
 function initChatbot() {
@@ -164,23 +542,17 @@ function initChatbot() {
     const chatbotInput = document.getElementById('chatbotInput');
     const quickReplies = document.querySelectorAll('.quick-reply');
 
-    // Check if elements exist
     if (!chatbotToggle || !chatbot) {
         console.error('❌ Chatbot elements not found in HTML');
         return;
     }
 
-    console.log('✅ Chatbot elements found:', {
-        toggle: !!chatbotToggle,
-        container: !!chatbot,
-        close: !!chatbotClose
-    });
+    console.log('✅ Chatbot elements found');
 
     // Toggle chatbot
     chatbotToggle.addEventListener('click', (e) => {
         e.preventDefault();
         e.stopPropagation();
-        console.log('🖱️ Chatbot toggle clicked');
         toggleChatbot();
     });
 
@@ -232,8 +604,6 @@ function toggleChatbot() {
 
     chatbotState.isOpen = !chatbotState.isOpen;
     chatbot.classList.toggle('active');
-    
-    console.log('🤖 Chatbot toggled:', chatbotState.isOpen ? 'OPEN' : 'CLOSED');
 
     if (chatbotState.isOpen) {
         const input = document.getElementById('chatbotInput');
@@ -244,7 +614,6 @@ function toggleChatbot() {
     }
 }
 
-// Make function globally accessible
 window.toggleChatbot = toggleChatbot;
 
 // ===================================
@@ -252,18 +621,12 @@ window.toggleChatbot = toggleChatbot;
 // ===================================
 
 function handleUserMessage(message) {
-    // Add user message to chat
     addMessage(message, 'user');
-
-    // Store in history
     chatbotState.messageHistory.push({ role: 'user', content: message });
-
-    // Show typing indicator
     showTypingIndicator();
 
-    // Process message and generate response
     setTimeout(() => {
-        const response = generateResponse(message);
+        const response = generateDynamicResponse(message);
         hideTypingIndicator();
         addBotResponse(response);
     }, CHATBOT_CONFIG.typingDelay);
@@ -290,8 +653,6 @@ function addMessage(content, type) {
     messageDiv.appendChild(avatar);
     messageDiv.appendChild(contentDiv);
     messagesContainer.appendChild(messageDiv);
-
-    // Scroll to bottom
     messagesContainer.scrollTop = messagesContainer.scrollHeight;
 }
 
@@ -307,14 +668,12 @@ function addBotResponse(response) {
     const contentDiv = document.createElement('div');
     contentDiv.className = 'message-content';
 
-    // Add text
     if (response.text) {
         const p = document.createElement('p');
         p.textContent = response.text;
         contentDiv.appendChild(p);
     }
 
-    // Add list
     if (response.list) {
         const ul = document.createElement('ul');
         response.list.forEach(item => {
@@ -325,7 +684,6 @@ function addBotResponse(response) {
         contentDiv.appendChild(ul);
     }
 
-    // Add actions
     if (response.actions) {
         const actionsDiv = document.createElement('div');
         actionsDiv.className = 'message-actions';
@@ -345,64 +703,8 @@ function addBotResponse(response) {
     messageDiv.appendChild(contentDiv);
     messagesContainer.appendChild(messageDiv);
 
-    // Store in history
     chatbotState.messageHistory.push({ role: 'bot', content: response.text });
-
-    // Scroll to bottom
     messagesContainer.scrollTop = messagesContainer.scrollHeight;
-}
-
-// ===================================
-// Response Generation
-// ===================================
-
-function generateResponse(message) {
-    const lowerMessage = message.toLowerCase();
-
-    // Check for greetings
-    if (isGreeting(lowerMessage)) {
-        return {
-            text: "Hello! 👋 I'm here to help you learn about Pranav's experience, skills, and projects. What would you like to know?",
-            actions: [
-                { text: "View Experience", action: "scrollToSection", params: "experience" },
-                { text: "See Projects", action: "scrollToSection", params: "projects" }
-            ]
-        };
-    }
-
-    // Check for name
-    if (lowerMessage.includes('your name') || lowerMessage.includes('who are you')) {
-        return {
-            text: `I'm ${CHATBOT_CONFIG.name}, an AI assistant created to help visitors learn about Pranav Pankhawala's portfolio. I can answer questions about his experience, skills, projects, and more!`
-        };
-    }
-
-    // Check FAQ database
-    for (const [category, data] of Object.entries(FAQ_DATABASE)) {
-        if (data.keywords.some(keyword => lowerMessage.includes(keyword))) {
-            return data.responses[0];
-        }
-    }
-
-    // Default response with suggestions
-    return {
-        text: "I'm not quite sure about that, but I can help you with:",
-        list: [
-            "Pranav's work experience and career timeline",
-            "Technical skills and expertise",
-            "Project portfolio and case studies",
-            "Contact information and scheduling",
-            "Education and qualifications"
-        ],
-        actions: [
-            { text: "Browse Portfolio", action: "scrollToSection", params: "projects" }
-        ]
-    };
-}
-
-function isGreeting(message) {
-    const greetings = ['hi', 'hello', 'hey', 'good morning', 'good afternoon', 'good evening', 'greetings'];
-    return greetings.some(greeting => message.startsWith(greeting));
 }
 
 // ===================================
@@ -444,10 +746,11 @@ function downloadResume() {
 }
 
 function scheduleMeeting() {
+    const email = chatbotState.portfolioData?.contact?.email || 'pranav.pankhawala@gmail.com';
     addBotResponse({
         text: "To schedule a consultation with Pranav:",
         list: [
-            "Email: pranav.pankhawala@gmail.com",
+            `Email: ${email}`,
             "Mention your preferred date and time",
             "Briefly describe the project or opportunity"
         ],
@@ -499,29 +802,10 @@ function hideQuickReplies() {
 }
 
 // ===================================
-// Analytics & Tracking
-// ===================================
-
-function trackChatbotInteraction(action, details) {
-    // Log chatbot interactions for analytics
-    console.log('Chatbot Interaction:', { action, details, timestamp: new Date().toISOString() });
-
-    // You can integrate with Google Analytics here
-    if (typeof gtag !== 'undefined') {
-        gtag('event', 'chatbot_interaction', {
-            event_category: 'Chatbot',
-            event_label: action,
-            value: details
-        });
-    }
-}
-
-// ===================================
 // Keyboard Shortcuts
 // ===================================
 
 document.addEventListener('keydown', (e) => {
-    // Press 'C' to toggle chatbot
     if (e.key === 'c' || e.key === 'C') {
         if (!e.target.matches('input, textarea')) {
             e.preventDefault();
@@ -529,18 +813,16 @@ document.addEventListener('keydown', (e) => {
         }
     }
 
-    // ESC to close chatbot
     if (e.key === 'Escape' && chatbotState.isOpen) {
         toggleChatbot();
     }
 });
 
 // ===================================
-// Chatbot Context Awareness
+// Context Awareness
 // ===================================
 
 function updateChatbotContext() {
-    // Detect current section and provide context-aware suggestions
     const sections = document.querySelectorAll('section[id]');
     const scrollPosition = window.scrollY + window.innerHeight / 2;
 
@@ -569,49 +851,9 @@ function debounce(func, wait) {
 }
 
 // ===================================
-// Export Chat History
-// ===================================
-
-function exportChatHistory() {
-    const history = chatbotState.messageHistory;
-    const dataStr = JSON.stringify(history, null, 2);
-    const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
-
-    const exportFileDefaultName = `chat-history-${new Date().toISOString()}.json`;
-
-    const linkElement = document.createElement('a');
-    linkElement.setAttribute('href', dataUri);
-    linkElement.setAttribute('download', exportFileDefaultName);
-    linkElement.click();
-}
-
-// Make export function available globally
-window.exportChatHistory = exportChatHistory;
-
-// ===================================
-// Persistent Chat State (Optional)
-// ===================================
-
-function saveChatState() {
-    localStorage.setItem('chatbotState', JSON.stringify(chatbotState));
-}
-
-function loadChatState() {
-    const saved = localStorage.getItem('chatbotState');
-    if (saved) {
-        chatbotState = JSON.parse(saved);
-    }
-}
-
-// Save state on beforeunload
-window.addEventListener('beforeunload', saveChatState);
-
-// ===================================
 // Console Message
 // ===================================
 
-console.log('%c🤖 AI Chatbot Loaded', 'color: #2563eb; font-size: 14px; font-weight: bold;');
+console.log('%c🤖 Dynamic AI Chatbot Loaded', 'color: #2563eb; font-size: 14px; font-weight: bold;');
 console.log('%cPress "C" to toggle chatbot', 'color: #6b7280; font-size: 12px;');
-console.log('%cAvailable functions:', 'color: #6b7280; font-size: 12px;');
-console.log('  - exportChatHistory(): Export chat as JSON');
-console.log('  - toggleChatbot(): Open/close chatbot');
+console.log('%cChatbot uses real-time data from the portfolio!', 'color: #10b981; font-size: 12px;');
