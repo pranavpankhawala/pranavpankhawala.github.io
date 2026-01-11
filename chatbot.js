@@ -583,13 +583,11 @@ function initChatbot() {
         });
     });
 
-    // Auto-open chatbot after delay (first visit)
-    if (!localStorage.getItem('chatbotVisited')) {
-        setTimeout(() => {
-            toggleChatbot();
-            localStorage.setItem('chatbotVisited', 'true');
-        }, 5000);
-    }
+   // New behavior - only auto-opens on desktop
+    if (!localStorage.getItem('chatbotVisited') && window.innerWidth >= 1024) 
+        {
+            setTimeout(() => toggleChatbot(), 5000);
+        }
 }
 
 function toggleChatbot() {
