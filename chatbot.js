@@ -9,6 +9,19 @@ const CHATBOT_CONFIG = {
     responseDelay: 500
 };
 
+function debounce(func, wait) {
+    let timeout;
+    return function (...args) {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func.apply(this, args), wait);
+    };
+}
+
+function scrollToSection(sectionId) {
+    const el = document.getElementById(sectionId);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
 // State Management
 let chatbotState = {
     isOpen: false,
@@ -23,19 +36,14 @@ let chatbotState = {
 // ===================================
 
 function extractPortfolioData() {
-    console.log('📊 Extracting portfolio data from HTML...');
-    
     const data = {
         experience: extractExperience(),
         education: extractEducation(),
         skills: extractSkills(),
-        projects: extractProjects(),
         contact: extractContact(),
         about: extractAbout(),
         stats: extractStats()
     };
-    
-    console.log('✅ Portfolio data extracted:', data);
     return data;
 }
 
@@ -136,30 +144,6 @@ function extractSkills() {
     return skills;
 }
 
-function extractProjects() {
-    const projects = [];
-    const projectCards = document.querySelectorAll('.project-card');
-    
-    projectCards.forEach(card => {
-        const title = card.querySelector('.project-title')?.textContent.trim();
-        const description = card.querySelector('.project-description')?.textContent.trim();
-        const technologies = Array.from(card.querySelectorAll('.tech-tag'))
-            .map(tag => tag.textContent.trim());
-        const category = card.getAttribute('data-category') || 'general';
-        
-        if (title) {
-            projects.push({
-                title,
-                description,
-                technologies,
-                category
-            });
-        }
-    });
-    
-    return projects;
-}
-
 function extractContact() {
     const contact = {
         email: '',
@@ -255,7 +239,7 @@ function generateDynamicResponse(message) {
     // Name query
     if (lowerMessage.includes('your name') || lowerMessage.includes('who are you')) {
         return {
-            text: `I'm ${CHATBOT_CONFIG.name}, an AI assistant with real-time access to Pranav's portfolio. I can tell you about his ${data.experience.length} work experiences, ${data.education.length} educational qualifications, ${data.projects.length} projects, and expertise across ${Object.keys(data.skills).length} skill categories!`
+            text: `I'm ${CHATBOT_CONFIG.name}, an AI assistant with real-time access to Pranav's portfolio. I can tell you about his ${data.experience.length} work experiences, ${data.education.length} educational qualifications, and expertise across ${Object.keys(data.skills).length} skill categories!`
         };
     }
     
@@ -272,11 +256,6 @@ function generateDynamicResponse(message) {
     // Skills queries
     if (containsAny(lowerMessage, ['skill', 'technology', 'tech', 'expertise', 'proficient', 'know', 'capable', 'programming'])) {
         return generateSkillsResponse(data.skills);
-    }
-    
-    // Projects queries
-    if (containsAny(lowerMessage, ['project', 'portfolio', 'built', 'created', 'developed', 'showcase'])) {
-        return generateProjectsResponse(data.projects);
     }
     
     // Contact queries
@@ -309,13 +288,12 @@ function generateDynamicResponse(message) {
             `${data.experience.length} work experiences at various companies`,
             `${data.education.length} educational qualifications`,
             `${Object.keys(data.skills).length} skill categories with specific technologies`,
-            `${data.projects.length} featured projects`,
             "Contact information and ways to connect",
             "Background and interests"
         ],
         actions: [
             { text: "View All Experience", action: "scrollToSection", params: "experience" },
-            { text: "Browse Projects", action: "scrollToSection", params: "showcase" }
+            { text: "View Showcase", action: "scrollToSection", params: "showcase" }
         ]
     };
 }
@@ -390,25 +368,6 @@ function generateSkillsResponse(skills) {
     };
 }
 
-function generateProjectsResponse(projects) {
-    if (projects.length === 0) {
-        return { text: "No projects information is currently available." };
-    }
-    
-    const responseList = projects.map(project => {
-        const techList = project.technologies.slice(0, 3).join(', ');
-        return `${project.title} - ${project.description.substring(0, 80)}... (${techList})`;
-    });
-    
-    return {
-        text: `Here are ${projects.length} featured projects:`,
-        list: responseList.slice(0, 3),
-        actions: [
-            { text: "View All Projects", action: "scrollToSection", params: "showcase" }
-        ]
-    };
-}
-
 function generateContactResponse(contact) {
     const contactList = [];
     
@@ -455,16 +414,11 @@ function generateStatsResponse(stats) {
 
 function generateTechnologyResponse(tech, data) {
     const techLower = tech.toLowerCase();
-    const relatedProjects = data.projects.filter(p => 
-        p.technologies.some(t => t.toLowerCase().includes(techLower)) ||
-        p.title.toLowerCase().includes(techLower) ||
-        p.description.toLowerCase().includes(techLower)
-    );
-    
+
     const relatedExperience = data.experience.filter(exp =>
         exp.technologies.some(t => t.toLowerCase().includes(techLower))
     );
-    
+
     const skillInfo = [];
     Object.entries(data.skills).forEach(([category, skills]) => {
         skills.forEach(skill => {
@@ -473,36 +427,27 @@ function generateTechnologyResponse(tech, data) {
             }
         });
     });
-    
+
     const responseList = [];
-    
-    if (skillInfo.length > 0) {
-        responseList.push(...skillInfo);
-    }
-    
-    if (relatedProjects.length > 0) {
-        responseList.push(`Used in ${relatedProjects.length} project${relatedProjects.length > 1 ? 's' : ''}: ${relatedProjects.map(p => p.title).join(', ')}`);
-    }
-    
+    if (skillInfo.length > 0) responseList.push(...skillInfo);
     if (relatedExperience.length > 0) {
         responseList.push(`Applied in ${relatedExperience.length} professional role${relatedExperience.length > 1 ? 's' : ''}`);
     }
-    
+
     if (responseList.length === 0) {
         return {
-            text: `${tech} is mentioned in the portfolio. Let me show you where it appears.`,
+            text: `${tech} is mentioned in the portfolio.`,
             actions: [
-                { text: "View Skills", action: "scrollToSection", params: "skills" },
-                { text: "View Projects", action: "scrollToSection", params: "showcase" }
+                { text: "View Skills", action: "scrollToSection", params: "skills" }
             ]
         };
     }
-    
+
     return {
         text: `Here's what I found about ${tech}:`,
         list: responseList,
         actions: [
-            { text: "See Related Projects", action: "scrollToSection", params: "showcase" }
+            { text: "See Skills", action: "scrollToSection", params: "skills" }
         ]
     };
 }
@@ -526,12 +471,7 @@ function isGreeting(message) {
 
 document.addEventListener('DOMContentLoaded', () => {
     initChatbot();
-    
-    // Extract portfolio data after a short delay to ensure DOM is ready
-    setTimeout(() => {
-        chatbotState.portfolioData = extractPortfolioData();
-        console.log('✅ Chatbot initialized with dynamic data');
-    }, 500);
+    chatbotState.portfolioData = extractPortfolioData();
 });
 
 function initChatbot() {
@@ -542,12 +482,7 @@ function initChatbot() {
     const chatbotInput = document.getElementById('chatbotInput');
     const quickReplies = document.querySelectorAll('.quick-reply');
 
-    if (!chatbotToggle || !chatbot) {
-        console.error('❌ Chatbot elements not found in HTML');
-        return;
-    }
-
-    console.log('✅ Chatbot elements found');
+    if (!chatbotToggle || !chatbot) return;
 
     // Toggle chatbot
     chatbotToggle.addEventListener('click', (e) => {
@@ -583,11 +518,7 @@ function initChatbot() {
         });
     });
 
-    // Auto-open once on desktop, never again after first visit
-    if (!localStorage.getItem('chatbotVisited') && window.innerWidth >= 1024) {
-        localStorage.setItem('chatbotVisited', 'true');
-        setTimeout(() => toggleChatbot(), 5000);
-    }
+    // Notification badge draws attention — no auto-open
 }
 
 function toggleChatbot() {
@@ -595,10 +526,7 @@ function toggleChatbot() {
     const chatbotToggle = document.getElementById('chatbotToggle');
     const notification = chatbotToggle ? chatbotToggle.querySelector('.chatbot-notification') : null;
 
-    if (!chatbot) {
-        console.error('❌ Chatbot container not found');
-        return;
-    }
+    if (!chatbot) return;
 
     chatbotState.isOpen = !chatbotState.isOpen;
     chatbot.classList.toggle('active');
@@ -612,6 +540,8 @@ function toggleChatbot() {
     }
 }
 
+window.Portfolio = window.Portfolio || {};
+window.Portfolio.toggleChatbot = toggleChatbot;
 window.toggleChatbot = toggleChatbot;
 
 // ===================================
@@ -828,11 +758,3 @@ function updateChatbotContext() {
 }
 
 window.addEventListener('scroll', debounce(updateChatbotContext, 200));
-
-// ===================================
-// Console Message
-// ===================================
-
-console.log('%c🤖 Dynamic AI Chatbot Loaded', 'color: #2563eb; font-size: 14px; font-weight: bold;');
-console.log('%cPress "C" to toggle chatbot', 'color: #6b7280; font-size: 12px;');
-console.log('%cChatbot uses real-time data from the portfolio!', 'color: #10b981; font-size: 12px;');

@@ -4,11 +4,9 @@
 
 // Configuration
 const ADVANCED_CONFIG = {
-    enableCustomCursor: false,  // DISABLED - Set to true if you want custom cursor
+    enableCustomCursor: false,
     enableCommandPalette: true,
-    enableKeyboardShortcuts: true,
-    githubUsername: 'pranavpankhawala',
-    githubTheme: 'tokyonight'
+    enableKeyboardShortcuts: true
 };
 
 // State Management
@@ -297,67 +295,86 @@ function initCommandPalette() {
 
 function renderCommandResults(query) {
     const resultsContainer = document.getElementById('commandPaletteResults');
-    const filteredCommands = advancedState.commands.filter(cmd => 
-        cmd.title.toLowerCase().includes(query) || 
+    const filteredCommands = advancedState.commands.filter(cmd =>
+        cmd.title.toLowerCase().includes(query) ||
         cmd.description.toLowerCase().includes(query)
     );
 
-    // Clamp selected index
     advancedState.selectedCommandIndex = Math.max(0, Math.min(
         advancedState.selectedCommandIndex,
         filteredCommands.length - 1
     ));
 
-    // Group by section
+    resultsContainer.innerHTML = '';
+
+    if (filteredCommands.length === 0) {
+        const empty = document.createElement('div');
+        empty.style.cssText = 'padding:2rem;text-align:center;color:var(--text-tertiary)';
+        empty.textContent = 'No results found';
+        resultsContainer.appendChild(empty);
+        return;
+    }
+
     const sections = {};
     filteredCommands.forEach(cmd => {
-        if (!sections[cmd.section]) {
-            sections[cmd.section] = [];
-        }
+        if (!sections[cmd.section]) sections[cmd.section] = [];
         sections[cmd.section].push(cmd);
     });
 
-    let html = '';
     let globalIndex = 0;
 
-    Object.entries(sections).forEach(([section, commands]) => {
-        html += `
-            <div class="command-palette-section">
-                <div class="command-palette-section-title">${section}</div>
-                ${commands.map((cmd, localIndex) => {
-                    const isSelected = globalIndex === advancedState.selectedCommandIndex;
-                    globalIndex++;
-                    return `
-                        <div class="command-palette-item ${isSelected ? 'selected' : ''}" data-command="${cmd.id}">
-                            <div class="command-palette-item-icon">
-                                <i class="${cmd.icon}"></i>
-                            </div>
-                            <div class="command-palette-item-content">
-                                <div class="command-palette-item-title">${cmd.title}</div>
-                                <div class="command-palette-item-description">${cmd.description}</div>
-                            </div>
-                        </div>
-                    `;
-                }).join('')}
-            </div>
-        `;
-    });
+    Object.entries(sections).forEach(([sectionName, commands]) => {
+        const sectionEl = document.createElement('div');
+        sectionEl.className = 'command-palette-section';
 
-    resultsContainer.innerHTML = html || '<div style="padding: 2rem; text-align: center; color: var(--text-tertiary);">No results found</div>';
+        const titleEl = document.createElement('div');
+        titleEl.className = 'command-palette-section-title';
+        titleEl.textContent = sectionName;
+        sectionEl.appendChild(titleEl);
 
-    // Add click handlers
-    document.querySelectorAll('.command-palette-item').forEach((item, index) => {
-        item.addEventListener('click', () => {
-            advancedState.selectedCommandIndex = index;
-            executeSelectedCommand();
+        commands.forEach(cmd => {
+            const isSelected = globalIndex === advancedState.selectedCommandIndex;
+            const itemEl = document.createElement('div');
+            itemEl.className = 'command-palette-item' + (isSelected ? ' selected' : '');
+            itemEl.dataset.command = cmd.id;
+
+            const iconEl = document.createElement('div');
+            iconEl.className = 'command-palette-item-icon';
+            const iconI = document.createElement('i');
+            iconI.className = cmd.icon;
+            iconEl.appendChild(iconI);
+
+            const contentEl = document.createElement('div');
+            contentEl.className = 'command-palette-item-content';
+
+            const titleDiv = document.createElement('div');
+            titleDiv.className = 'command-palette-item-title';
+            titleDiv.textContent = cmd.title;
+
+            const descDiv = document.createElement('div');
+            descDiv.className = 'command-palette-item-description';
+            descDiv.textContent = cmd.description;
+
+            contentEl.appendChild(titleDiv);
+            contentEl.appendChild(descDiv);
+            itemEl.appendChild(iconEl);
+            itemEl.appendChild(contentEl);
+
+            const capturedIndex = globalIndex;
+            itemEl.addEventListener('click', () => {
+                advancedState.selectedCommandIndex = capturedIndex;
+                executeSelectedCommand();
+            });
+
+            sectionEl.appendChild(itemEl);
+            globalIndex++;
         });
+
+        resultsContainer.appendChild(sectionEl);
     });
 
-    // Scroll selected into view
     const selected = resultsContainer.querySelector('.command-palette-item.selected');
-    if (selected) {
-        selected.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
-    }
+    if (selected) selected.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
 }
 
 function executeSelectedCommand() {
@@ -572,7 +589,7 @@ function initGlobalKeyboardShortcuts() {
                 break;
             case 'c':
                 e.preventDefault();
-                window.toggleChatbot?.();
+                window.Portfolio?.toggleChatbot?.();
                 break;
             case 'r':
                 e.preventDefault();
@@ -606,48 +623,6 @@ function initGlobalKeyboardShortcuts() {
 }
 
 // ===================================
-// GitHub Stats Integration
-// ===================================
-
-function initGitHubStats() {
-    const githubSection = document.getElementById('github-stats');
-    if (!githubSection) return;
-
-    const username = ADVANCED_CONFIG.githubUsername;
-
-    const statsHTML = `
-        <div class="github-stats-container">
-            <div class="github-stat-card" data-aos="fade-up">
-                <h3 style="color: var(--primary-color); margin-bottom: 1rem;">GitHub Activity</h3>
-                <img src="https://ghchart.rshah.org/00d9ff/${username}" alt="GitHub Contribution Chart" loading="lazy" style="width: 100%; height: auto; border-radius: 8px;" />
-            </div>
-            <div class="github-stat-card" data-aos="fade-up" data-aos-delay="100">
-                <img src="https://github-readme-streak-stats.herokuapp.com/?user=${username}&theme=tokyonight&hide_border=true&background=1a1a2e&ring=00d9ff&fire=00d9ff&currStreakLabel=00d9ff" alt="GitHub Streak" loading="lazy" />
-            </div>
-            <div class="github-stat-card" data-aos="fade-up" data-aos-delay="200">
-                <h3 style="color: var(--primary-color); margin-bottom: 1rem;">GitHub Profile</h3>
-                <a href="https://github.com/${username}" target="_blank" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 1rem 2rem; background: var(--gradient-primary); color: white; border-radius: 50px; text-decoration: none; font-weight: 600; transition: transform 0.3s;">
-                    <i class="fab fa-github" style="font-size: 1.5rem;"></i>
-                    View Full Profile
-                </a>
-                <div style="margin-top: 1.5rem; display: grid; gap: 0.75rem;">
-                    <div style="display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem; background: var(--surface); border-radius: 8px;">
-                        <i class="fas fa-code" style="color: var(--primary-color); font-size: 1.25rem;"></i>
-                        <span style="color: var(--text-secondary);">Browse Repositories</span>
-                    </div>
-                    <div style="display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem; background: var(--surface); border-radius: 8px;">
-                        <i class="fas fa-star" style="color: var(--primary-color); font-size: 1.25rem;"></i>
-                        <span style="color: var(--text-secondary);">View Contributions</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    `;
-
-    githubSection.innerHTML = statsHTML;
-}
-
-// ===================================
 // Utility Functions
 // ===================================
 
@@ -661,32 +636,17 @@ function scrollToSection(sectionId) {
 function copyToClipboard(text, successMessage = 'Copied!') {
     navigator.clipboard.writeText(text).then(() => {
         showToast(successMessage);
-    }).catch(err => {
-        console.error('Failed to copy:', err);
-    });
+    }).catch(() => {});
 }
 
 function showToast(message, duration = 3000) {
     const toast = document.createElement('div');
-    toast.style.cssText = `
-        position: fixed;
-        bottom: 2rem;
-        left: 50%;
-        transform: translateX(-50%);
-        background: var(--primary-color);
-        color: white;
-        padding: 1rem 2rem;
-        border-radius: 50px;
-        box-shadow: var(--shadow-lg);
-        z-index: 10001;
-        font-weight: 600;
-        animation: fadeInUp 0.3s ease-out;
-    `;
+    toast.className = 'toast';
     toast.textContent = message;
     document.body.appendChild(toast);
 
     setTimeout(() => {
-        toast.style.animation = 'fadeOut 0.3s ease-out';
+        toast.classList.add('toast--hide');
         setTimeout(() => toast.remove(), 300);
     }, duration);
 }
@@ -701,20 +661,17 @@ document.addEventListener('DOMContentLoaded', () => {
     initCommandPalette();
     initKeyboardShortcuts();
     initGlobalKeyboardShortcuts();
-    initGitHubStats();
-    
-    console.log('%c🚀 Advanced Features Loaded', 'color: #2563eb; font-size: 14px; font-weight: bold;');
-    console.log('%cKeyboard Shortcuts:', 'color: #6b7280; font-size: 12px;');
-    console.log('  ⌘+K or Ctrl+K : Open command palette');
-    console.log('  ? : Show keyboard shortcuts');
-    console.log('  D : Toggle dark mode');
-    console.log('  C : Open chatbot');
-    console.log('  T : Scroll to timeline');
-    console.log('  J/K : Scroll down/up');
-    console.log('  GG : Scroll to top');
 });
 
-// Export for use in other scripts
+window.Portfolio = window.Portfolio || {};
+window.Portfolio.openCommandPalette = openCommandPalette;
+window.Portfolio.closeCommandPalette = closeCommandPalette;
+window.Portfolio.openShortcutsModal = openShortcutsModal;
+window.Portfolio.closeShortcutsModal = closeShortcutsModal;
+window.Portfolio.copyToClipboard = copyToClipboard;
+window.Portfolio.showToast = showToast;
+
+// Legacy aliases
 window.openCommandPalette = openCommandPalette;
 window.closeCommandPalette = closeCommandPalette;
 window.openShortcutsModal = openShortcutsModal;

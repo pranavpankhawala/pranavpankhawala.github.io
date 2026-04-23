@@ -33,8 +33,10 @@
     <link rel="stylesheet" href="advanced-features.css">
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="https://avatars.githubusercontent.com/u/36548613?v=4">
+    <meta name="theme-color" content="#2563eb">
 </head>
 <body>
+    <a href="#home" class="skip-link">Skip to main content</a>
     <!-- Loading Screen -->
     <div id="loading-screen" class="loading-screen">
         <div class="loader">
@@ -66,7 +68,7 @@
                 <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
                     <i class="fas fa-moon"></i>
                 </button>
-                <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu">
+                <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu" aria-expanded="false">
                     <span></span>
                     <span></span>
                     <span></span>
@@ -83,7 +85,7 @@
         <div class="hero-content">
             <div class="hero-text">
                 <h1 class="hero-title">
-                    Hi, I'm <span class="gradient-text" data-text="Pranav Pankhawala">Pranav Pankhawala</span>
+                    Hi, I'm <span class="gradient-text">Pranav Pankhawala</span>
                 </h1>
                 <div class="hero-subtitle-wrapper">
                     <p class="hero-subtitle">Software Developer</p>
@@ -200,7 +202,7 @@
             </div>
 
             <!-- Vertical Timeline (Hidden - used for cloning) -->
-            <div class="timeline-container vertical-timeline active" data-aos="fade-up" data-aos-delay="200">
+            <div class="timeline-container vertical-timeline" data-aos="fade-up" data-aos-delay="200">
                 <div class="timeline-item" data-aos="fade-up" data-aos-delay="250">
                     <div class="timeline-marker">
                         <div class="timeline-icon">
@@ -377,10 +379,6 @@
                 </div>
             </div>
 
-            <!-- Horizontal Timeline -->
-            <div class="timeline-container horizontal-timeline">
-                <div class="horizontal-scroll"></div>
-            </div>
         </div>
     </section>
 
@@ -395,7 +393,7 @@
             </div>
 
             <!-- Vertical Timeline (Hidden - used for cloning) -->
-            <div class="timeline-container vertical-timeline-education active" data-aos="fade-up" data-aos-delay="200">
+            <div class="timeline-container vertical-timeline-education" data-aos="fade-up" data-aos-delay="200">
                 <div class="timeline-item" data-aos="fade-up" data-aos-delay="250">
                     <div class="timeline-marker">
                         <div class="timeline-icon">
@@ -530,10 +528,6 @@
                 </div>
             </div>
 
-            <!-- Horizontal Timeline for Education -->
-            <div class="timeline-container horizontal-timeline-education">
-                <div class="horizontal-scroll-education"></div>
-            </div>
         </div>
     </section>
 
@@ -817,209 +811,6 @@
         </div>
     </section>
 
-    <!-- Projects Section -->
-    <section id="projects" class="section projects" style="display: none;">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title" data-aos="fade-up">Featured Projects</h2>
-                <p class="section-description" data-aos="fade-up" data-aos-delay="100">
-                    A selection of my recent work in web development, machine learning, and IoT systems
-                </p>
-            </div>
-            
-            <!-- Project Filter -->
-            <div class="project-filter" data-aos="fade-up" data-aos-delay="150">
-                <button class="filter-btn active" data-filter="all">All</button>
-                <button class="filter-btn" data-filter="web">Web</button>
-                <button class="filter-btn" data-filter="ml">Machine Learning</button>
-                <button class="filter-btn" data-filter="iot">IoT</button>
-            </div>
-
-            <div class="projects-grid">
-                <div class="project-card" data-aos="fade-up" data-aos-delay="200" data-category="web">
-                    <div class="project-image">
-                        <div class="project-overlay">
-                            <div class="project-links">
-                                <a href="#" class="project-link-icon" aria-label="View on GitHub">
-                                    <i class="fab fa-github"></i>
-                                </a>
-                                <a href="#" class="project-link-icon" aria-label="View live demo">
-                                    <i class="fas fa-external-link-alt"></i>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="project-icon">
-                            <i class="fas fa-chart-line"></i>
-                        </div>
-                    </div>
-                    <div class="project-content">
-                        <h3 class="project-title">Interactive Dashboard Platform</h3>
-                        <p class="project-description">
-                            Responsive web dashboard integrating charts, KPIs, and configurable widgets for data visualization and monitoring.
-                        </p>
-                        <div class="project-tech">
-                            <span class="tech-tag">Python</span>
-                            <span class="tech-tag">Flask</span>
-                            <span class="tech-tag">Chart.js</span>
-                            <span class="tech-tag">JavaScript</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="project-card" data-aos="fade-up" data-aos-delay="300" data-category="web ml">
-                    <div class="project-image">
-                        <div class="project-overlay">
-                            <div class="project-links">
-                                <a href="#" class="project-link-icon" aria-label="View on GitHub">
-                                    <i class="fab fa-github"></i>
-                                </a>
-                                <a href="#" class="project-link-icon" aria-label="View live demo">
-                                    <i class="fas fa-external-link-alt"></i>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="project-icon">
-                            <i class="fas fa-filter"></i>
-                        </div>
-                    </div>
-                    <div class="project-content">
-                        <h3 class="project-title">Smart Data Screener</h3>
-                        <p class="project-description">
-                            Web tool to filter and rank entities (devices, signals, or assets) based on custom criteria and intelligent rules.
-                        </p>
-                        <div class="project-tech">
-                            <span class="tech-tag">Python</span>
-                            <span class="tech-tag">Flask</span>
-                            <span class="tech-tag">HTML</span>
-                            <span class="tech-tag">JavaScript</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="project-card" data-aos="fade-up" data-aos-delay="400" data-category="web iot">
-                    <div class="project-image">
-                        <div class="project-overlay">
-                            <div class="project-links">
-                                <a href="#" class="project-link-icon" aria-label="View on GitHub">
-                                    <i class="fab fa-github"></i>
-                                </a>
-                                <a href="#" class="project-link-icon" aria-label="View live demo">
-                                    <i class="fas fa-external-link-alt"></i>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="project-icon">
-                            <i class="fas fa-tachometer-alt"></i>
-                        </div>
-                    </div>
-                    <div class="project-content">
-                        <h3 class="project-title">Realtime Analytics Viewer</h3>
-                        <p class="project-description">
-                            Frontend for visualizing streaming or high-frequency data with trend analysis, alerts, and interactive controls.
-                        </p>
-                        <div class="project-tech">
-                            <span class="tech-tag">Python</span>
-                            <span class="tech-tag">JavaScript</span>
-                            <span class="tech-tag">Chart.js</span>
-                            <span class="tech-tag">WebSockets</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Blog Section -->
-    <section id="blog" class="section blog" style="display: none;">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title" data-aos="fade-up">Latest Blog Posts</h2>
-                <p class="section-description" data-aos="fade-up" data-aos-delay="100">
-                    Thoughts on development, technology, and learning
-                </p>
-            </div>
-            <div class="blog-grid">
-                <article class="blog-card" data-aos="fade-up" data-aos-delay="200">
-                    <div class="blog-image">
-                        <div class="blog-category">Web Development</div>
-                        <div class="blog-icon">
-                            <i class="fas fa-code"></i>
-                        </div>
-                    </div>
-                    <div class="blog-content">
-                        <div class="blog-meta">
-                            <span class="blog-date">
-                                <i class="far fa-calendar"></i> Dec 15, 2024
-                            </span>
-                            <span class="blog-read-time">
-                                <i class="far fa-clock"></i> 5 min read
-                            </span>
-                        </div>
-                        <h3 class="blog-title">Building Responsive Dashboards with Modern CSS</h3>
-                        <p class="blog-excerpt">
-                            Exploring CSS Grid and Flexbox techniques for creating fluid, responsive dashboard layouts that adapt to any screen size.
-                        </p>
-                        <a href="#" class="blog-link">
-                            Read More <i class="fas fa-arrow-right"></i>
-                        </a>
-                    </div>
-                </article>
-
-                <article class="blog-card" data-aos="fade-up" data-aos-delay="300">
-                    <div class="blog-image">
-                        <div class="blog-category">Machine Learning</div>
-                        <div class="blog-icon">
-                            <i class="fas fa-brain"></i>
-                        </div>
-                    </div>
-                    <div class="blog-content">
-                        <div class="blog-meta">
-                            <span class="blog-date">
-                                <i class="far fa-calendar"></i> Dec 8, 2024
-                            </span>
-                            <span class="blog-read-time">
-                                <i class="far fa-clock"></i> 8 min read
-                            </span>
-                        </div>
-                        <h3 class="blog-title">Introduction to Supervised Learning Models</h3>
-                        <p class="blog-excerpt">
-                            A practical guide to understanding and implementing common supervised learning algorithms for real-world problems.
-                        </p>
-                        <a href="#" class="blog-link">
-                            Read More <i class="fas fa-arrow-right"></i>
-                        </a>
-                    </div>
-                </article>
-
-                <article class="blog-card" data-aos="fade-up" data-aos-delay="400">
-                    <div class="blog-image">
-                        <div class="blog-category">IoT</div>
-                        <div class="blog-icon">
-                            <i class="fas fa-network-wired"></i>
-                        </div>
-                    </div>
-                    <div class="blog-content">
-                        <div class="blog-meta">
-                            <span class="blog-date">
-                                <i class="far fa-calendar"></i> Nov 30, 2024
-                            </span>
-                            <span class="blog-read-time">
-                                <i class="far fa-clock"></i> 6 min read
-                            </span>
-                        </div>
-                        <h3 class="blog-title">Securing IoT Device Communication</h3>
-                        <p class="blog-excerpt">
-                            Best practices for implementing secure device-to-cloud communication in IoT systems using modern protocols.
-                        </p>
-                        <a href="#" class="blog-link">
-                            Read More <i class="fas fa-arrow-right"></i>
-                        </a>
-                    </div>
-                </article>
-            </div>
-        </div>
-    </section>
-
     <!-- Contact Section -->
     <section id="contact" class="section contact">
         <div class="container">
@@ -1087,7 +878,7 @@
                             <i class="fas fa-spinner fa-spin"></i>
                         </span>
                     </button>
-                    <div class="form-status" id="formStatus"></div>
+                    <div class="form-status" id="formStatus" role="alert" aria-live="polite"></div>
                 </form>
             </div>
         </div>
@@ -1191,9 +982,9 @@
     </button>
 
     <!-- Scripts -->
-    <script src="script.js"></script>
-    <script src="timeline.js"></script>
-    <script src="chatbot.js"></script>
-    <script src="advanced-features.js"></script>
+    <script src="script.js" defer></script>
+    <script src="timeline.js" defer></script>
+    <script src="chatbot.js" defer></script>
+    <script src="advanced-features.js" defer></script>
 </body>
 </html>

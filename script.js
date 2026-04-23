@@ -4,10 +4,11 @@
 const CONFIG = {
     typingSpeed: 100,
     typingDelay: 2000,
-    emailServiceURL: 'https://formspree.io/f/YOUR_FORM_ID', // Replace with your Formspree ID
-    animationThreshold: 0.15,
-    particleCount: 50
+    emailServiceURL: 'https://formspree.io/f/YOUR_FORM_ID', // TODO: Replace YOUR_FORM_ID with your ID from formspree.io
+    animationThreshold: 0.15
 };
+
+window.Portfolio = {};
 
 const typingTexts = [
     'Web Development',
@@ -34,8 +35,6 @@ const DOM = {
     particles: document.getElementById('particles'),
     typedText: document.querySelector('.typed-text'),
     statNumbers: document.querySelectorAll('.stat-number'),
-    filterBtns: document.querySelectorAll('.filter-btn'),
-    projectCards: document.querySelectorAll('.project-card'),
     skillItems: document.querySelectorAll('.skill-item')
 };
 
@@ -45,40 +44,36 @@ const DOM = {
 document.addEventListener('DOMContentLoaded', () => {
     initTheme();
     initNavigation();
-    initAnimations();
     initTypingEffect();
     initParticles();
     initScrollAnimations();
-    initProjectFilter();
     initContactForm();
     initSkillBars();
     initStatCounters();
     initLazyLoading();
+    initFormValidation();
 
-    // Hide loading screen
-    setTimeout(() => {
-        DOM.loadingScreen.classList.add('hidden');
-    }, 500);
+    DOM.loadingScreen.classList.add('hidden');
 });
 
 // ===================================
 // Theme Management
 // ===================================
 function initTheme() {
-    const savedTheme = localStorage.getItem('theme') || 
+    const savedTheme = localStorage.getItem('theme') ||
         (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-    
-    document.body.setAttribute('data-theme', savedTheme);
+
+    document.documentElement.setAttribute('data-theme', savedTheme);
     updateThemeIcon(savedTheme);
     
     DOM.themeToggle.addEventListener('click', toggleTheme);
 }
 
 function toggleTheme() {
-    const currentTheme = document.body.getAttribute('data-theme');
+    const currentTheme = document.documentElement.getAttribute('data-theme');
     const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-    
-    document.body.setAttribute('data-theme', newTheme);
+
+    document.documentElement.setAttribute('data-theme', newTheme);
     localStorage.setItem('theme', newTheme);
     updateThemeIcon(newTheme);
 }
@@ -96,6 +91,8 @@ function initNavigation() {
     DOM.mobileMenuToggle.addEventListener('click', () => {
         DOM.mobileMenuToggle.classList.toggle('active');
         DOM.navMenu.classList.toggle('active');
+        const isOpen = DOM.navMenu.classList.contains('active');
+        DOM.mobileMenuToggle.setAttribute('aria-expanded', isOpen);
     });
     
     // Smooth scroll for navigation links
@@ -124,51 +121,28 @@ function initNavigation() {
         });
     });
     
-    // Update active nav link on scroll
-    window.addEventListener('scroll', updateActiveNavLink);
-    
-    // Navbar scroll effect
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 100) {
-            DOM.navbar.classList.add('scrolled');
-        } else {
-            DOM.navbar.classList.remove('scrolled');
-        }
-    });
-    
-    // Back to top button
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 500) {
-            DOM.backToTop.classList.add('visible');
-        } else {
-            DOM.backToTop.classList.remove('visible');
-        }
-    });
-    
+    // Single debounced scroll handler replacing three separate listeners
+    function handleScroll() {
+        const scrollY = window.scrollY;
+        DOM.navbar.classList.toggle('scrolled', scrollY > 100);
+        DOM.backToTop.classList.toggle('visible', scrollY > 500);
+        updateActiveNavLink();
+    }
+    window.addEventListener('scroll', debounce(handleScroll, 100));
+
     DOM.backToTop.addEventListener('click', () => {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     });
-    
-    // Resume download
+
+    // Resume download — add resume.pdf to project root to enable
     DOM.resumeBtn.addEventListener('click', (e) => {
         e.preventDefault();
-        // Create a sample resume download
-        // Replace this with your actual resume file
-        const resumeUrl = 'resume.pdf'; // Place your resume.pdf in the same directory
-        
-        // Try to download
         const link = document.createElement('a');
-        link.href = resumeUrl;
+        link.href = 'resume.pdf';
         link.download = 'Pranav_Pankhawala_Resume.pdf';
+        document.body.appendChild(link);
         link.click();
-        
-        // If file doesn't exist, show message
-        link.onerror = () => {
-            alert('Resume file not found. Please add your resume.pdf file to the project directory.');
-        };
+        document.body.removeChild(link);
     });
 }
 
@@ -236,7 +210,9 @@ function initTypingEffect() {
 // Particles Animation
 // ===================================
 function initParticles() {
-    for (let i = 0; i < CONFIG.particleCount; i++) {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const count = window.innerWidth < 768 ? 10 : 20;
+    for (let i = 0; i < count; i++) {
         createParticle();
     }
 }
@@ -275,21 +251,6 @@ function initScrollAnimations() {
     
     document.querySelectorAll('[data-aos]').forEach(element => {
         observer.observe(element);
-    });
-}
-
-function initAnimations() {
-    // Add entrance animations
-    const animateElements = document.querySelectorAll('.hero-text, .hero-stats, .section-title');
-    animateElements.forEach((element, index) => {
-        element.style.opacity = '0';
-        element.style.transform = 'translateY(30px)';
-        
-        setTimeout(() => {
-            element.style.transition = 'opacity 0.8s ease-out, transform 0.8s ease-out';
-            element.style.opacity = '1';
-            element.style.transform = 'translateY(0)';
-        }, index * 100);
     });
 }
 
@@ -364,33 +325,6 @@ function initSkillBars() {
 }
 
 // ===================================
-// Project Filter
-// ===================================
-function initProjectFilter() {
-    DOM.filterBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            // Update active button
-            DOM.filterBtns.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            
-            const filter = btn.getAttribute('data-filter');
-            
-            // Filter projects
-            DOM.projectCards.forEach(card => {
-                const categories = card.getAttribute('data-category');
-                
-                if (filter === 'all' || categories.includes(filter)) {
-                    card.style.display = 'flex';
-                    card.style.animation = 'fadeInUp 0.6s ease-out';
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-        });
-    });
-}
-
-// ===================================
 // Contact Form with Email Integration
 // ===================================
 function initContactForm() {
@@ -435,14 +369,25 @@ function sendEmailViaMailto(formData) {
     const email = formData.get('email');
     const subject = formData.get('subject');
     const message = formData.get('message');
-    
+
     const mailtoLink = `mailto:pranav.pankhawala@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(
         `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`
     )}`;
-    
-    window.location.href = mailtoLink;
-    
-    showFormStatus('success', 'Opening your email client... Please send the email to complete your message.');
+
+    DOM.formStatus.className = 'form-status error';
+    DOM.formStatus.innerHTML = '';
+    DOM.formStatus.style.display = 'block';
+
+    const msg = document.createElement('p');
+    msg.textContent = 'Automatic submission unavailable. Use the link below to send via email client:';
+
+    const link = document.createElement('a');
+    link.href = mailtoLink;
+    link.textContent = 'Open Email Client';
+    link.style.cssText = 'display:inline-block;margin-top:0.5rem;color:var(--primary-color);font-weight:600;text-decoration:underline;';
+
+    DOM.formStatus.appendChild(msg);
+    DOM.formStatus.appendChild(link);
     DOM.contactForm.reset();
 }
 
@@ -555,8 +500,6 @@ function validateField(field) {
     
     return isValid;
 }
-
-initFormValidation();
 
 // ===================================
 // Console Message (Easter Egg)
