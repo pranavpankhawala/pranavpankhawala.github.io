@@ -247,7 +247,7 @@ function generateDynamicResponse(message) {
             text: `Hello! 👋 I'm here to help you learn about Pranav's experience, skills, and projects. I have access to real-time data from this portfolio. What would you like to know?`,
             actions: [
                 { text: "View Experience", action: "scrollToSection", params: "experience" },
-                { text: "See Projects", action: "scrollToSection", params: "projects" }
+                { text: "See Projects", action: "scrollToSection", params: "showcase" }
             ]
         };
     }
@@ -315,7 +315,7 @@ function generateDynamicResponse(message) {
         ],
         actions: [
             { text: "View All Experience", action: "scrollToSection", params: "experience" },
-            { text: "Browse Projects", action: "scrollToSection", params: "projects" }
+            { text: "Browse Projects", action: "scrollToSection", params: "showcase" }
         ]
     };
 }
@@ -404,7 +404,7 @@ function generateProjectsResponse(projects) {
         text: `Here are ${projects.length} featured projects:`,
         list: responseList.slice(0, 3),
         actions: [
-            { text: "View All Projects", action: "scrollToSection", params: "projects" }
+            { text: "View All Projects", action: "scrollToSection", params: "showcase" }
         ]
     };
 }
@@ -493,7 +493,7 @@ function generateTechnologyResponse(tech, data) {
             text: `${tech} is mentioned in the portfolio. Let me show you where it appears.`,
             actions: [
                 { text: "View Skills", action: "scrollToSection", params: "skills" },
-                { text: "View Projects", action: "scrollToSection", params: "projects" }
+                { text: "View Projects", action: "scrollToSection", params: "showcase" }
             ]
         };
     }
@@ -502,7 +502,7 @@ function generateTechnologyResponse(tech, data) {
         text: `Here's what I found about ${tech}:`,
         list: responseList,
         actions: [
-            { text: "See Related Projects", action: "scrollToSection", params: "projects" }
+            { text: "See Related Projects", action: "scrollToSection", params: "showcase" }
         ]
     };
 }
@@ -583,11 +583,11 @@ function initChatbot() {
         });
     });
 
-   // New behavior - only auto-opens on desktop
-    if (!localStorage.getItem('chatbotVisited') && window.innerWidth >= 1024) 
-        {
-            setTimeout(() => toggleChatbot(), 5000);
-        }
+    // Auto-open once on desktop, never again after first visit
+    if (!localStorage.getItem('chatbotVisited') && window.innerWidth >= 1024) {
+        localStorage.setItem('chatbotVisited', 'true');
+        setTimeout(() => toggleChatbot(), 5000);
+    }
 }
 
 function toggleChatbot() {
@@ -726,13 +726,6 @@ function handleAction(action, params) {
     }
 }
 
-function scrollToSection(sectionId) {
-    const section = document.getElementById(sectionId);
-    if (section) {
-        section.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-}
-
 function downloadResume() {
     const resumeBtn = document.getElementById('resumeBtn');
     if (resumeBtn) {
@@ -835,18 +828,6 @@ function updateChatbotContext() {
 }
 
 window.addEventListener('scroll', debounce(updateChatbotContext, 200));
-
-function debounce(func, wait) {
-    let timeout;
-    return function executedFunction(...args) {
-        const later = () => {
-            clearTimeout(timeout);
-            func(...args);
-        };
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-    };
-}
 
 // ===================================
 // Console Message

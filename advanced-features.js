@@ -202,22 +202,6 @@ function initCommandPalette() {
             action: () => scrollToSection('skills')
         },
         {
-            id: 'projects',
-            title: 'Go to Projects',
-            description: 'Browse project portfolio',
-            icon: 'fas fa-folder',
-            section: 'Navigation',
-            action: () => scrollToSection('projects')
-        },
-        {
-            id: 'blog',
-            title: 'Go to Blog',
-            description: 'Read latest articles',
-            icon: 'fas fa-rss',
-            section: 'Navigation',
-            action: () => scrollToSection('blog')
-        },
-        {
             id: 'contact',
             title: 'Go to Contact',
             description: 'Get in touch',
@@ -255,7 +239,7 @@ function initCommandPalette() {
             description: 'Visit GitHub profile',
             icon: 'fab fa-github',
             section: 'Social',
-            action: () => window.open('https://github.com/pranavpankhawala', '_blank')
+            action: () => window.open('https://github.com/pranavpankhawala', '_blank', 'noopener,noreferrer')
         },
         {
             id: 'linkedin',
@@ -263,7 +247,7 @@ function initCommandPalette() {
             description: 'Visit LinkedIn profile',
             icon: 'fab fa-linkedin',
             section: 'Social',
-            action: () => window.open('https://linkedin.com/in/pranavpankhawala', '_blank')
+            action: () => window.open('https://linkedin.com/in/pranavpankhawala', '_blank', 'noopener,noreferrer')
         },
         {
             id: 'shortcuts',
