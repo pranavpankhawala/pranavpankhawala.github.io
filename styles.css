@@ -1,42 +1,52 @@
 /* ===================================
    CSS Variables & Root Styles
+   Default theme: DARK (indigo/violet)
    =================================== */
-   :root {
-    /* Colors */
-    --primary-color: #2563eb;
-    --secondary-color: #1e40af;
-    --accent-color: #06b6d4;
-    --text-primary: #1f2937;
-    --text-secondary: #6b7280;
-    --text-tertiary: #9ca3af;
-    --background: #ffffff;
-    --surface: #f9fafb;
-    --surface-elevated: #ffffff;
-    --border: #e5e7eb;
-    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-    --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-    --shadow-lg: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-    
+:root {
+    /* Colors — Dark Mode (default) */
+    --primary-color: #818cf8;       /* Indigo-400 */
+    --primary-strong: #6366f1;      /* Indigo-500, for gradient base */
+    --secondary-color: #a855f7;     /* Violet-500 */
+    --accent-color: #22d3ee;        /* Cyan-400 */
+    --text-primary: #f5f6fa;
+    --text-secondary: #c4c8d4;
+    --text-tertiary: #8b90a3;
+    --background: #0b0d12;
+    --surface: #13161d;
+    --surface-elevated: #1c2030;
+    --surface-hover: #252a3d;
+    --border: #262b3d;
+    --border-strong: #3a4060;
+    --success: #34d399;
+    --success-bg: rgba(52, 211, 153, 0.12);
+    --danger: #f87171;
+    --danger-bg: rgba(248, 113, 113, 0.12);
+    --on-accent: #0b0d12;           /* Text color placed on bright accents */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.4);
+    --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+    --shadow-lg: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+
     /* Gradients */
-    --gradient-primary: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-    --gradient-accent: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
-    
+    --gradient-primary: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+    --gradient-accent: linear-gradient(135deg, #6366f1 0%, #22d3ee 100%);
+
     /* Typography */
     --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     --font-size-base: 16px;
     --line-height-base: 1.6;
-    
+
     /* Transitions */
     --transition-fast: 150ms ease-in-out;
     --transition-base: 300ms ease-in-out;
     --transition-slow: 500ms ease-in-out;
-    
+    --transition-theme: background-color 0.35s ease, color 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+
     /* Border Radius */
     --radius-sm: 8px;
     --radius-md: 12px;
     --radius-lg: 16px;
     --radius-xl: 24px;
-    
+
     /* Spacing */
     --spacing-xs: 0.5rem;
     --spacing-sm: 1rem;
@@ -44,16 +54,37 @@
     --spacing-lg: 2rem;
     --spacing-xl: 3rem;
     --spacing-2xl: 4rem;
+
+    color-scheme: dark;
 }
 
-[data-theme="dark"] {
-    --text-primary: #f9fafb;
-    --text-secondary: #d1d5db;
-    --text-tertiary: #9ca3af;
-    --background: #111827;
-    --surface: #1f2937;
-    --surface-elevated: #374151;
-    --border: #374151;
+[data-theme="light"] {
+    --primary-color: #4f46e5;       /* Indigo-600 — darker for AA on light bg */
+    --primary-strong: #4338ca;      /* Indigo-700 */
+    --secondary-color: #7c3aed;     /* Violet-600 */
+    --accent-color: #0891b2;        /* Cyan-600 */
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --text-tertiary: #64748b;
+    --background: #fafafb;
+    --surface: #ffffff;
+    --surface-elevated: #ffffff;
+    --surface-hover: #f3f4f6;
+    --border: #e5e7eb;
+    --border-strong: #cbd5e1;
+    --success: #059669;
+    --success-bg: rgba(5, 150, 105, 0.12);
+    --danger: #dc2626;
+    --danger-bg: rgba(220, 38, 38, 0.10);
+    --on-accent: #ffffff;
+    --shadow-sm: 0 1px 2px 0 rgba(15, 23, 42, 0.05);
+    --shadow: 0 10px 15px -3px rgba(15, 23, 42, 0.1);
+    --shadow-lg: 0 25px 50px -12px rgba(15, 23, 42, 0.25);
+
+    --gradient-primary: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+    --gradient-accent: linear-gradient(135deg, #4f46e5 0%, #0891b2 100%);
+
+    color-scheme: light;
 }
 
 /* ===================================
@@ -78,6 +109,61 @@ body {
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    transition: var(--transition-theme);
+}
+
+/* Accessible focus ring */
+:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
+/* Skip-to-content link (visually hidden until focused) */
+.skip-link {
+    position: absolute;
+    top: -40px;
+    left: 1rem;
+    padding: 0.5rem 1rem;
+    background: var(--primary-color);
+    color: var(--on-accent);
+    border-radius: var(--radius-sm);
+    z-index: 10000;
+    font-weight: 600;
+    transition: top 0.2s ease;
+}
+
+.skip-link:focus {
+    top: 1rem;
+}
+
+/* Visually hidden text (screen reader only) */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Reduced motion: disable non-essential animation */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+    .particle,
+    .scroll-indicator {
+        display: none !important;
+    }
 }
 
 img {
@@ -180,27 +266,27 @@ button {
     left: 0;
     right: 0;
     width: 100%;
-    background: rgba(255, 255, 255, 0.8);
+    background: rgba(11, 13, 18, 0.75);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     z-index: 1000;
     padding: 1rem 0;
-    transition: all var(--transition-base);
+    transition: var(--transition-theme), padding var(--transition-base);
     border-bottom: 1px solid transparent;
 }
 
 .navbar.scrolled {
-    background: rgba(255, 255, 255, 0.95);
+    background: rgba(11, 13, 18, 0.92);
     box-shadow: var(--shadow);
     border-bottom-color: var(--border);
 }
 
-[data-theme="dark"] .navbar {
-    background: rgba(17, 24, 39, 0.8);
+[data-theme="light"] .navbar {
+    background: rgba(255, 255, 255, 0.8);
 }
 
-[data-theme="dark"] .navbar.scrolled {
-    background: rgba(17, 24, 39, 0.95);
+[data-theme="light"] .navbar.scrolled {
+    background: rgba(255, 255, 255, 0.95);
 }
 
 .nav-container {
@@ -311,9 +397,9 @@ button {
 }
 
 .theme-toggle:hover {
-    background: var(--primary-color);
-    color: white;
-    border-color: var(--primary-color);
+    background: var(--primary-strong);
+    color: #ffffff;
+    border-color: var(--primary-strong);
     transform: rotate(15deg);
 }
 
@@ -502,25 +588,25 @@ button {
 }
 
 .btn-primary {
-    background: white;
-    color: var(--primary-color);
+    background: #ffffff;
+    color: var(--primary-strong);
     box-shadow: var(--shadow-lg);
 }
 
 .btn-primary:hover {
     transform: translateY(-3px);
-    box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.4);
 }
 
 .btn-secondary {
     background: transparent;
-    color: white;
-    border: 2px solid white;
+    color: #ffffff;
+    border: 2px solid #ffffff;
 }
 
 .btn-secondary:hover {
-    background: white;
-    color: var(--primary-color);
+    background: #ffffff;
+    color: var(--primary-strong);
     transform: translateY(-3px);
 }
 
@@ -942,9 +1028,9 @@ button {
 .form-group textarea {
     width: 100%;
     padding: 1rem;
-    border: 2px solid var(--border);
+    border: 2px solid var(--border-strong);
     border-radius: var(--radius-sm);
-    background: var(--background);
+    background: var(--surface);
     color: var(--text-primary);
     font-size: 1rem;
     font-family: inherit;
@@ -955,7 +1041,7 @@ button {
 .form-group textarea:focus {
     outline: none;
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary-color) 25%, transparent);
 }
 
 .form-group textarea {
@@ -993,16 +1079,35 @@ button {
 
 .form-status.success {
     display: block;
-    background: #d1fae5;
-    color: #065f46;
-    border: 1px solid #10b981;
+    background: var(--success-bg);
+    color: var(--success);
+    border: 1px solid var(--success);
 }
 
 .form-status.error {
     display: block;
-    background: #fee2e2;
-    color: #991b1b;
-    border: 1px solid #ef4444;
+    background: var(--danger-bg);
+    color: var(--danger);
+    border: 1px solid var(--danger);
+}
+
+.form-status .form-status-action {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: var(--surface-elevated);
+    color: var(--text-primary);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-theme), transform 0.15s ease;
+}
+
+.form-status .form-status-action:hover {
+    transform: translateY(-1px);
+    border-color: var(--primary-color);
+    color: var(--primary-color);
 }
 
 /* ===================================
@@ -1100,7 +1205,7 @@ button {
 }
 
 .footer-bottom i {
-    color: #ef4444;
+    color: var(--danger);
     animation: heartbeat 1.5s ease-in-out infinite;
 }
 

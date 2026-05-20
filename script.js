@@ -58,15 +58,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // ===================================
 // Theme Management
+// Dark mode is the default. Light mode is opt-in via toggle or OS preference.
+// The inline <head> script applies the saved/preferred theme before CSS loads
+// (prevents flash). This block keeps icon/aria-label in sync and wires the toggle.
 // ===================================
 function initTheme() {
-    const savedTheme = localStorage.getItem('theme') ||
-        (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+    updateThemeIcon(currentTheme);
 
-    document.documentElement.setAttribute('data-theme', savedTheme);
-    updateThemeIcon(savedTheme);
-    
     DOM.themeToggle.addEventListener('click', toggleTheme);
+
+    // Follow OS-level theme changes when the user has no explicit saved choice
+    if (window.matchMedia) {
+        window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', (e) => {
+            if (!localStorage.getItem('theme')) {
+                const next = e.matches ? 'light' : 'dark';
+                document.documentElement.setAttribute('data-theme', next);
+                updateThemeIcon(next);
+            }
+        });
+    }
 }
 
 function toggleTheme() {
@@ -80,7 +91,11 @@ function toggleTheme() {
 
 function updateThemeIcon(theme) {
     const icon = DOM.themeToggle.querySelector('i');
+    // In dark mode show sun (action: go to light); in light mode show moon (action: go to dark)
     icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+    const label = theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode';
+    DOM.themeToggle.setAttribute('aria-label', label);
+    DOM.themeToggle.setAttribute('title', label);
 }
 
 // ===================================
@@ -134,15 +149,24 @@ function initNavigation() {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 
-    // Resume download — add resume.pdf to project root to enable
-    DOM.resumeBtn.addEventListener('click', (e) => {
+    // Resume button — verify file exists before downloading; fall back to email
+    DOM.resumeBtn.addEventListener('click', async (e) => {
         e.preventDefault();
-        const link = document.createElement('a');
-        link.href = 'resume.pdf';
-        link.download = 'Pranav_Pankhawala_Resume.pdf';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+        try {
+            const head = await fetch('resume.pdf', { method: 'HEAD' });
+            if (!head.ok) throw new Error('not-found');
+            const link = document.createElement('a');
+            link.href = 'resume.pdf';
+            link.download = 'Pranav_Pankhawala_Resume.pdf';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        } catch (err) {
+            window.location.href = 'mailto:pranav.pankhawala@gmail.com?subject=' +
+                encodeURIComponent('Resume Request') +
+                '&body=' +
+                encodeURIComponent("Hi Pranav,\n\nCould you please share a copy of your resume?\n\nThanks!");
+        }
     });
 }
 
@@ -330,25 +354,30 @@ function initSkillBars() {
 function initContactForm() {
     DOM.contactForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        
+
         const submitBtn = DOM.contactForm.querySelector('.btn-submit');
         const formData = new FormData(DOM.contactForm);
-        
+
         // Show loading state
         submitBtn.classList.add('loading');
         DOM.formStatus.style.display = 'none';
-        
+
+        // Skip remote submission when endpoint is unconfigured — fall back immediately
+        const endpointConfigured = CONFIG.emailServiceURL && !CONFIG.emailServiceURL.includes('YOUR_FORM_ID');
+
+        if (!endpointConfigured) {
+            sendEmailViaMailto(formData);
+            submitBtn.classList.remove('loading');
+            return;
+        }
+
         try {
-            // Using Formspree for form handling
-            // Replace CONFIG.emailServiceURL with your Formspree endpoint
             const response = await fetch(CONFIG.emailServiceURL, {
                 method: 'POST',
                 body: formData,
-                headers: {
-                    'Accept': 'application/json'
-                }
+                headers: { 'Accept': 'application/json' }
             });
-            
+
             if (response.ok) {
                 showFormStatus('success', 'Thank you! Your message has been sent successfully.');
                 DOM.contactForm.reset();
@@ -356,7 +385,6 @@ function initContactForm() {
                 throw new Error('Form submission failed');
             }
         } catch (error) {
-            // Fallback: Send email using mailto (less reliable but works without backend)
             sendEmailViaMailto(formData);
         } finally {
             submitBtn.classList.remove('loading');
@@ -365,10 +393,10 @@ function initContactForm() {
 }
 
 function sendEmailViaMailto(formData) {
-    const name = formData.get('name');
-    const email = formData.get('email');
-    const subject = formData.get('subject');
-    const message = formData.get('message');
+    const name = formData.get('name') || '';
+    const email = formData.get('email') || '';
+    const subject = formData.get('subject') || 'Message from portfolio';
+    const message = formData.get('message') || '';
 
     const mailtoLink = `mailto:pranav.pankhawala@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(
         `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`
@@ -379,16 +407,15 @@ function sendEmailViaMailto(formData) {
     DOM.formStatus.style.display = 'block';
 
     const msg = document.createElement('p');
-    msg.textContent = 'Automatic submission unavailable. Use the link below to send via email client:';
+    msg.textContent = 'Direct submission is unavailable right now. You can open your email client to send this message instead:';
 
     const link = document.createElement('a');
     link.href = mailtoLink;
-    link.textContent = 'Open Email Client';
-    link.style.cssText = 'display:inline-block;margin-top:0.5rem;color:var(--primary-color);font-weight:600;text-decoration:underline;';
+    link.textContent = 'Open in email client';
+    link.className = 'form-status-action';
 
     DOM.formStatus.appendChild(msg);
     DOM.formStatus.appendChild(link);
-    DOM.contactForm.reset();
 }
 
 function showFormStatus(type, message) {

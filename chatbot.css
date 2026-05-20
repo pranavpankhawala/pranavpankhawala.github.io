@@ -27,7 +27,7 @@
 
 .chatbot-toggle:hover {
     transform: scale(1.1);
-    box-shadow: 0 30px 60px -15px rgba(37, 99, 235, 0.5);
+    box-shadow: 0 30px 60px -15px color-mix(in srgb, var(--primary-color) 50%, transparent);
 }
 
 .chatbot-toggle i {
@@ -40,7 +40,7 @@
     position: absolute;
     top: -5px;
     right: -5px;
-    background: #ef4444;
+    background: var(--danger);
     color: white;
     width: 24px;
     height: 24px;
@@ -72,7 +72,7 @@
     height: 600px;
     background: var(--surface-elevated);
     border-radius: var(--radius-xl);
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    box-shadow: var(--shadow-lg);
     display: flex;
     flex-direction: column;
     z-index: 999;
@@ -134,7 +134,7 @@
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background: #10b981;
+    background: var(--success);
     display: inline-block;
     animation: blink 1.5s infinite;
 }
@@ -224,7 +224,7 @@
 
 .message-content {
     flex: 1;
-    background: var(--surface);
+    background: var(--surface-elevated);
     padding: 1rem;
     border-radius: var(--radius-md);
     border: 1px solid var(--border);
@@ -259,9 +259,9 @@
 }
 
 .user-message .message-content {
-    background: var(--primary-color);
-    color: white;
-    border-color: var(--primary-color);
+    background: var(--primary-strong);
+    color: #ffffff;
+    border-color: var(--primary-strong);
 }
 
 .user-message .message-content p {
@@ -334,9 +334,9 @@
 }
 
 .quick-reply:hover {
-    background: var(--primary-color);
-    color: white;
-    border-color: var(--primary-color);
+    background: var(--primary-strong);
+    color: #ffffff;
+    border-color: var(--primary-strong);
     transform: translateY(-2px);
 }
 
@@ -365,7 +365,7 @@
 .chatbot-input:focus {
     outline: none;
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary-color) 25%, transparent);
 }
 
 .chatbot-send {
@@ -385,7 +385,7 @@
 
 .chatbot-send:hover {
     transform: scale(1.05);
-    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+    box-shadow: 0 4px 12px color-mix(in srgb, var(--primary-color) 35%, transparent);
 }
 
 .chatbot-send:active {
@@ -516,19 +516,9 @@
 }
 
 /* ===================================
-   Dark Mode Adjustments
+   Theme-aware container shadow
+   (deeper shadow in dark mode handled via var(--shadow-lg) tokens)
    =================================== */
-[data-theme="dark"] .chatbot-container {
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
-}
-
-[data-theme="dark"] .message-content {
-    background: var(--surface-elevated);
-}
-
-[data-theme="dark"] .user-message .message-content {
-    background: var(--primary-color);
-}
 
 /* ===================================
    Accessibility

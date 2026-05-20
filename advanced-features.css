@@ -14,7 +14,7 @@
     background: var(--gradient-primary);
     z-index: 9999;
     transition: width 0.1s ease-out;
-    box-shadow: 0 0 10px rgba(37, 99, 235, 0.5);
+    box-shadow: 0 0 10px color-mix(in srgb, var(--primary-color) 50%, transparent);
 }
 
 /* ===================================
@@ -80,8 +80,8 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(5px);
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(8px);
     z-index: 10000;
     display: none;
     opacity: 0;
@@ -256,8 +256,8 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(5px);
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(8px);
     z-index: 10000;
     display: none;
     opacity: 0;
@@ -435,7 +435,7 @@
 .achievement-badge:hover {
     transform: translateY(-5px);
     border-color: var(--primary-color);
-    box-shadow: 0 0 20px rgba(37, 99, 235, 0.2);
+    box-shadow: 0 0 20px color-mix(in srgb, var(--primary-color) 25%, transparent);
 }
 
 .achievement-icon {
@@ -581,7 +581,7 @@
 .tech-bubble:hover {
     transform: scale(1.1);
     border-color: var(--primary-color);
-    box-shadow: 0 0 30px rgba(37, 99, 235, 0.3);
+    box-shadow: 0 0 30px color-mix(in srgb, var(--primary-color) 35%, transparent);
 }
 
 .tech-bubble-icon {
@@ -673,19 +673,21 @@
 .bento-item:nth-child(6) { animation-delay: 0.6s; }
 
 /* ===================================
-   Dark Mode Adjustments
+   Custom cursor uses accent color in both modes
+   (defaults declared in cursor sections above)
    =================================== */
-[data-theme="dark"] .command-palette-overlay,
-[data-theme="dark"] .shortcuts-modal-overlay {
-    background: rgba(0, 0, 0, 0.8);
-}
-
-[data-theme="dark"] .custom-cursor {
+.custom-cursor {
     border-color: var(--accent-color);
 }
 
-[data-theme="dark"] .custom-cursor-follower {
+.custom-cursor-follower {
     background: var(--accent-color);
+}
+
+/* Light-mode overlay slightly lighter so chrome behind feels less crushed */
+[data-theme="light"] .command-palette-overlay,
+[data-theme="light"] .shortcuts-modal-overlay {
+    background: rgba(15, 23, 42, 0.55);
 }
 
 /* ===================================

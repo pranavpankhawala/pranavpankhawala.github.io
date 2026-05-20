@@ -1,8 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Apply saved/preferred theme before CSS loads to prevent flash -->
+    <script>
+        (function () {
+            try {
+                var saved = localStorage.getItem('theme');
+                var theme = saved || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+                document.documentElement.setAttribute('data-theme', theme);
+            } catch (e) { /* defaults to dark */ }
+        })();
+    </script>
     <meta name="description" content="Pranav Pankhawala - Software Developer specializing in Web Development, Machine Learning, and IoT Systems">
     <meta name="keywords" content="software developer, web development, machine learning, IoT, full-stack developer">
     <meta name="author" content="Pranav Pankhawala">
@@ -33,7 +43,8 @@
     <link rel="stylesheet" href="advanced-features.css">
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="https://avatars.githubusercontent.com/u/36548613?v=4">
-    <meta name="theme-color" content="#2563eb">
+    <meta name="theme-color" content="#0b0d12" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#fafafb" media="(prefers-color-scheme: light)">
 </head>
 <body>
     <a href="#home" class="skip-link">Skip to main content</a>
@@ -65,8 +76,9 @@
                 </a></li>
             </ul>
             <div class="nav-actions">
-                <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
-                    <i class="fas fa-moon"></i>
+                <button class="theme-toggle" id="themeToggle" aria-label="Switch to light mode" title="Switch to light mode">
+                    <i class="fas fa-sun" aria-hidden="true"></i>
+                    <span class="sr-only">Toggle color theme</span>
                 </button>
                 <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu" aria-expanded="false">
                     <span></span>
