@@ -67,17 +67,6 @@ function initTheme() {
     updateThemeIcon(currentTheme);
 
     DOM.themeToggle.addEventListener('click', toggleTheme);
-
-    // Follow OS-level theme changes when the user has no explicit saved choice
-    if (window.matchMedia) {
-        window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', (e) => {
-            if (!localStorage.getItem('theme')) {
-                const next = e.matches ? 'light' : 'dark';
-                document.documentElement.setAttribute('data-theme', next);
-                updateThemeIcon(next);
-            }
-        });
-    }
 }
 
 function toggleTheme() {
