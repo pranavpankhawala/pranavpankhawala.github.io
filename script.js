@@ -11,11 +11,11 @@ const CONFIG = {
 window.Portfolio = {};
 
 const typingTexts = [
-    'Web Development',
-    'Machine Learning',
-    'IoT Systems',
-    'Full-Stack Applications',
-    'Data-Driven Solutions'
+    'Computer Vision Engineer',
+    'Cybersecurity Specialist',
+    'Edge AI Developer',
+    'Industrial Automation Expert',
+    'Deep Learning Researcher'
 ];
 
 // ===================================

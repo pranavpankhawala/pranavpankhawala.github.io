@@ -231,7 +231,7 @@ function generateDynamicResponse(message) {
             text: `Hello! 👋 I'm here to help you learn about Pranav's experience, skills, and projects. I have access to real-time data from this portfolio. What would you like to know?`,
             actions: [
                 { text: "View Experience", action: "scrollToSection", params: "experience" },
-                { text: "See Projects", action: "scrollToSection", params: "showcase" }
+                { text: "See Projects", action: "scrollToSection", params: "projects" }
             ]
         };
     }
@@ -293,7 +293,7 @@ function generateDynamicResponse(message) {
         ],
         actions: [
             { text: "View All Experience", action: "scrollToSection", params: "experience" },
-            { text: "View Showcase", action: "scrollToSection", params: "showcase" }
+            { text: "View Projects", action: "scrollToSection", params: "projects" }
         ]
     };
 }
