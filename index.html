@@ -799,6 +799,29 @@ footer {
 
 /* svg icons */
 .i { width: 16px; height: 16px; stroke: currentColor; stroke-width: 1.6; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+
+/* ---------- Mobile overrides ---------- */
+@media (max-width: 880px) {
+  .nav-cta { display: none; }
+}
+
+@media (max-width: 600px) {
+  .hero-main h1 { font-size: clamp(38px, 10vw, 54px); }
+
+  .hero-cta { flex-direction: column; align-items: stretch; }
+  .hero-cta .btn { justify-content: center; }
+
+  .contact-card { padding: 24px 20px; }
+  .contact-actions { flex-direction: column; }
+  .contact-actions .btn { width: 100%; justify-content: center; box-sizing: border-box; }
+  .contact-actions .btn-primary { font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+  .proj-toolbar { flex-direction: column; align-items: stretch; }
+  .filters { justify-content: center; }
+  .viewtoggle { justify-content: center; }
+
+  .foot { flex-direction: column; gap: 8px; }
+}
 </style>
 </head>
 <body data-screen-label="Portfolio">
@@ -814,8 +837,8 @@ footer {
       </span>
     </a>
     <div class="nav-links" id="navLinks">
-      <a href="#work">Work</a>
       <a href="#about">About</a>
+      <a href="#work">Work</a>
       <a href="#capabilities">Capabilities</a>
       <a href="#projects">Projects</a>
       <a href="#publications">Publications</a>
@@ -849,7 +872,11 @@ footer {
       <button class="icon-btn" id="themeBtn" aria-label="Toggle theme">
         <svg class="i" id="themeIcon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
       </button>
-      <a href="#contact" class="btn btn-primary" style="margin-left:4px">
+      <a href="resume.pdf" download class="btn btn-ghost nav-cta" style="margin-left:4px">
+        <svg class="i" viewBox="0 0 24 24" width="14" height="14"><path d="M12 2v13"/><path d="m7 12 5 5 5-5"/><path d="M5 20h14"/></svg>
+        Resume
+      </a>
+      <a href="#contact" class="btn btn-primary nav-cta" style="margin-left:4px">
         Get in touch
         <svg class="i arrow" viewBox="0 0 24 24" width="14" height="14"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg>
       </a>
@@ -897,6 +924,10 @@ footer {
             </a>
             <a href="#contact" class="btn btn-ghost">
               Start a project
+            </a>
+            <a href="resume.pdf" download class="btn btn-ghost">
+              <svg class="i" viewBox="0 0 24 24" width="14" height="14"><path d="M12 2v13"/><path d="m7 12 5 5 5-5"/><path d="M5 20h14"/></svg>
+              Download Resume
             </a>
           </div>
 
@@ -1483,6 +1514,7 @@ const cmdkItems = [
   { ic: '@', label: 'Email Pranav', action: () => location.href = 'mailto:pranav.pankhawala@gmail.com', hint: 'mail' },
   { ic: '☎', label: 'Call Pranav', action: () => location.href = 'tel:+918408069188', hint: 'tel' },
   { ic: '↗', label: 'Open GitHub', action: () => window.open('https://github.com/pranavpankhawala','_blank'), hint: 'ext' },
+  { ic: '↓', label: 'Download Resume', action: () => { const a = document.createElement('a'); a.href = 'resume.pdf'; a.download = ''; a.click(); }, hint: 'pdf' },
   { ic: '◐', label: 'Toggle theme', action: () => themeBtn.click(), hint: '⇧T' },
 ];
 function renderCmdk(q = '') {
