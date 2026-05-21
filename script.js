@@ -391,20 +391,9 @@ function sendEmailViaMailto(formData) {
         `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`
     )}`;
 
-    DOM.formStatus.className = 'form-status error';
-    DOM.formStatus.innerHTML = '';
-    DOM.formStatus.style.display = 'block';
-
-    const msg = document.createElement('p');
-    msg.textContent = 'Direct submission is unavailable right now. You can open your email client to send this message instead:';
-
-    const link = document.createElement('a');
-    link.href = mailtoLink;
-    link.textContent = 'Open in email client';
-    link.className = 'form-status-action';
-
-    DOM.formStatus.appendChild(msg);
-    DOM.formStatus.appendChild(link);
+    window.location.href = mailtoLink;
+    DOM.contactForm.reset();
+    showFormStatus('success', 'Opening your email client — thanks for reaching out!');
 }
 
 function showFormStatus(type, message) {
