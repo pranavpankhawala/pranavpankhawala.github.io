@@ -76,7 +76,7 @@
 .timeline-item:hover .timeline-icon {
     transform: scale(1.1);
     animation: none;
-    box-shadow: 0 0 0 4px var(--background), 0 0 0 6px var(--accent-color), 0 0 20px rgba(37, 99, 235, 0.3);
+    box-shadow: 0 0 0 4px var(--background), 0 0 0 6px var(--accent-color), 0 0 20px color-mix(in srgb, var(--primary-color) 35%, transparent);
 }
 
 /* Card */
@@ -313,15 +313,7 @@
     50% { box-shadow: 0 0 0 4px var(--background), 0 0 0 8px var(--primary-color); }
 }
 
-/* Dark mode */
-[data-theme="dark"] .timeline-icon {
-    box-shadow: 0 0 0 4px var(--background), 0 0 0 6px var(--primary-color);
-}
-
-[data-theme="dark"] .vertical-timeline::before,
-[data-theme="dark"] .vertical-timeline-education::before {
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
-}
+/* Timeline icon/line use theme tokens — colors adapt automatically. */
 
 /* Print */
 @media print {
