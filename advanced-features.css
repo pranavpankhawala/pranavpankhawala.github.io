@@ -1,0 +1,704 @@
+/* ===================================
+   Advanced Portfolio Features CSS
+   =================================== */
+
+/* ===================================
+   Reading Progress Bar
+   =================================== */
+   .reading-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 4px;
+    background: var(--gradient-primary);
+    z-index: 9999;
+    transition: width 0.1s ease-out;
+    box-shadow: 0 0 10px color-mix(in srgb, var(--primary-color) 50%, transparent);
+}
+
+/* ===================================
+   Custom Cursor
+   =================================== */
+.custom-cursor {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--primary-color);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 10000;
+    transition: transform 0.15s ease-out, opacity 0.15s ease-out;
+    opacity: 0;
+}
+
+.custom-cursor-follower {
+    width: 8px;
+    height: 8px;
+    background: var(--primary-color);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.2s ease-out;
+    opacity: 0;
+}
+
+.custom-cursor.active,
+.custom-cursor-follower.active {
+    opacity: 1;
+}
+
+.custom-cursor.hover {
+    transform: scale(2);
+    border-color: var(--accent-color);
+}
+
+.custom-cursor.click {
+    transform: scale(0.8);
+}
+
+/* Hide default cursor on desktop */
+@media (min-width: 1024px) {
+    body.custom-cursor-enabled {
+        cursor: none;
+    }
+    
+    body.custom-cursor-enabled a,
+    body.custom-cursor-enabled button,
+    body.custom-cursor-enabled [role="button"] {
+        cursor: none;
+    }
+}
+
+/* ===================================
+   Command Palette
+   =================================== */
+.command-palette-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(8px);
+    z-index: 10000;
+    display: none;
+    opacity: 0;
+    transition: opacity var(--transition-base);
+}
+
+.command-palette-overlay.active {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 15vh;
+    opacity: 1;
+}
+
+.command-palette {
+    width: 90%;
+    max-width: 640px;
+    background: var(--surface-elevated);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--border);
+    transform: translateY(-20px);
+    transition: transform var(--transition-base);
+}
+
+.command-palette-overlay.active .command-palette {
+    transform: translateY(0);
+}
+
+.command-palette-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.25rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.command-palette-icon {
+    color: var(--text-tertiary);
+    font-size: 1.25rem;
+}
+
+.command-palette-input {
+    flex: 1;
+    border: none;
+    background: none;
+    color: var(--text-primary);
+    font-size: 1.125rem;
+    outline: none;
+    font-family: inherit;
+}
+
+.command-palette-input::placeholder {
+    color: var(--text-tertiary);
+}
+
+.command-palette-hint {
+    padding: 0.25rem 0.5rem;
+    background: var(--surface);
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-tertiary);
+    border: 1px solid var(--border);
+}
+
+.command-palette-results {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.command-palette-section {
+    padding: 0.75rem 0;
+}
+
+.command-palette-section-title {
+    padding: 0.5rem 1.25rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-tertiary);
+}
+
+.command-palette-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.875rem 1.25rem;
+    cursor: pointer;
+    transition: background var(--transition-fast);
+    border-left: 3px solid transparent;
+}
+
+.command-palette-item:hover,
+.command-palette-item.selected {
+    background: var(--surface);
+    border-left-color: var(--primary-color);
+}
+
+.command-palette-item-icon {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--surface);
+    border-radius: var(--radius-sm);
+    color: var(--primary-color);
+    font-size: 1rem;
+    flex-shrink: 0;
+}
+
+.command-palette-item.selected .command-palette-item-icon {
+    background: var(--primary-color);
+    color: white;
+}
+
+.command-palette-item-content {
+    flex: 1;
+}
+
+.command-palette-item-title {
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.125rem;
+}
+
+.command-palette-item-description {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}
+
+.command-palette-item-shortcut {
+    display: flex;
+    gap: 0.25rem;
+}
+
+.command-palette-key {
+    padding: 0.25rem 0.5rem;
+    background: var(--surface);
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-tertiary);
+    border: 1px solid var(--border);
+    min-width: 24px;
+    text-align: center;
+}
+
+.command-palette-footer {
+    padding: 0.75rem 1.25rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    gap: 1rem;
+    font-size: 0.875rem;
+    color: var(--text-tertiary);
+}
+
+.command-palette-footer-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* ===================================
+   Keyboard Shortcuts Help Modal
+   =================================== */
+.shortcuts-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(8px);
+    z-index: 10000;
+    display: none;
+    opacity: 0;
+    transition: opacity var(--transition-base);
+}
+
+.shortcuts-modal-overlay.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    opacity: 1;
+}
+
+.shortcuts-modal {
+    width: 100%;
+    max-width: 800px;
+    max-height: 80vh;
+    background: var(--surface-elevated);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.shortcuts-modal-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.shortcuts-modal-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.shortcuts-modal-close {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all var(--transition-base);
+}
+
+.shortcuts-modal-close:hover {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+.shortcuts-modal-body {
+    padding: 1.5rem;
+    overflow-y: auto;
+}
+
+.shortcuts-section {
+    margin-bottom: 2rem;
+}
+
+.shortcuts-section:last-child {
+    margin-bottom: 0;
+}
+
+.shortcuts-section-title {
+    font-size: 0.875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-tertiary);
+    margin-bottom: 1rem;
+}
+
+.shortcuts-list {
+    display: grid;
+    gap: 0.75rem;
+}
+
+.shortcut-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem;
+    background: var(--surface);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+}
+
+.shortcut-description {
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+.shortcut-keys {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.shortcut-key {
+    padding: 0.375rem 0.75rem;
+    background: var(--background);
+    border-radius: 4px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    border: 1px solid var(--border);
+    min-width: 32px;
+    text-align: center;
+    font-family: 'Courier New', monospace;
+}
+
+/* ===================================
+   Toast Notification
+   =================================== */
+.toast {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--primary-color);
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    box-shadow: var(--shadow-lg);
+    z-index: 10001;
+    font-weight: 600;
+    white-space: nowrap;
+    animation: fadeInUp 0.3s ease-out;
+}
+
+.toast--hide {
+    animation: fadeOut 0.3s ease-out forwards;
+}
+
+@keyframes fadeOut {
+    to { opacity: 0; transform: translateX(-50%) translateY(10px); }
+}
+
+/* ===================================
+   Achievement Badges
+   =================================== */
+.achievements-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.achievement-badge {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 1.5rem 1rem;
+    background: var(--surface-elevated);
+    border-radius: var(--radius-md);
+    border: 2px solid var(--border);
+    transition: all var(--transition-base);
+    cursor: pointer;
+}
+
+.achievement-badge:hover {
+    transform: translateY(-5px);
+    border-color: var(--primary-color);
+    box-shadow: 0 0 20px color-mix(in srgb, var(--primary-color) 25%, transparent);
+}
+
+.achievement-icon {
+    width: 60px;
+    height: 60px;
+    background: var(--gradient-primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.75rem;
+    margin-bottom: 0.75rem;
+    position: relative;
+}
+
+.achievement-icon::after {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
+    z-index: -1;
+    opacity: 0;
+    transition: opacity var(--transition-base);
+}
+
+.achievement-badge:hover .achievement-icon::after {
+    opacity: 0.5;
+}
+
+.achievement-title {
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: var(--text-primary);
+    margin-bottom: 0.25rem;
+}
+
+.achievement-description {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+}
+
+/* ===================================
+   Bento Grid Showcase
+   =================================== */
+.bento-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 1rem;
+    margin-top: 3rem;
+}
+
+.bento-item {
+    background: var(--surface-elevated);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    border: 1px solid var(--border);
+    transition: all var(--transition-base);
+    overflow: hidden;
+    position: relative;
+}
+
+.bento-item:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--primary-color);
+}
+
+.bento-item-large {
+    grid-column: span 6;
+    grid-row: span 2;
+}
+
+.bento-item-medium {
+    grid-column: span 4;
+}
+
+.bento-item-small {
+    grid-column: span 3;
+}
+
+.bento-item-wide {
+    grid-column: span 8;
+}
+
+.bento-item-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.bento-item-icon {
+    width: 50px;
+    height: 50px;
+    background: var(--gradient-primary);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.5rem;
+}
+
+.bento-item-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.bento-item-content {
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+/* ===================================
+   Tech Stack Visualization
+   =================================== */
+.tech-stack-visual {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    justify-content: center;
+    margin-top: 3rem;
+}
+
+.tech-bubble {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1.5rem;
+    background: var(--surface-elevated);
+    border-radius: 50%;
+    width: 140px;
+    height: 140px;
+    border: 2px solid var(--border);
+    transition: all var(--transition-base);
+    cursor: pointer;
+}
+
+.tech-bubble:hover {
+    transform: scale(1.1);
+    border-color: var(--primary-color);
+    box-shadow: 0 0 30px color-mix(in srgb, var(--primary-color) 35%, transparent);
+}
+
+.tech-bubble-icon {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+}
+
+.tech-bubble-name {
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: var(--text-primary);
+    text-align: center;
+}
+
+/* ===================================
+   Responsive Design
+   =================================== */
+@media (max-width: 1024px) {
+    .bento-item-large,
+    .bento-item-medium,
+    .bento-item-small,
+    .bento-item-wide {
+        grid-column: span 12;
+        grid-row: span 1;
+    }
+    
+    .tech-bubble {
+        width: 120px;
+        height: 120px;
+    }
+}
+
+@media (max-width: 768px) {
+    .command-palette {
+        width: 95%;
+        max-height: 70vh;
+    }
+    
+    .shortcuts-modal {
+        max-width: 100%;
+        max-height: 90vh;
+    }
+    
+    .achievements-grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    }
+    
+    .github-stats-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .tech-bubble {
+        width: 100px;
+        height: 100px;
+    }
+}
+
+/* ===================================
+   Animations
+   =================================== */
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.command-palette-item,
+.shortcut-item,
+.achievement-badge {
+    animation: fadeInScale 0.3s ease-out;
+}
+
+/* Stagger animation for grid items */
+.bento-item {
+    opacity: 0;
+    animation: fadeInScale 0.6s ease-out forwards;
+}
+
+.bento-item:nth-child(1) { animation-delay: 0.1s; }
+.bento-item:nth-child(2) { animation-delay: 0.2s; }
+.bento-item:nth-child(3) { animation-delay: 0.3s; }
+.bento-item:nth-child(4) { animation-delay: 0.4s; }
+.bento-item:nth-child(5) { animation-delay: 0.5s; }
+.bento-item:nth-child(6) { animation-delay: 0.6s; }
+
+/* ===================================
+   Custom cursor uses accent color in both modes
+   (defaults declared in cursor sections above)
+   =================================== */
+.custom-cursor {
+    border-color: var(--accent-color);
+}
+
+.custom-cursor-follower {
+    background: var(--accent-color);
+}
+
+/* Light-mode overlay slightly lighter so chrome behind feels less crushed */
+[data-theme="light"] .command-palette-overlay,
+[data-theme="light"] .shortcuts-modal-overlay {
+    background: rgba(15, 23, 42, 0.55);
+}
+
+/* ===================================
+   Print Styles
+   =================================== */
+@media print {
+    .command-palette-overlay,
+    .shortcuts-modal-overlay,
+    .custom-cursor,
+    .custom-cursor-follower,
+    .reading-progress {
+        display: none !important;
+    }
+}
