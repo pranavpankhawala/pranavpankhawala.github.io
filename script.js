@@ -4,17 +4,18 @@
 const CONFIG = {
     typingSpeed: 100,
     typingDelay: 2000,
-    emailServiceURL: 'https://formspree.io/f/YOUR_FORM_ID', // Replace with your Formspree ID
-    animationThreshold: 0.15,
-    particleCount: 50
+    emailServiceURL: 'https://formspree.io/f/YOUR_FORM_ID', // TODO: Replace YOUR_FORM_ID with your ID from formspree.io
+    animationThreshold: 0.15
 };
 
+window.Portfolio = {};
+
 const typingTexts = [
-    'Web Development',
-    'Machine Learning',
-    'IoT Systems',
-    'Full-Stack Applications',
-    'Data-Driven Solutions'
+    'Computer Vision Engineer',
+    'Cybersecurity Specialist',
+    'Edge AI Developer',
+    'Industrial Automation Expert',
+    'Deep Learning Researcher'
 ];
 
 // ===================================
@@ -34,8 +35,6 @@ const DOM = {
     particles: document.getElementById('particles'),
     typedText: document.querySelector('.typed-text'),
     statNumbers: document.querySelectorAll('.stat-number'),
-    filterBtns: document.querySelectorAll('.filter-btn'),
-    projectCards: document.querySelectorAll('.project-card'),
     skillItems: document.querySelectorAll('.skill-item')
 };
 
@@ -45,46 +44,47 @@ const DOM = {
 document.addEventListener('DOMContentLoaded', () => {
     initTheme();
     initNavigation();
-    initAnimations();
     initTypingEffect();
     initParticles();
     initScrollAnimations();
-    initProjectFilter();
     initContactForm();
     initSkillBars();
     initStatCounters();
-    
-    // Hide loading screen
-    setTimeout(() => {
-        DOM.loadingScreen.classList.add('hidden');
-    }, 500);
+    initLazyLoading();
+    initFormValidation();
+
+    DOM.loadingScreen.classList.add('hidden');
 });
 
 // ===================================
 // Theme Management
+// Dark mode is the default. Light mode is opt-in via toggle or OS preference.
+// The inline <head> script applies the saved/preferred theme before CSS loads
+// (prevents flash). This block keeps icon/aria-label in sync and wires the toggle.
 // ===================================
 function initTheme() {
-    const savedTheme = localStorage.getItem('theme') || 
-        (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-    
-    document.body.setAttribute('data-theme', savedTheme);
-    updateThemeIcon(savedTheme);
-    
+    const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+    updateThemeIcon(currentTheme);
+
     DOM.themeToggle.addEventListener('click', toggleTheme);
 }
 
 function toggleTheme() {
-    const currentTheme = document.body.getAttribute('data-theme');
+    const currentTheme = document.documentElement.getAttribute('data-theme');
     const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-    
-    document.body.setAttribute('data-theme', newTheme);
+
+    document.documentElement.setAttribute('data-theme', newTheme);
     localStorage.setItem('theme', newTheme);
     updateThemeIcon(newTheme);
 }
 
 function updateThemeIcon(theme) {
     const icon = DOM.themeToggle.querySelector('i');
+    // In dark mode show sun (action: go to light); in light mode show moon (action: go to dark)
     icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+    const label = theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode';
+    DOM.themeToggle.setAttribute('aria-label', label);
+    DOM.themeToggle.setAttribute('title', label);
 }
 
 // ===================================
@@ -95,6 +95,8 @@ function initNavigation() {
     DOM.mobileMenuToggle.addEventListener('click', () => {
         DOM.mobileMenuToggle.classList.toggle('active');
         DOM.navMenu.classList.toggle('active');
+        const isOpen = DOM.navMenu.classList.contains('active');
+        DOM.mobileMenuToggle.setAttribute('aria-expanded', isOpen);
     });
     
     // Smooth scroll for navigation links
@@ -123,51 +125,37 @@ function initNavigation() {
         });
     });
     
-    // Update active nav link on scroll
-    window.addEventListener('scroll', updateActiveNavLink);
-    
-    // Navbar scroll effect
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 100) {
-            DOM.navbar.classList.add('scrolled');
-        } else {
-            DOM.navbar.classList.remove('scrolled');
-        }
-    });
-    
-    // Back to top button
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 500) {
-            DOM.backToTop.classList.add('visible');
-        } else {
-            DOM.backToTop.classList.remove('visible');
-        }
-    });
-    
+    // Single debounced scroll handler replacing three separate listeners
+    function handleScroll() {
+        const scrollY = window.scrollY;
+        DOM.navbar.classList.toggle('scrolled', scrollY > 100);
+        DOM.backToTop.classList.toggle('visible', scrollY > 500);
+        updateActiveNavLink();
+    }
+    window.addEventListener('scroll', debounce(handleScroll, 100));
+
     DOM.backToTop.addEventListener('click', () => {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     });
-    
-    // Resume download
-    DOM.resumeBtn.addEventListener('click', (e) => {
+
+    // Resume button — verify file exists before downloading; fall back to email
+    DOM.resumeBtn.addEventListener('click', async (e) => {
         e.preventDefault();
-        // Create a sample resume download
-        // Replace this with your actual resume file
-        const resumeUrl = 'resume.pdf'; // Place your resume.pdf in the same directory
-        
-        // Try to download
-        const link = document.createElement('a');
-        link.href = resumeUrl;
-        link.download = 'Pranav_Pankhawala_Resume.pdf';
-        link.click();
-        
-        // If file doesn't exist, show message
-        link.onerror = () => {
-            alert('Resume file not found. Please add your resume.pdf file to the project directory.');
-        };
+        try {
+            const head = await fetch('resume.pdf', { method: 'HEAD' });
+            if (!head.ok) throw new Error('not-found');
+            const link = document.createElement('a');
+            link.href = 'resume.pdf';
+            link.download = 'Pranav_Pankhawala_Resume.pdf';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        } catch (err) {
+            window.location.href = 'mailto:pranav.pankhawala@gmail.com?subject=' +
+                encodeURIComponent('Resume Request') +
+                '&body=' +
+                encodeURIComponent("Hi Pranav,\n\nCould you please share a copy of your resume?\n\nThanks!");
+        }
     });
 }
 
@@ -235,7 +223,9 @@ function initTypingEffect() {
 // Particles Animation
 // ===================================
 function initParticles() {
-    for (let i = 0; i < CONFIG.particleCount; i++) {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const count = window.innerWidth < 768 ? 10 : 20;
+    for (let i = 0; i < count; i++) {
         createParticle();
     }
 }
@@ -243,47 +233,17 @@ function initParticles() {
 function createParticle() {
     const particle = document.createElement('div');
     particle.className = 'particle';
-    
+
     const size = Math.random() * 4 + 1;
-    const x = Math.random() * 100;
-    const duration = Math.random() * 20 + 10;
-    const delay = Math.random() * 5;
-    
-    particle.style.cssText = `
-        position: absolute;
-        width: ${size}px;
-        height: ${size}px;
-        background: rgba(255, 255, 255, 0.5);
-        border-radius: 50%;
-        left: ${x}%;
-        bottom: -10px;
-        animation: float ${duration}s linear ${delay}s infinite;
-    `;
-    
+    particle.style.width = `${size}px`;
+    particle.style.height = `${size}px`;
+    particle.style.left = `${Math.random() * 100}%`;
+    particle.style.animationDuration = `${Math.random() * 20 + 10}s`;
+    particle.style.animationDelay = `${Math.random() * 5}s`;
+
     DOM.particles.appendChild(particle);
 }
 
-// Add float animation CSS dynamically
-const style = document.createElement('style');
-style.textContent = `
-    @keyframes float {
-        0% {
-            transform: translateY(0) rotate(0deg);
-            opacity: 0;
-        }
-        10% {
-            opacity: 1;
-        }
-        90% {
-            opacity: 1;
-        }
-        100% {
-            transform: translateY(-100vh) rotate(360deg);
-            opacity: 0;
-        }
-    }
-`;
-document.head.appendChild(style);
 
 // ===================================
 // Scroll Animations (AOS-like)
@@ -304,21 +264,6 @@ function initScrollAnimations() {
     
     document.querySelectorAll('[data-aos]').forEach(element => {
         observer.observe(element);
-    });
-}
-
-function initAnimations() {
-    // Add entrance animations
-    const animateElements = document.querySelectorAll('.hero-text, .hero-stats, .section-title');
-    animateElements.forEach((element, index) => {
-        element.style.opacity = '0';
-        element.style.transform = 'translateY(30px)';
-        
-        setTimeout(() => {
-            element.style.transition = 'opacity 0.8s ease-out, transform 0.8s ease-out';
-            element.style.opacity = '1';
-            element.style.transform = 'translateY(0)';
-        }, index * 100);
     });
 }
 
@@ -393,57 +338,35 @@ function initSkillBars() {
 }
 
 // ===================================
-// Project Filter
-// ===================================
-function initProjectFilter() {
-    DOM.filterBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            // Update active button
-            DOM.filterBtns.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            
-            const filter = btn.getAttribute('data-filter');
-            
-            // Filter projects
-            DOM.projectCards.forEach(card => {
-                const categories = card.getAttribute('data-category');
-                
-                if (filter === 'all' || categories.includes(filter)) {
-                    card.style.display = 'flex';
-                    card.style.animation = 'fadeInUp 0.6s ease-out';
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-        });
-    });
-}
-
-// ===================================
 // Contact Form with Email Integration
 // ===================================
 function initContactForm() {
     DOM.contactForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        
+
         const submitBtn = DOM.contactForm.querySelector('.btn-submit');
         const formData = new FormData(DOM.contactForm);
-        
+
         // Show loading state
         submitBtn.classList.add('loading');
         DOM.formStatus.style.display = 'none';
-        
+
+        // Skip remote submission when endpoint is unconfigured — fall back immediately
+        const endpointConfigured = CONFIG.emailServiceURL && !CONFIG.emailServiceURL.includes('YOUR_FORM_ID');
+
+        if (!endpointConfigured) {
+            sendEmailViaMailto(formData);
+            submitBtn.classList.remove('loading');
+            return;
+        }
+
         try {
-            // Using Formspree for form handling
-            // Replace CONFIG.emailServiceURL with your Formspree endpoint
             const response = await fetch(CONFIG.emailServiceURL, {
                 method: 'POST',
                 body: formData,
-                headers: {
-                    'Accept': 'application/json'
-                }
+                headers: { 'Accept': 'application/json' }
             });
-            
+
             if (response.ok) {
                 showFormStatus('success', 'Thank you! Your message has been sent successfully.');
                 DOM.contactForm.reset();
@@ -451,7 +374,6 @@ function initContactForm() {
                 throw new Error('Form submission failed');
             }
         } catch (error) {
-            // Fallback: Send email using mailto (less reliable but works without backend)
             sendEmailViaMailto(formData);
         } finally {
             submitBtn.classList.remove('loading');
@@ -460,19 +382,18 @@ function initContactForm() {
 }
 
 function sendEmailViaMailto(formData) {
-    const name = formData.get('name');
-    const email = formData.get('email');
-    const subject = formData.get('subject');
-    const message = formData.get('message');
-    
+    const name = formData.get('name') || '';
+    const email = formData.get('email') || '';
+    const subject = formData.get('subject') || 'Message from portfolio';
+    const message = formData.get('message') || '';
+
     const mailtoLink = `mailto:pranav.pankhawala@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(
         `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`
     )}`;
-    
+
     window.location.href = mailtoLink;
-    
-    showFormStatus('success', 'Opening your email client... Please send the email to complete your message.');
     DOM.contactForm.reset();
+    showFormStatus('success', 'Opening your email client — thanks for reaching out!');
 }
 
 function showFormStatus(type, message) {
@@ -522,8 +443,6 @@ function initLazyLoading() {
     }
 }
 
-// Initialize lazy loading
-initLazyLoading();
 
 // ===================================
 // Keyboard Navigation
@@ -587,8 +506,6 @@ function validateField(field) {
     return isValid;
 }
 
-initFormValidation();
-
 // ===================================
 // Console Message (Easter Egg)
 // ===================================
@@ -605,25 +522,4 @@ console.log(
     'color: #2563eb; font-size: 14px;'
 );
 
-// ===================================
-// Service Worker Registration (PWA Support)
-// ===================================
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-        // Uncomment when you have a service worker file
-        // navigator.serviceWorker.register('/sw.js')
-        //     .then(registration => console.log('SW registered'))
-        //     .catch(err => console.log('SW registration failed'));
-    });
-}
 
-// ===================================
-// Export functions for testing (optional)
-// ===================================
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = {
-        toggleTheme,
-        validateField,
-        debounce
-    };
-}
