@@ -1,1213 +1,1520 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Apply saved theme before CSS loads to prevent flash. Defaults to dark. -->
-    <script>
-        (function () {
-            try {
-                var saved = localStorage.getItem('theme');
-                document.documentElement.setAttribute('data-theme', saved === 'light' ? 'light' : 'dark');
-            } catch (e) { /* defaults to dark */ }
-        })();
-    </script>
-    <meta name="description" content="Pranav Pankhawala – AI Automation & Cybersecurity Engineer specializing in Computer Vision, Deep Learning, Edge AI, and Penetration Testing. Building intelligent, secure systems for industrial automation.">
-    <meta name="keywords" content="AI engineer, computer vision, cybersecurity, YOLO, OpenCV, PyTorch, deep learning, edge AI, NVIDIA Jetson, penetration testing, ethical hacking, industrial automation, Pune India, Pranav Pankhawala">
-    <meta name="author" content="Pranav Pankhawala">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Pranav Pankhawala — AI Automation & Cybersecurity Engineer</title>
+<meta name="description" content="Pranav Pankhawala — AI automation & cybersecurity engineer building secure, real-time computer-vision systems for industrial environments." />
 
-    <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="Pranav Pankhawala – AI Automation & Cybersecurity Engineer">
-    <meta property="og:description" content="Designing intelligent vision systems, hardening industrial infrastructure, and deploying edge-optimized AI — where deep learning meets real-world security.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://pranavpankhawala.github.io">
-    <meta property="og:image" content="https://avatars.githubusercontent.com/u/36548613?v=4">
-    <link rel="canonical" href="https://pranavpankhawala.github.io">
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Geist:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 
-    <title>Pranav Pankhawala – AI Automation & Cybersecurity Engineer</title>
+<style>
+/* ---------- Design tokens (green) ---------- */
+:root {
+  /* Light — soft cream-green paper */
+  --bg: oklch(0.975 0.012 140);
+  --bg-elev: oklch(0.987 0.008 140);
+  --ink: oklch(0.18 0.014 150);
+  --ink-2: oklch(0.32 0.014 150);
+  --ink-3: oklch(0.52 0.012 150);
+  --rule: oklch(0.87 0.015 145);
+  --rule-2: oklch(0.92 0.012 145);
+  --accent: oklch(0.54 0.13 150);     /* forest / sage green */
+  --accent-ink: oklch(0.20 0.05 150);
+  --chip-bg: oklch(0.94 0.014 140);
+  --chip-ink: oklch(0.30 0.014 150);
+  --code-bg: oklch(0.93 0.014 140);
+  --shadow: 0 1px 0 oklch(0.85 0.014 145 / 0.5), 0 12px 32px -16px oklch(0.20 0.02 150 / 0.18);
+  --shadow-lift: 0 1px 0 oklch(0.85 0.014 145 / 0.6), 0 24px 48px -20px oklch(0.20 0.02 150 / 0.28);
+}
+[data-theme="dark"] {
+  --bg: oklch(0.17 0.012 160);
+  --bg-elev: oklch(0.21 0.014 160);
+  --ink: oklch(0.96 0.012 145);
+  --ink-2: oklch(0.82 0.012 145);
+  --ink-3: oklch(0.62 0.012 145);
+  --rule: oklch(0.28 0.014 160);
+  --rule-2: oklch(0.24 0.014 160);
+  --accent: oklch(0.78 0.14 150);
+  --accent-ink: oklch(0.96 0.05 150);
+  --chip-bg: oklch(0.23 0.014 160);
+  --chip-ink: oklch(0.84 0.012 145);
+  --code-bg: oklch(0.23 0.014 160);
+  --shadow: 0 1px 0 oklch(0.10 0.005 160 / 0.6), 0 12px 32px -16px oklch(0 0 0 / 0.5);
+  --shadow-lift: 0 1px 0 oklch(0.10 0.005 160 / 0.7), 0 24px 48px -20px oklch(0 0 0 / 0.6);
+}
 
-    <!-- Preload Critical Resources -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+/* ---------- Palette: Slate (cool steel-blue on near-white) ---------- */
+[data-palette="slate"] {
+  --bg: oklch(0.975 0.005 240);
+  --bg-elev: oklch(0.988 0.004 240);
+  --ink: oklch(0.20 0.018 250);
+  --ink-2: oklch(0.34 0.018 250);
+  --ink-3: oklch(0.52 0.012 250);
+  --rule: oklch(0.88 0.008 240);
+  --rule-2: oklch(0.93 0.006 240);
+  --accent: oklch(0.50 0.13 250);
+  --accent-ink: oklch(0.20 0.05 250);
+  --chip-bg: oklch(0.94 0.008 240);
+  --chip-ink: oklch(0.30 0.014 250);
+  --code-bg: oklch(0.93 0.008 240);
+}
+[data-palette="slate"][data-theme="dark"] {
+  --bg: oklch(0.17 0.012 250);
+  --bg-elev: oklch(0.21 0.014 250);
+  --ink: oklch(0.96 0.008 250);
+  --ink-2: oklch(0.82 0.010 250);
+  --ink-3: oklch(0.62 0.010 250);
+  --rule: oklch(0.28 0.014 250);
+  --rule-2: oklch(0.24 0.014 250);
+  --accent: oklch(0.78 0.13 240);
+  --chip-bg: oklch(0.23 0.014 250);
+  --chip-ink: oklch(0.84 0.010 250);
+}
 
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+/* ---------- Palette: Ember (warm amber on cream) ---------- */
+[data-palette="ember"] {
+  --bg: oklch(0.972 0.012 85);
+  --bg-elev: oklch(0.985 0.008 85);
+  --ink: oklch(0.18 0.012 75);
+  --ink-2: oklch(0.32 0.012 75);
+  --ink-3: oklch(0.52 0.010 75);
+  --rule: oklch(0.87 0.012 80);
+  --rule-2: oklch(0.92 0.010 80);
+  --accent: oklch(0.62 0.15 55);
+  --accent-ink: oklch(0.20 0.05 55);
+  --chip-bg: oklch(0.95 0.012 80);
+  --chip-ink: oklch(0.30 0.012 75);
+  --code-bg: oklch(0.93 0.012 80);
+}
+[data-palette="ember"][data-theme="dark"] {
+  --bg: oklch(0.17 0.012 70);
+  --bg-elev: oklch(0.21 0.014 70);
+  --ink: oklch(0.96 0.010 85);
+  --ink-2: oklch(0.82 0.010 80);
+  --ink-3: oklch(0.62 0.010 80);
+  --rule: oklch(0.28 0.014 70);
+  --rule-2: oklch(0.24 0.014 70);
+  --accent: oklch(0.80 0.13 65);
+  --chip-bg: oklch(0.23 0.014 70);
+  --chip-ink: oklch(0.84 0.010 80);
+}
 
-    <!-- Stylesheets -->
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="timeline.css">
-    <link rel="stylesheet" href="chatbot.css">
-    <link rel="stylesheet" href="advanced-features.css">
-    <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="https://avatars.githubusercontent.com/u/36548613?v=4">
-    <meta name="theme-color" content="#0b0d12" media="(prefers-color-scheme: dark)">
-    <meta name="theme-color" content="#fafafb" media="(prefers-color-scheme: light)">
+/* ---------- Palette: Plum (cool violet on lavender paper) ---------- */
+[data-palette="plum"] {
+  --bg: oklch(0.974 0.008 320);
+  --bg-elev: oklch(0.987 0.006 320);
+  --ink: oklch(0.20 0.016 320);
+  --ink-2: oklch(0.34 0.016 320);
+  --ink-3: oklch(0.52 0.012 320);
+  --rule: oklch(0.87 0.010 320);
+  --rule-2: oklch(0.92 0.008 320);
+  --accent: oklch(0.50 0.16 320);
+  --accent-ink: oklch(0.20 0.05 320);
+  --chip-bg: oklch(0.94 0.010 320);
+  --chip-ink: oklch(0.30 0.014 320);
+  --code-bg: oklch(0.93 0.010 320);
+}
+[data-palette="plum"][data-theme="dark"] {
+  --bg: oklch(0.17 0.016 320);
+  --bg-elev: oklch(0.21 0.018 320);
+  --ink: oklch(0.96 0.010 320);
+  --ink-2: oklch(0.82 0.010 320);
+  --ink-3: oklch(0.62 0.012 320);
+  --rule: oklch(0.28 0.018 320);
+  --rule-2: oklch(0.24 0.018 320);
+  --accent: oklch(0.80 0.14 320);
+  --chip-bg: oklch(0.23 0.018 320);
+  --chip-ink: oklch(0.84 0.010 320);
+}
+
+/* ---------- Palette: Crimson (oxblood on bone) ---------- */
+[data-palette="crimson"] {
+  --bg: oklch(0.972 0.010 30);
+  --bg-elev: oklch(0.985 0.008 30);
+  --ink: oklch(0.20 0.014 25);
+  --ink-2: oklch(0.34 0.014 25);
+  --ink-3: oklch(0.52 0.012 25);
+  --rule: oklch(0.87 0.012 25);
+  --rule-2: oklch(0.92 0.010 25);
+  --accent: oklch(0.50 0.16 25);
+  --accent-ink: oklch(0.20 0.05 25);
+  --chip-bg: oklch(0.95 0.012 25);
+  --chip-ink: oklch(0.30 0.014 25);
+  --code-bg: oklch(0.93 0.012 25);
+}
+[data-palette="crimson"][data-theme="dark"] {
+  --bg: oklch(0.17 0.012 25);
+  --bg-elev: oklch(0.21 0.014 25);
+  --ink: oklch(0.96 0.010 25);
+  --ink-2: oklch(0.82 0.010 25);
+  --ink-3: oklch(0.62 0.012 25);
+  --rule: oklch(0.28 0.014 25);
+  --rule-2: oklch(0.24 0.014 25);
+  --accent: oklch(0.74 0.16 25);
+  --chip-bg: oklch(0.23 0.014 25);
+  --chip-ink: oklch(0.84 0.010 25);
+}
+
+/* ---------- Palette: Ocean (teal/cyan on cool paper) ---------- */
+[data-palette="ocean"] {
+  --bg: oklch(0.974 0.010 210);
+  --bg-elev: oklch(0.987 0.008 210);
+  --ink: oklch(0.20 0.018 215);
+  --ink-2: oklch(0.34 0.016 215);
+  --ink-3: oklch(0.52 0.012 215);
+  --rule: oklch(0.87 0.012 210);
+  --rule-2: oklch(0.92 0.010 210);
+  --accent: oklch(0.55 0.13 205);
+  --accent-ink: oklch(0.20 0.05 205);
+  --chip-bg: oklch(0.94 0.012 210);
+  --chip-ink: oklch(0.30 0.014 215);
+  --code-bg: oklch(0.93 0.012 210);
+}
+[data-palette="ocean"][data-theme="dark"] {
+  --bg: oklch(0.17 0.014 215);
+  --bg-elev: oklch(0.21 0.016 215);
+  --ink: oklch(0.96 0.010 210);
+  --ink-2: oklch(0.82 0.010 210);
+  --ink-3: oklch(0.62 0.012 210);
+  --rule: oklch(0.28 0.016 215);
+  --rule-2: oklch(0.24 0.016 215);
+  --accent: oklch(0.80 0.13 200);
+  --chip-bg: oklch(0.23 0.016 215);
+  --chip-ink: oklch(0.84 0.010 210);
+}
+
+/* ---------- Palette: Mono (pure achromatic) ---------- */
+[data-palette="mono"] {
+  --bg: oklch(0.98 0 0);
+  --bg-elev: oklch(0.992 0 0);
+  --ink: oklch(0.16 0 0);
+  --ink-2: oklch(0.32 0 0);
+  --ink-3: oklch(0.55 0 0);
+  --rule: oklch(0.87 0 0);
+  --rule-2: oklch(0.93 0 0);
+  --accent: oklch(0.16 0 0);
+  --accent-ink: oklch(0.98 0 0);
+  --chip-bg: oklch(0.94 0 0);
+  --chip-ink: oklch(0.30 0 0);
+  --code-bg: oklch(0.93 0 0);
+}
+[data-palette="mono"][data-theme="dark"] {
+  --bg: oklch(0.13 0 0);
+  --bg-elev: oklch(0.18 0 0);
+  --ink: oklch(0.98 0 0);
+  --ink-2: oklch(0.82 0 0);
+  --ink-3: oklch(0.60 0 0);
+  --rule: oklch(0.28 0 0);
+  --rule-2: oklch(0.22 0 0);
+  --accent: oklch(0.98 0 0);
+  --chip-bg: oklch(0.22 0 0);
+  --chip-ink: oklch(0.84 0 0);
+}
+
+/* ---------- Palette: Sand (warm tan on warm bone) ---------- */
+[data-palette="sand"] {
+  --bg: oklch(0.965 0.012 75);
+  --bg-elev: oklch(0.982 0.010 75);
+  --ink: oklch(0.20 0.018 60);
+  --ink-2: oklch(0.34 0.016 60);
+  --ink-3: oklch(0.52 0.014 60);
+  --rule: oklch(0.85 0.014 70);
+  --rule-2: oklch(0.91 0.012 70);
+  --accent: oklch(0.55 0.10 70);
+  --accent-ink: oklch(0.20 0.04 70);
+  --chip-bg: oklch(0.93 0.014 70);
+  --chip-ink: oklch(0.30 0.014 60);
+  --code-bg: oklch(0.92 0.014 70);
+}
+[data-palette="sand"][data-theme="dark"] {
+  --bg: oklch(0.18 0.014 60);
+  --bg-elev: oklch(0.22 0.016 60);
+  --ink: oklch(0.96 0.012 75);
+  --ink-2: oklch(0.82 0.012 70);
+  --ink-3: oklch(0.62 0.012 70);
+  --rule: oklch(0.28 0.016 60);
+  --rule-2: oklch(0.24 0.016 60);
+  --accent: oklch(0.78 0.10 75);
+  --chip-bg: oklch(0.24 0.016 60);
+  --chip-ink: oklch(0.84 0.012 70);
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  font-family: "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--ink);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  transition: background 240ms ease, color 240ms ease;
+}
+::selection { background: var(--accent); color: var(--bg); }
+
+/* ---------- Type ---------- */
+.serif { font-family: "Instrument Serif", "Iowan Old Style", Georgia, serif; font-weight: 400; letter-spacing: -0.01em; }
+.mono { font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace; font-feature-settings: "ss01","cv11"; }
+.eyebrow {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--ink-3); display: inline-flex; align-items: center; gap: 8px;
+}
+.eyebrow::before {
+  content: ""; width: 18px; height: 1px; background: currentColor;
+}
+
+h1, h2, h3, h4 { margin: 0; font-weight: 500; color: var(--ink); }
+
+/* ---------- Layout ---------- */
+.shell { max-width: 1280px; margin: 0 auto; padding: 0 32px; }
+@media (max-width: 720px) { .shell { padding: 0 20px; } }
+
+/* ---------- Top nav ---------- */
+.nav {
+  position: sticky; top: 0; z-index: 50;
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  background: color-mix(in oklab, var(--bg) 78%, transparent);
+  border-bottom: 1px solid transparent;
+  transition: border-color 240ms ease, background 240ms ease;
+}
+.nav.scrolled { border-bottom-color: var(--rule); }
+.nav-inner {
+  display: flex; align-items: center; justify-content: space-between;
+  height: 64px;
+}
+.brand {
+  display: inline-flex; align-items: center; gap: 12px;
+  color: var(--ink); text-decoration: none; font-weight: 500;
+}
+.brand-mark {
+  width: 28px; height: 28px; border-radius: 8px;
+  background: var(--ink); color: var(--bg);
+  display: grid; place-items: center;
+  font-family: "Instrument Serif", serif; font-size: 18px; line-height: 1;
+  font-style: italic;
+}
+.brand small {
+  display: block; font-size: 11px; color: var(--ink-3);
+  font-family: "JetBrains Mono", monospace; letter-spacing: 0.05em;
+}
+.nav-links { display: flex; align-items: center; gap: 4px; }
+.nav-links a {
+  color: var(--ink-2); text-decoration: none;
+  font-size: 14px; padding: 8px 12px; border-radius: 8px;
+  transition: color 160ms ease, background 160ms ease;
+}
+.nav-links a:hover { color: var(--ink); background: var(--chip-bg); }
+.nav-actions { display: flex; gap: 8px; align-items: center; }
+.icon-btn {
+  width: 36px; height: 36px; border-radius: 10px;
+  border: 1px solid var(--rule); background: transparent; color: var(--ink-2);
+  cursor: pointer; display: grid; place-items: center;
+  transition: all 160ms ease;
+}
+.icon-btn:hover { color: var(--ink); border-color: var(--ink-3); transform: translateY(-1px); }
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  height: 36px; padding: 0 14px; border-radius: 10px;
+  font-size: 13.5px; font-weight: 500; text-decoration: none;
+  border: 1px solid transparent; cursor: pointer;
+  transition: all 160ms ease;
+}
+.btn-primary { background: var(--ink); color: var(--bg); }
+.btn-primary:hover { transform: translateY(-1px); box-shadow: var(--shadow-lift); }
+.btn-ghost { background: transparent; color: var(--ink); border-color: var(--rule); }
+.btn-ghost:hover { border-color: var(--ink-3); transform: translateY(-1px); }
+.btn .arrow { transition: transform 200ms ease; }
+.btn:hover .arrow { transform: translate(2px, -2px); }
+
+.menu-btn { display: none; }
+@media (max-width: 880px) {
+  .nav-links { display: none; }
+  .menu-btn { display: grid; }
+  .nav-links.open {
+    display: flex; flex-direction: column; align-items: stretch;
+    position: absolute; top: 64px; left: 0; right: 0;
+    padding: 12px 20px 20px;
+    background: var(--bg); border-bottom: 1px solid var(--rule);
+    gap: 2px;
+  }
+  .nav-links.open a { padding: 12px 14px; font-size: 15px; }
+}
+
+/* ---------- Section scaffolding ---------- */
+section.block { padding: 96px 0; border-top: 1px solid var(--rule); }
+section.block:first-of-type { border-top: 0; }
+@media (max-width: 720px) { section.block { padding: 64px 0; } }
+
+.section-head {
+  display: grid; grid-template-columns: 200px 1fr; gap: 48px;
+  margin-bottom: 56px; align-items: baseline;
+}
+.section-head .index { color: var(--ink-3); }
+.section-head h2 {
+  font-family: "Instrument Serif", serif; font-weight: 400;
+  font-size: clamp(32px, 4.5vw, 48px); line-height: 1.05;
+  letter-spacing: -0.015em; max-width: 720px;
+}
+.section-head h2 em { font-style: italic; color: var(--ink-3); }
+@media (max-width: 720px) {
+  .section-head { grid-template-columns: 1fr; gap: 12px; margin-bottom: 36px; }
+}
+
+/* ---------- Hero ---------- */
+.hero { padding: 56px 0 96px; position: relative; }
+.hero-grid {
+  display: grid; grid-template-columns: 200px 1fr; gap: 48px;
+  align-items: start;
+}
+.hero-side { display: flex; flex-direction: column; gap: 24px; padding-top: 16px; }
+.status {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: "JetBrains Mono", monospace; font-size: 12px; color: var(--ink-2);
+}
+.dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: oklch(0.7 0.16 145);
+  box-shadow: 0 0 0 4px oklch(0.7 0.16 145 / 0.18);
+  animation: pulse 2.2s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%,100% { box-shadow: 0 0 0 0 oklch(0.7 0.16 145 / 0.4); }
+  50% { box-shadow: 0 0 0 6px oklch(0.7 0.16 145 / 0); }
+}
+.hero-meta {
+  display: flex; flex-direction: column; gap: 6px;
+  font-family: "JetBrains Mono", monospace; font-size: 11.5px; color: var(--ink-3);
+}
+.hero-meta .row { display: flex; justify-content: space-between; gap: 12px; }
+.hero-meta .row span:last-child { color: var(--ink-2); }
+
+.hero-main h1 {
+  font-family: "Instrument Serif", serif; font-weight: 400;
+  font-size: clamp(54px, 9vw, 116px); line-height: 0.95;
+  letter-spacing: -0.025em;
+  margin: 0 0 24px;
+}
+.hero-main h1 em { color: var(--accent); font-style: italic; }
+.hero-main .lede {
+  max-width: 640px; font-size: clamp(17px, 1.6vw, 20px);
+  color: var(--ink-2); line-height: 1.5; margin: 0 0 32px;
+}
+.hero-main .lede strong { color: var(--ink); font-weight: 500; }
+.hero-cta { display: flex; gap: 12px; flex-wrap: wrap; }
+
+.hero-ticker {
+  margin-top: 72px; padding-top: 24px;
+  border-top: 1px solid var(--rule);
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px;
+}
+.ticker-cell .k {
+  font-family: "JetBrains Mono", monospace; font-size: 11px;
+  color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.1em;
+}
+.ticker-cell .v {
+  font-family: "Instrument Serif", serif; font-size: 28px; line-height: 1.1;
+  color: var(--ink); margin-top: 6px;
+}
+.ticker-cell .v small {
+  font-family: "Geist", sans-serif; font-size: 12px; color: var(--ink-3); margin-left: 6px;
+}
+@media (max-width: 880px) {
+  .hero-grid { grid-template-columns: 1fr; gap: 24px; }
+  .hero-side { flex-direction: row; flex-wrap: wrap; gap: 16px 32px; padding-top: 0; }
+  .hero-meta { flex: 1; min-width: 0; }
+  .hero-ticker { grid-template-columns: repeat(2, 1fr); gap: 20px 32px; margin-top: 48px; }
+}
+
+/* ---------- About ---------- */
+.about-grid {
+  display: grid; grid-template-columns: 200px 1.2fr 1fr; gap: 48px;
+}
+.about-side { font-family: "JetBrains Mono", monospace; font-size: 12px; color: var(--ink-3); }
+.about-body p { margin: 0 0 18px; color: var(--ink-2); font-size: 17px; line-height: 1.65; max-width: 56ch; }
+.about-body p:first-child { color: var(--ink); font-size: 22px; line-height: 1.45; font-family: "Instrument Serif", serif; font-weight: 400; max-width: 28ch; margin-bottom: 28px; letter-spacing: -0.005em; }
+
+.facts {
+  display: flex; flex-direction: column; gap: 0;
+  border-top: 1px solid var(--rule);
+}
+.fact {
+  display: grid; grid-template-columns: 100px 1fr; gap: 16px;
+  padding: 14px 0; border-bottom: 1px solid var(--rule);
+  font-size: 14px;
+}
+.fact .k { font-family: "JetBrains Mono", monospace; font-size: 11px; color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.08em; padding-top: 2px; }
+.fact .v { color: var(--ink); }
+.fact .v a { color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--rule); transition: border-color 160ms ease; }
+.fact .v a:hover { border-color: var(--accent); }
+
+@media (max-width: 880px) {
+  .about-grid { grid-template-columns: 1fr; gap: 32px; }
+}
+
+/* ---------- Work (experience + education) ---------- */
+.work-list { display: flex; flex-direction: column; gap: 0; border-top: 1px solid var(--rule); }
+.role {
+  display: grid; grid-template-columns: 200px 1fr 200px; gap: 48px;
+  padding: 28px 0; border-bottom: 1px solid var(--rule);
+  align-items: start;
+  transition: background 200ms ease;
+  position: relative;
+  cursor: pointer;
+}
+.role::before {
+  content: ""; position: absolute; left: 0; right: 0; top: 0; bottom: 0;
+  background: var(--chip-bg); opacity: 0; transition: opacity 200ms ease;
+  pointer-events: none; z-index: -1;
+  margin-left: -16px; margin-right: -16px; border-radius: 12px;
+}
+.role:hover::before { opacity: 0.6; }
+.role .when { font-family: "JetBrains Mono", monospace; font-size: 12px; color: var(--ink-3); padding-top: 4px; }
+.role .when .now { display: inline-flex; align-items: center; gap: 6px; color: oklch(0.6 0.14 145); }
+[data-theme="dark"] .role .when .now { color: oklch(0.78 0.16 145); }
+.role .now-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.role .where {
+  font-family: "JetBrains Mono", monospace; font-size: 12px; color: var(--ink-3);
+  padding-top: 4px; text-align: right;
+}
+.role .what h3 {
+  font-family: "Instrument Serif", serif; font-weight: 400;
+  font-size: 26px; line-height: 1.15; margin-bottom: 4px; color: var(--ink);
+  letter-spacing: -0.005em;
+}
+.role .what .at { font-size: 14px; color: var(--ink-2); margin-bottom: 14px; }
+.role .what ul { margin: 0 0 14px; padding: 0; list-style: none; }
+.role .what ul li {
+  font-size: 14.5px; color: var(--ink-2); line-height: 1.55;
+  padding-left: 18px; position: relative; margin-bottom: 4px;
+}
+.role .what ul li::before {
+  content: ""; position: absolute; left: 0; top: 10px;
+  width: 8px; height: 1px; background: var(--ink-3);
+}
+.tagrow { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+.tag {
+  font-family: "JetBrains Mono", monospace; font-size: 11px;
+  color: var(--chip-ink); background: var(--chip-bg);
+  padding: 4px 8px; border-radius: 6px;
+  border: 1px solid transparent;
+  transition: all 160ms ease;
+}
+.tag:hover { border-color: var(--rule); }
+.tag.accent { color: var(--accent); background: color-mix(in oklab, var(--accent) 10%, transparent); }
+
+@media (max-width: 880px) {
+  .role { grid-template-columns: 1fr; gap: 8px; padding: 24px 0; }
+  .role .where { text-align: left; padding-top: 0; }
+  .role .when { padding-top: 0; }
+  .role .what h3 { font-size: 22px; }
+}
+
+/* ---------- Capabilities (replaces fake skill bars) ---------- */
+.caps {
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 0;
+  border-top: 1px solid var(--rule);
+}
+.cap {
+  padding: 32px 32px 32px 0;
+  border-bottom: 1px solid var(--rule);
+  display: grid; grid-template-columns: 40px 1fr; gap: 20px;
+}
+.cap:nth-child(odd) { border-right: 1px solid var(--rule); padding-right: 32px; }
+.cap:nth-child(even) { padding-left: 32px; }
+.cap .num {
+  font-family: "JetBrains Mono", monospace; font-size: 11px;
+  color: var(--ink-3); padding-top: 6px;
+}
+.cap h3 {
+  font-family: "Instrument Serif", serif; font-weight: 400;
+  font-size: 22px; margin-bottom: 6px; letter-spacing: -0.005em;
+}
+.cap p { color: var(--ink-2); font-size: 14.5px; margin: 0 0 14px; line-height: 1.55; max-width: 44ch; }
+@media (max-width: 720px) {
+  .caps { grid-template-columns: 1fr; }
+  .cap, .cap:nth-child(odd) { border-right: 0; padding: 24px 0; }
+  .cap:nth-child(even) { padding-left: 0; }
+}
+
+/* ---------- Projects ---------- */
+.proj-toolbar {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 28px; gap: 16px; flex-wrap: wrap;
+}
+.filters { display: flex; gap: 4px; padding: 4px; background: var(--chip-bg); border-radius: 10px; }
+.filters button {
+  border: 0; background: transparent; cursor: pointer;
+  font-family: inherit; font-size: 13px; color: var(--ink-2);
+  padding: 6px 12px; border-radius: 7px; transition: all 160ms ease;
+}
+.filters button:hover { color: var(--ink); }
+.filters button.active { background: var(--bg); color: var(--ink); box-shadow: var(--shadow); }
+
+.viewtoggle { display: flex; gap: 4px; padding: 4px; background: var(--chip-bg); border-radius: 10px; }
+.viewtoggle button {
+  border: 0; background: transparent; cursor: pointer;
+  width: 30px; height: 28px; border-radius: 6px;
+  color: var(--ink-3); display: grid; place-items: center;
+  transition: all 160ms ease;
+}
+.viewtoggle button.active { background: var(--bg); color: var(--ink); box-shadow: var(--shadow); }
+.viewtoggle svg { width: 16px; height: 16px; }
+
+.projects { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+@media (max-width: 1080px) { .projects { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 680px) { .projects { grid-template-columns: 1fr; } }
+
+.proj {
+  border: 1px solid var(--rule); border-radius: 16px;
+  background: var(--bg-elev); overflow: hidden;
+  display: flex; flex-direction: column;
+  transition: transform 240ms cubic-bezier(.2,.7,.2,1), box-shadow 240ms ease, border-color 240ms ease;
+  cursor: pointer;
+}
+.proj:hover { transform: translateY(-3px); box-shadow: var(--shadow-lift); border-color: var(--ink-3); }
+.proj.hidden { display: none; }
+
+.proj-art {
+  aspect-ratio: 16 / 10; position: relative;
+  background:
+    repeating-linear-gradient(135deg,
+      color-mix(in oklab, var(--ink) 6%, transparent) 0 1px,
+      transparent 1px 14px),
+    var(--chip-bg);
+  border-bottom: 1px solid var(--rule);
+  overflow: hidden;
+}
+.proj-art .label {
+  position: absolute; top: 12px; left: 12px;
+  font-family: "JetBrains Mono", monospace; font-size: 10.5px;
+  color: var(--ink-3); background: color-mix(in oklab, var(--bg) 80%, transparent);
+  padding: 4px 8px; border-radius: 6px;
+  backdrop-filter: blur(6px);
+}
+.proj-art .glyph {
+  position: absolute; right: 16px; bottom: 12px;
+  font-family: "Instrument Serif", serif; font-style: italic;
+  font-size: 72px; line-height: 1; color: var(--ink); opacity: 0.18;
+}
+.proj-art .badge {
+  position: absolute; top: 12px; right: 12px;
+  font-family: "JetBrains Mono", monospace; font-size: 10.5px;
+  color: var(--accent); background: color-mix(in oklab, var(--accent) 12%, transparent);
+  padding: 4px 8px; border-radius: 6px;
+}
+
+.proj-body { padding: 20px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+.proj-body h3 {
+  font-family: "Instrument Serif", serif; font-weight: 400;
+  font-size: 22px; letter-spacing: -0.005em;
+}
+.proj-body p { color: var(--ink-2); font-size: 14px; margin: 0; line-height: 1.5; }
+.proj-meta {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-top: auto; padding-top: 12px;
+  font-family: "JetBrains Mono", monospace; font-size: 11px; color: var(--ink-3);
+}
+.proj-meta .links { display: flex; gap: 6px; }
+.proj-meta .links a {
+  width: 28px; height: 28px; border-radius: 7px;
+  border: 1px solid var(--rule); color: var(--ink-2);
+  display: grid; place-items: center;
+  transition: all 160ms ease; text-decoration: none;
+}
+.proj-meta .links a:hover { border-color: var(--ink-3); color: var(--ink); transform: translateY(-1px); }
+
+/* List view */
+.projects.list { grid-template-columns: 1fr; gap: 0; border-top: 1px solid var(--rule); }
+.projects.list .proj {
+  border-radius: 0; border: 0; border-bottom: 1px solid var(--rule);
+  background: transparent; flex-direction: row; align-items: center;
+  padding: 18px 0; gap: 24px;
+}
+.projects.list .proj:hover { transform: none; box-shadow: none; background: var(--chip-bg); padding-left: 16px; padding-right: 16px; margin-left: -16px; margin-right: -16px; }
+.projects.list .proj-art { display: none; }
+.projects.list .proj-body { padding: 0; flex-direction: row; align-items: center; gap: 24px; flex: 1; }
+.projects.list .proj-body h3 { font-size: 20px; flex: 0 0 240px; }
+.projects.list .proj-body p { flex: 1; max-width: 50ch; }
+.projects.list .proj-body .tagrow { margin-top: 0; flex: 0 0 auto; }
+.projects.list .proj-meta { display: none; }
+@media (max-width: 880px) {
+  .projects.list .proj-body { flex-direction: column; align-items: flex-start; gap: 6px; }
+  .projects.list .proj-body h3 { flex: none; }
+}
+
+/* ---------- Contact ---------- */
+.contact-grid {
+  display: grid; grid-template-columns: 200px 1fr; gap: 48px;
+}
+.contact-card {
+  border: 1px solid var(--rule); border-radius: 20px;
+  padding: 48px; background: var(--bg-elev);
+  position: relative; overflow: hidden;
+}
+.contact-card::before {
+  content: ""; position: absolute; top: 0; right: 0; width: 280px; height: 280px;
+  background: radial-gradient(circle at top right, color-mix(in oklab, var(--accent) 18%, transparent), transparent 60%);
+  pointer-events: none;
+}
+.contact-card h2 {
+  font-family: "Instrument Serif", serif; font-weight: 400;
+  font-size: clamp(36px, 5vw, 56px); line-height: 1.05; letter-spacing: -0.02em;
+  max-width: 16ch; position: relative;
+}
+.contact-card h2 em { font-style: italic; color: var(--accent); }
+.contact-card p {
+  max-width: 48ch; color: var(--ink-2); font-size: 16px; line-height: 1.6;
+  margin: 20px 0 28px; position: relative;
+}
+.contact-actions { display: flex; gap: 12px; flex-wrap: wrap; position: relative; }
+.contact-channels {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 0;
+  margin-top: 40px; border-top: 1px solid var(--rule); padding-top: 24px;
+  position: relative;
+}
+.channel { display: flex; flex-direction: column; gap: 4px; }
+.channel .k { font-family: "JetBrains Mono", monospace; font-size: 11px; color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.08em; }
+.channel a { color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--rule); padding-bottom: 1px; transition: border-color 160ms ease; }
+.channel a:hover { border-color: var(--accent); }
+@media (max-width: 880px) {
+  .contact-grid { grid-template-columns: 1fr; gap: 24px; }
+  .contact-card { padding: 32px 24px; }
+  .contact-channels { grid-template-columns: 1fr; gap: 16px; }
+}
+
+/* ---------- Footer ---------- */
+footer {
+  border-top: 1px solid var(--rule);
+  padding: 40px 0;
+  font-family: "JetBrains Mono", monospace; font-size: 12px; color: var(--ink-3);
+}
+.foot { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.foot a { color: var(--ink-2); text-decoration: none; }
+.foot a:hover { color: var(--ink); }
+
+/* ---------- Reveal animation ---------- */
+.reveal { opacity: 0; transform: translateY(14px); transition: opacity 600ms ease, transform 600ms cubic-bezier(.2,.7,.2,1); }
+.reveal.in { opacity: 1; transform: none; }
+
+/* ---------- Cursor / command bar ---------- */
+.cmdk-backdrop {
+  position: fixed; inset: 0; z-index: 100;
+  background: color-mix(in oklab, var(--bg) 50%, oklch(0 0 0 / 0.4));
+  backdrop-filter: blur(8px);
+  display: none; align-items: flex-start; justify-content: center;
+  padding-top: 12vh;
+}
+.cmdk-backdrop.open { display: flex; }
+.cmdk {
+  width: min(560px, calc(100vw - 32px));
+  background: var(--bg-elev); border: 1px solid var(--rule);
+  border-radius: 16px; box-shadow: var(--shadow-lift); overflow: hidden;
+}
+.cmdk-input {
+  display: flex; align-items: center; gap: 12px;
+  padding: 16px 18px; border-bottom: 1px solid var(--rule);
+}
+.cmdk-input svg { color: var(--ink-3); }
+.cmdk-input input {
+  border: 0; background: transparent; color: var(--ink); flex: 1;
+  font: inherit; font-size: 15px; outline: none;
+}
+.cmdk-input kbd {
+  font-family: "JetBrains Mono", monospace; font-size: 11px;
+  background: var(--chip-bg); color: var(--ink-3);
+  padding: 3px 6px; border-radius: 5px;
+  border: 1px solid var(--rule);
+}
+.cmdk-list { max-height: 50vh; overflow-y: auto; padding: 8px; }
+.cmdk-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 12px; border-radius: 8px; cursor: pointer;
+  color: var(--ink-2); font-size: 14px;
+}
+.cmdk-item:hover, .cmdk-item.active { background: var(--chip-bg); color: var(--ink); }
+.cmdk-item .ic { width: 22px; color: var(--ink-3); }
+.cmdk-item .hint { margin-left: auto; font-family: "JetBrains Mono", monospace; font-size: 11px; color: var(--ink-3); }
+
+/* ---------- Toast ---------- */
+.toast {
+  position: fixed; bottom: 24px; left: 50%; transform: translate(-50%, 100px);
+  background: var(--ink); color: var(--bg);
+  padding: 10px 16px; border-radius: 10px; font-size: 13px;
+  display: flex; align-items: center; gap: 10px;
+  box-shadow: var(--shadow-lift); z-index: 200;
+  transition: transform 320ms cubic-bezier(.2,.7,.2,1);
+}
+.toast.show { transform: translate(-50%, 0); }
+
+/* ---------- Palette popover ---------- */
+.pal-wrap { position: relative; }
+.pal-pop {
+  position: absolute; top: calc(100% + 10px); right: 0;
+  min-width: 240px;
+  background: var(--bg-elev); border: 1px solid var(--rule);
+  border-radius: 14px; box-shadow: var(--shadow-lift);
+  padding: 12px;
+  opacity: 0; pointer-events: none; transform: translateY(-4px);
+  transition: opacity 160ms ease, transform 160ms ease;
+  z-index: 60;
+}
+.pal-pop.open { opacity: 1; pointer-events: auto; transform: none; }
+.pal-head {
+  display: flex; justify-content: space-between; align-items: baseline;
+  padding: 4px 6px 10px; border-bottom: 1px solid var(--rule);
+  margin-bottom: 8px;
+}
+.pal-head .t { font-family: "Instrument Serif", serif; font-size: 17px; color: var(--ink); }
+.pal-head .k { font-family: "JetBrains Mono", monospace; font-size: 10.5px; color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.08em; }
+.pal-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 4px; }
+.pal-opt {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 10px; border-radius: 9px; cursor: pointer;
+  border: 1px solid transparent;
+  transition: all 160ms ease;
+  background: transparent;
+  font: inherit; color: var(--ink-2); text-align: left;
+  font-size: 13px;
+}
+.pal-opt:hover { background: var(--chip-bg); color: var(--ink); }
+.pal-opt.active { border-color: var(--accent); color: var(--ink); background: color-mix(in oklab, var(--accent) 8%, transparent); }
+.pal-swatch {
+  width: 22px; height: 22px; border-radius: 7px;
+  background: var(--sw-bg); position: relative; overflow: hidden;
+  border: 1px solid color-mix(in oklab, var(--ink) 12%, transparent);
+  flex-shrink: 0;
+}
+.pal-swatch::after {
+  content: ""; position: absolute; right: 0; top: 0; bottom: 0; width: 50%;
+  background: var(--sw-accent);
+}
+
+/* svg icons */
+.i { width: 16px; height: 16px; stroke: currentColor; stroke-width: 1.6; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+</style>
 </head>
-<body>
-    <a href="#home" class="skip-link">Skip to main content</a>
-    <!-- Loading Screen -->
-    <div id="loading-screen" class="loading-screen">
-        <div class="loader">
-            <div class="loader-circle"></div>
-            <div class="loader-text">Loading</div>
-        </div>
-    </div>
+<body data-screen-label="Portfolio">
 
-    <!-- Navigation -->
-    <nav class="navbar" id="navbar">
-        <div class="nav-container">
-            <a href="#home" class="nav-logo">
-                <img src="https://avatars.githubusercontent.com/u/36548613?v=4" alt="Pranav Pankhawala" loading="lazy">
-                <span>Pranav</span>
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <div class="shell nav-inner">
+    <a href="#top" class="brand" aria-label="Home">
+      <span class="brand-mark">P</span>
+      <span>
+        Pranav Pankhawala
+        <small>AI &amp; Cybersecurity Engineer</small>
+      </span>
+    </a>
+    <div class="nav-links" id="navLinks">
+      <a href="#work">Work</a>
+      <a href="#about">About</a>
+      <a href="#capabilities">Capabilities</a>
+      <a href="#projects">Projects</a>
+      <a href="#publications">Publications</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <div class="nav-actions">
+      <button class="icon-btn" id="cmdkBtn" aria-label="Open command palette" title="Search (⌘K)">
+        <svg class="i" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      </button>
+      <div class="pal-wrap">
+        <button class="icon-btn" id="palBtn" aria-label="Change palette" title="Themes">
+          <svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="7.5" cy="10.5" r="1"/><circle cx="12" cy="7.5" r="1"/><circle cx="16.5" cy="10.5" r="1"/><circle cx="15" cy="15" r="1"/></svg>
+        </button>
+        <div class="pal-pop" id="palPop" role="menu">
+          <div class="pal-head">
+            <span class="t">Theme</span>
+            <span class="k">7 palettes</span>
+          </div>
+          <div class="pal-grid">
+            <button class="pal-opt active" data-pal="forest" style="--sw-bg:oklch(0.975 0.012 140);--sw-accent:oklch(0.54 0.13 150)"><span class="pal-swatch"></span>Forest</button>
+            <button class="pal-opt" data-pal="slate" style="--sw-bg:oklch(0.975 0.005 240);--sw-accent:oklch(0.50 0.13 250)"><span class="pal-swatch"></span>Slate</button>
+            <button class="pal-opt" data-pal="ember" style="--sw-bg:oklch(0.972 0.012 85);--sw-accent:oklch(0.62 0.15 55)"><span class="pal-swatch"></span>Ember</button>
+            <button class="pal-opt" data-pal="plum" style="--sw-bg:oklch(0.974 0.008 320);--sw-accent:oklch(0.50 0.16 320)"><span class="pal-swatch"></span>Plum</button>
+            <button class="pal-opt" data-pal="crimson" style="--sw-bg:oklch(0.972 0.010 30);--sw-accent:oklch(0.50 0.16 25)"><span class="pal-swatch"></span>Crimson</button>
+            <button class="pal-opt" data-pal="ocean" style="--sw-bg:oklch(0.974 0.010 210);--sw-accent:oklch(0.55 0.13 205)"><span class="pal-swatch"></span>Ocean</button>
+            <button class="pal-opt" data-pal="sand" style="--sw-bg:oklch(0.965 0.012 75);--sw-accent:oklch(0.55 0.10 70)"><span class="pal-swatch"></span>Sand</button>
+            <button class="pal-opt" data-pal="mono" style="--sw-bg:oklch(0.98 0 0);--sw-accent:oklch(0.16 0 0)"><span class="pal-swatch"></span>Mono</button>
+          </div>
+        </div>
+      </div>
+      <button class="icon-btn" id="themeBtn" aria-label="Toggle theme">
+        <svg class="i" id="themeIcon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      </button>
+      <a href="#contact" class="btn btn-primary" style="margin-left:4px">
+        Get in touch
+        <svg class="i arrow" viewBox="0 0 24 24" width="14" height="14"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg>
+      </a>
+      <button class="icon-btn menu-btn" id="menuBtn" aria-label="Menu">
+        <svg class="i" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<main id="top">
+  <div class="shell">
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-grid">
+        <aside class="hero-side reveal">
+          <div class="status">
+            <span class="dot"></span>
+            Available for select work
+          </div>
+          <div class="hero-meta">
+            <div class="row"><span>Role</span><span>AI / Cybersec</span></div>
+            <div class="row"><span>Based</span><span>Pune, India</span></div>
+            <div class="row"><span>Tz</span><span>GMT+5:30</span></div>
+            <div class="row"><span>Since</span><span>2018</span></div>
+          </div>
+        </aside>
+        <div class="hero-main reveal">
+          <h1>
+            Secure, scalable,<br/>
+            <em>real-time</em> intelligent<br/>
+            systems.
+          </h1>
+          <p class="lede">
+            I'm <strong>Pranav</strong> — an AI&nbsp;Automation &amp; Cybersecurity Engineer
+            building computer-vision systems for industrial automation,
+            smart manufacturing, and autonomous driving. CNNs and YOLO on the edge;
+            secure-by-design from network up.
+          </p>
+          <div class="hero-cta">
+            <a href="#projects" class="btn btn-primary">
+              See selected work
+              <svg class="i arrow" viewBox="0 0 24 24" width="14" height="14"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg>
             </a>
-            <ul class="nav-menu" id="navMenu">
-                <li><a href="#home" class="nav-link">Home</a></li>
-                <li><a href="#about" class="nav-link">About</a></li>
-                <li><a href="#experience" class="nav-link">Experience</a></li>
-                <li><a href="#skills" class="nav-link">Skills</a></li>
-                <li><a href="#projects" class="nav-link">Projects</a></li>
-                <li><a href="#certifications" class="nav-link">Certifications</a></li>
-                <li><a href="#contact" class="nav-link">Contact</a></li>
-                <li><a href="#" class="nav-link nav-resume" id="resumeBtn">
-                    <i class="fas fa-download"></i> Resume
-                </a></li>
+            <a href="#contact" class="btn btn-ghost">
+              Start a project
+            </a>
+          </div>
+
+          <div class="hero-ticker">
+            <div class="ticker-cell"><div class="k">Focus</div><div class="v">Vision · AI · Security</div></div>
+            <div class="ticker-cell"><div class="k">Stack</div><div class="v">PyTorch · YOLO</div></div>
+            <div class="ticker-cell"><div class="k">Edge</div><div class="v">Jetson · Pi</div></div>
+            <div class="ticker-cell"><div class="k">Papers</div><div class="v">2<small>published</small></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section class="block" id="about">
+      <div class="section-head">
+        <div class="eyebrow"><span class="mono">01</span> About</div>
+        <h2>An <em>engineer</em> at the intersection of AI, vision &amp; security.</h2>
+      </div>
+      <div class="about-grid reveal">
+        <aside class="about-side">
+          <div>// bio</div>
+        </aside>
+        <div class="about-body">
+          <p>AI &amp; cybersecurity engineer designing, developing and deploying intelligent, secure, scalable ML systems for real industrial environments.</p>
+          <p>
+            My work centers on high-performance deep-learning models — CNNs and YOLO-based architectures — for defect detection,
+            object classification, and automated inspection across manufacturing and production workflows.
+          </p>
+          <p>
+            I combine classical computer-vision techniques (edge detection, feature extraction, contour analysis, color filtering)
+            with model quantization and hardware-aware deployment to ship low-latency inference on NVIDIA Jetson and Raspberry Pi.
+            Trained in cyber law and secure system design; I treat hardening as part of the pipeline, not an afterthought.
+          </p>
+        </div>
+        <div class="facts">
+          <div class="fact"><div class="k">Location</div><div class="v">Pune, India</div></div>
+          <div class="fact"><div class="k">Open to</div><div class="v">AI / Vision / Cybersecurity roles</div></div>
+          <div class="fact"><div class="k">Languages</div><div class="v">English, Hindi, Marathi, Gujarati</div></div>
+          <div class="fact"><div class="k">Education</div><div class="v">M.Tech · MIT WPU · 9.14 / 10</div></div>
+          <div class="fact"><div class="k">Currently</div><div class="v">C4i4 Lab — AI Automation Engineer</div></div>
+          <div class="fact"><div class="k">Email</div><div class="v"><a href="mailto:pranav.pankhawala@gmail.com">pranav.pankhawala@gmail.com</a></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WORK -->
+    <section class="block" id="work">
+      <div class="section-head">
+        <div class="eyebrow"><span class="mono">02</span> Work</div>
+        <h2>Seven years across <em>industrial AI, software</em> and offensive security.</h2>
+      </div>
+
+      <div class="work-list reveal">
+        <article class="role">
+          <div class="when">Jul 2025 — Present<br/><span class="now"><span class="now-dot"></span>Current</span></div>
+          <div class="what">
+            <h3>AI Automation Engineer</h3>
+            <div class="at">Centre for Industry 4.0 (C4i4) Lab</div>
+            <ul>
+              <li>Designed, developed and deployed AI-powered defect-detection and object-classification systems for manufacturing QA</li>
+              <li>Built and optimized CNN- and YOLO-based vision models for real-time detection, surveillance and industrial inspection</li>
+              <li>Cut false positives with color-based rejection, Canny edge detection, contour analysis and preprocessing optimization</li>
+              <li>Deployed inference pipelines on NVIDIA Jetson Nano, Jetson AGX Xavier and Raspberry Pi — low-latency, hardware-aware</li>
+              <li>Tuned via dataset augmentation, hyperparameter search, model quantization and resource-constrained deployment strategies</li>
             </ul>
-            <div class="nav-actions">
-                <button class="theme-toggle" id="themeToggle" aria-label="Switch to light mode" title="Switch to light mode">
-                    <i class="fas fa-sun" aria-hidden="true"></i>
-                    <span class="sr-only">Toggle color theme</span>
-                </button>
-                <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu" aria-expanded="false">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </button>
+            <div class="tagrow">
+              <span class="tag accent">Computer Vision</span>
+              <span class="tag">PyTorch</span>
+              <span class="tag">YOLO</span>
+              <span class="tag">OpenCV</span>
+              <span class="tag">Jetson</span>
+              <span class="tag">Raspberry Pi</span>
+              <span class="tag">Python</span>
             </div>
-        </div>
-    </nav>
+          </div>
+          <div class="where">C4i4 Lab<br/>Pune, IN</div>
+        </article>
 
-    <!-- Hero Section -->
-    <section id="home" class="hero">
-        <div class="hero-background">
-            <div class="hero-particles" id="particles"></div>
-        </div>
-        <div class="hero-content">
-            <div class="hero-text">
-                <h1 class="hero-title">
-                    Hi, I'm <span class="gradient-text">Pranav Pankhawala</span>
-                </h1>
-                <div class="hero-subtitle-wrapper">
-                    <p class="hero-subtitle">AI Automation & Cybersecurity Engineer</p>
-                    <div class="typing-container">
-                        <span class="typed-text"></span>
-                        <span class="cursor">|</span>
-                    </div>
-                </div>
-                <p class="hero-description">Designing intelligent vision systems, hardening industrial infrastructure, and deploying edge-optimized AI — where deep learning meets real-world security.</p>
-                <div class="hero-buttons">
-                    <a href="#projects" class="btn btn-primary">
-                        <i class="fas fa-eye"></i>
-                        <span>View Projects</span>
-                    </a>
-                    <a href="#contact" class="btn btn-secondary">
-                        <i class="fas fa-envelope"></i>
-                        <span>Get in Touch</span>
-                    </a>
-                </div>
+        <article class="role">
+          <div class="when">Sep 2023 — Jul 2025</div>
+          <div class="what">
+            <h3>Engineer Intern → Software Developer</h3>
+            <div class="at">Centre for Industry 4.0 (C4i4) Lab</div>
+            <ul>
+              <li>Contributed to the QUIKSTEP software platform for a 0.5HP water-pump demonstration line</li>
+              <li>Designed scalable backend services and RESTful APIs in Django/Python for reliable server-side processing</li>
+              <li>Built responsive frontend interfaces in HTML, CSS and JavaScript</li>
+              <li>Integrated AI-assisted dev tools into the SDLC, reducing development time ~30%</li>
+              <li>Promoted from Engineer Intern to Software Developer on technical contribution and consistency</li>
+            </ul>
+            <div class="tagrow">
+              <span class="tag">Django</span>
+              <span class="tag">Python</span>
+              <span class="tag">REST APIs</span>
+              <span class="tag">JavaScript</span>
+              <span class="tag">HTML / CSS</span>
+              <span class="tag">Git</span>
             </div>
-            <div class="hero-stats">
-                <div class="stat-item">
-                    <div class="stat-number" data-count="6" data-suffix="+">0</div>
-                    <div class="stat-label">Years of Experience</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number" data-count="2" data-suffix="">0</div>
-                    <div class="stat-label">Research Papers</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number" data-count="12" data-suffix="+">0</div>
-                    <div class="stat-label">Certifications</div>
-                </div>
+          </div>
+          <div class="where">C4i4 Lab<br/>Pune, IN</div>
+        </article>
+
+        <article class="role">
+          <div class="when">Jan — Mar 2022</div>
+          <div class="what">
+            <h3>Cybersecurity Engineer Intern</h3>
+            <div class="at">Photoshooto</div>
+            <ul>
+              <li>Ran end-to-end VAPT activities using industry methodologies and platforms like TryHackMe</li>
+              <li>Identified, analyzed and documented vulnerabilities with risk assessments, PoC findings and remediation paths</li>
+              <li>Performed reconnaissance, enumeration, exploitation and post-exploitation against simulated targets</li>
+              <li>Promoted from intern to team lead during the internship; coordinated assessments under tight deadlines</li>
+            </ul>
+            <div class="tagrow">
+              <span class="tag accent">VAPT</span>
+              <span class="tag">Penetration Testing</span>
+              <span class="tag">OWASP</span>
+              <span class="tag">TryHackMe</span>
+              <span class="tag">Red Teaming</span>
+              <span class="tag">Kali Linux</span>
             </div>
-        </div>
-        <div class="scroll-indicator">
-            <div class="mouse">
-                <div class="wheel"></div>
+          </div>
+          <div class="where">Photoshooto<br/>Pune, IN</div>
+        </article>
+
+        <article class="role">
+          <div class="when">Dec 2018 — Jan 2019</div>
+          <div class="what">
+            <h3>Engineer Intern</h3>
+            <div class="at">Twintech Control Systems</div>
+            <ul>
+              <li>Built a C# .NET application on Windows 10 IoT Core / Raspberry Pi to monitor industrial thermal-switch systems</li>
+              <li>Designed a scalable Universal Windows Platform (UWP) architecture for IoT hardware integration</li>
+              <li>Implemented real-time temperature monitoring, alerting, and operator UI for thresholds &amp; status</li>
+            </ul>
+            <div class="tagrow">
+              <span class="tag">C# .NET</span>
+              <span class="tag">UWP</span>
+              <span class="tag">Windows 10 IoT Core</span>
+              <span class="tag">Raspberry Pi</span>
             </div>
-            <p>Scroll Down</p>
+          </div>
+          <div class="where">Twintech<br/>Pune, IN</div>
+        </article>
+      </div>
+
+      <!-- Education sub-block -->
+      <div style="margin-top: 72px;">
+        <div class="section-head" style="margin-bottom: 32px;">
+          <div class="eyebrow"><span class="mono">02·b</span> Education</div>
+          <h2>Trained in <em>networks, security &amp; systems.</em></h2>
         </div>
+        <div class="work-list reveal">
+          <article class="role">
+            <div class="when">2023</div>
+            <div class="what">
+              <h3>Diploma in Cyber Law</h3>
+              <div class="at">Asian School of Cyber Laws · 62%</div>
+              <div class="tagrow">
+                <span class="tag">IT Act 2000</span>
+                <span class="tag">Cyber Law</span>
+                <span class="tag">Compliance</span>
+              </div>
+            </div>
+            <div class="where">ASCL · Pune</div>
+          </article>
+          <article class="role">
+            <div class="when">2022</div>
+            <div class="what">
+              <h3>M.Tech, CSE — Network Management &amp; Cyber Security</h3>
+              <div class="at">MIT WPU · GPA 9.14 / 10 · Thesis: ML for network security</div>
+              <div class="tagrow">
+                <span class="tag accent">Network Security</span>
+                <span class="tag">Machine Learning</span>
+                <span class="tag">Cryptography</span>
+                <span class="tag">Ethical Hacking</span>
+              </div>
+            </div>
+            <div class="where">MIT WPU · Pune</div>
+          </article>
+          <article class="role">
+            <div class="when">2020</div>
+            <div class="what">
+              <h3>B.E., Electronics &amp; Telecommunication</h3>
+              <div class="at">SPPU · GPA 7.36 / 10 · Capstone: Night-vision &amp; perimeter security</div>
+              <div class="tagrow">
+                <span class="tag">C / C++</span><span class="tag">Python</span>
+                <span class="tag">DBMS</span><span class="tag">Networks</span>
+                <span class="tag">Embedded</span>
+              </div>
+            </div>
+            <div class="where">SPPU · Pune</div>
+          </article>
+        </div>
+      </div>
     </section>
 
-    <!-- About Section -->
-    <section id="about" class="section about">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title" data-aos="fade-up">About Me</h2>
-                <div class="section-subtitle" data-aos="fade-up" data-aos-delay="100">
-                    AI Automation & Cybersecurity Engineer
-                </div>
+    <!-- CAPABILITIES -->
+    <section class="block" id="capabilities">
+      <div class="section-head">
+        <div class="eyebrow"><span class="mono">03</span> Capabilities</div>
+        <h2>What I bring to a team, <em>concretely.</em></h2>
+      </div>
+      <div class="caps reveal">
+        <div class="cap">
+          <div class="num">01</div>
+          <div>
+            <h3>AI &amp; Computer Vision</h3>
+            <p>CNNs, YOLO architectures, pose estimation, and classical CV techniques for defect detection, classification and automated inspection.</p>
+            <div class="tagrow">
+              <span class="tag">PyTorch</span><span class="tag">OpenCV</span>
+              <span class="tag">YOLO</span><span class="tag">MediaPipe</span>
+              <span class="tag">Pose Estimation</span><span class="tag">CNN</span>
             </div>
-            <div class="about-content">
-                <div class="about-text" data-aos="fade-right">
-                    <p class="about-bio">
-                        AI and Cybersecurity engineer with hands-on experience building production-grade computer vision systems for industrial manufacturing, automated defect detection, and real-time surveillance — currently at the Centre for Industry 4.0 (C4i4) Lab in Pune.
-                    </p>
-                    <p class="about-bio">
-                        Specialized in deploying YOLO-based and CNN architectures on resource-constrained edge hardware including NVIDIA Jetson Nano, Jetson AGX Xavier, and Raspberry Pi. Equally comfortable running VAPT engagements, performing red team assessments, and building secure systems grounded in OWASP methodology and Indian cyber law.
-                    </p>
-                    <p class="about-bio">
-                        Published researcher with two peer-reviewed papers covering ML-based network security in IoT and Industry 4.0 smart manufacturing. MTech with a 9.14/10 GPA from MIT-WPU. Outside of AI pipelines — motorcycle rides, the gym, and chasing bug bounties.
-                    </p>
-                    <div class="about-cta">
-                        <a href="#contact" class="btn btn-outline">Let's Collaborate</a>
-                    </div>
-                </div>
-                <div class="about-interests" data-aos="fade-left">
-                    <div class="interest-item">
-                        <div class="interest-icon">
-                            <i class="fas fa-eye"></i>
-                        </div>
-                        <div class="interest-content">
-                            <h3>Computer Vision & AI</h3>
-                            <p>YOLO, CNN, OpenCV, PyTorch — real-time detection and industrial inspection systems</p>
-                        </div>
-                    </div>
-                    <div class="interest-item">
-                        <div class="interest-icon">
-                            <i class="fas fa-shield-alt"></i>
-                        </div>
-                        <div class="interest-content">
-                            <h3>Cybersecurity & Red Teaming</h3>
-                            <p>Penetration testing, VAPT, ethical hacking, and OWASP-aligned security assessments</p>
-                        </div>
-                    </div>
-                    <div class="interest-item">
-                        <div class="interest-icon">
-                            <i class="fas fa-microchip"></i>
-                        </div>
-                        <div class="interest-content">
-                            <h3>Edge AI & IoT</h3>
-                            <p>NVIDIA Jetson, Raspberry Pi — low-latency AI inference on embedded platforms</p>
-                        </div>
-                    </div>
-                    <div class="interest-item">
-                        <div class="interest-icon">
-                            <i class="fas fa-book-open"></i>
-                        </div>
-                        <div class="interest-content">
-                            <h3>Research & Publications</h3>
-                            <p>Peer-reviewed papers on ML network security and smart manufacturing</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+          </div>
         </div>
+        <div class="cap">
+          <div class="num">02</div>
+          <div>
+            <h3>Cybersecurity &amp; Red Teaming</h3>
+            <p>VAPT, penetration testing, social engineering and network security — with a foundation in cyber law and secure system design.</p>
+            <div class="tagrow">
+              <span class="tag">Penetration Testing</span><span class="tag">Red Teaming</span>
+              <span class="tag">OWASP</span><span class="tag">VAPT</span>
+              <span class="tag">Network Security</span><span class="tag">Kali Linux</span>
+            </div>
+          </div>
+        </div>
+        <div class="cap">
+          <div class="num">03</div>
+          <div>
+            <h3>Edge &amp; IoT Deployment</h3>
+            <p>Low-latency inference on Jetson Nano, Jetson AGX Xavier and Raspberry Pi; MQTT-based IoT messaging and UWP on Windows 10 IoT Core.</p>
+            <div class="tagrow">
+              <span class="tag">Jetson Nano</span><span class="tag">Jetson AGX</span>
+              <span class="tag">Raspberry Pi</span><span class="tag">MQTT</span>
+              <span class="tag">UWP</span><span class="tag">Linux</span>
+            </div>
+          </div>
+        </div>
+        <div class="cap">
+          <div class="num">04</div>
+          <div>
+            <h3>Web, API &amp; Backend</h3>
+            <p>Django and FastAPI services with clean REST contracts, paired with HTML/CSS/JS frontends. Comfortable across C/C++ and Python.</p>
+            <div class="tagrow">
+              <span class="tag">Django</span><span class="tag">Flask</span>
+              <span class="tag">FastAPI</span><span class="tag">REST APIs</span>
+              <span class="tag">Python</span><span class="tag">C / C++</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
 
-    <!-- Work Experience Timeline Section -->
-    <section id="experience" class="section experience">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title" data-aos="fade-up">Work Experience</h2>
-                <p class="section-description" data-aos="fade-up" data-aos-delay="100">
-                    A track record of building intelligent systems and securing infrastructure
-                </p>
-            </div>
+    <!-- PROJECTS -->
+    <section class="block" id="projects">
+      <div class="section-head">
+        <div class="eyebrow"><span class="mono">04</span> Projects</div>
+        <h2>Three projects across the <em>career arc</em> — BE, M.Tech, and self-driven.</h2>
+      </div>
 
-            <div class="timeline-container vertical-timeline" data-aos="fade-up" data-aos-delay="200">
-                <div class="timeline-item" data-aos="fade-up" data-aos-delay="250">
-                    <div class="timeline-marker">
-                        <div class="timeline-icon">
-                            <i class="fas fa-briefcase"></i>
-                        </div>
-                    </div>
-                    <div class="timeline-content">
-                        <div class="timeline-card">
-                            <div class="timeline-header">
-                                <div class="company-logo">
-                                    <i class="fas fa-robot"></i>
-                                </div>
-                                <div class="timeline-info">
-                                    <h3 class="job-title">AI Automation Engineer</h3>
-                                    <h4 class="company-name">Centre for Industry 4.0 (C4i4) Lab</h4>
-                                    <div class="timeline-meta">
-                                        <span class="timeline-date">
-                                            <i class="far fa-calendar"></i> Jul 2025 – Present
-                                        </span>
-                                        <span class="timeline-location">
-                                            <i class="fas fa-map-marker-alt"></i> Pune, India
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="timeline-body">
-                                <ul class="responsibilities">
-                                    <li>Designed and deployed AI-powered defect detection and object classification systems, improving manufacturing quality assurance by reducing false positives through advanced preprocessing techniques</li>
-                                    <li>Built and optimized YOLO-based and CNN architectures for real-time industrial inspection on NVIDIA Jetson Nano, Jetson AGX Xavier, and Raspberry Pi using hardware-aware quantization and deployment strategies</li>
-                                    <li>Engineered end-to-end computer vision pipelines — image acquisition, preprocessing, model training, inference, and automated decision-making — with production-grade precision, recall, and F1-score tracking</li>
-                                    <li>Applied Canny edge detection, contour analysis, and color-based rejection algorithms to enhance model robustness under dynamic industrial conditions</li>
-                                </ul>
-                                <div class="tech-stack">
-                                    <span class="tech-tag">Python</span>
-                                    <span class="tech-tag">YOLO</span>
-                                    <span class="tech-tag">PyTorch</span>
-                                    <span class="tech-tag">OpenCV</span>
-                                    <span class="tech-tag">CNN</span>
-                                    <span class="tech-tag">Jetson Nano</span>
-                                    <span class="tech-tag">Jetson AGX</span>
-                                    <span class="tech-tag">Raspberry Pi</span>
-                                    <span class="tech-tag">FastAPI</span>
-                                    <span class="tech-tag">Linux</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="timeline-item" data-aos="fade-up" data-aos-delay="300">
-                    <div class="timeline-marker">
-                        <div class="timeline-icon">
-                            <i class="fas fa-briefcase"></i>
-                        </div>
-                    </div>
-                    <div class="timeline-content">
-                        <div class="timeline-card">
-                            <div class="timeline-header">
-                                <div class="company-logo">
-                                    <i class="fas fa-building"></i>
-                                </div>
-                                <div class="timeline-info">
-                                    <h3 class="job-title">Engineer Intern → Software Developer</h3>
-                                    <h4 class="company-name">Centre for Industry 4.0 (C4i4) Lab</h4>
-                                    <div class="timeline-meta">
-                                        <span class="timeline-date">
-                                            <i class="far fa-calendar"></i> Sep 2023 – Jul 2025
-                                        </span>
-                                        <span class="timeline-location">
-                                            <i class="fas fa-map-marker-alt"></i> Pune, India
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="timeline-body">
-                                <ul class="responsibilities">
-                                    <li>Developed and maintained the QUIKSTEP industrial software platform for a 0.5HP water pump demonstration line, improving operational reliability and system performance</li>
-                                    <li>Designed scalable backend services and RESTful APIs using Django and Python, enabling efficient server-side processing and seamless data handling</li>
-                                    <li>Integrated AI-assisted development tools into the software lifecycle, reducing development time by approximately 30%</li>
-                                    <li>Progressed from Engineer Intern to Software Developer through consistent delivery — promoted within the first year of tenure</li>
-                                </ul>
-                                <div class="tech-stack">
-                                    <span class="tech-tag">Python</span>
-                                    <span class="tech-tag">Django</span>
-                                    <span class="tech-tag">FastAPI</span>
-                                    <span class="tech-tag">Flask</span>
-                                    <span class="tech-tag">JavaScript</span>
-                                    <span class="tech-tag">HTML / CSS</span>
-                                    <span class="tech-tag">Linux</span>
-                                    <span class="tech-tag">REST APIs</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="timeline-item" data-aos="fade-up" data-aos-delay="350">
-                    <div class="timeline-marker">
-                        <div class="timeline-icon">
-                            <i class="fas fa-briefcase"></i>
-                        </div>
-                    </div>
-                    <div class="timeline-content">
-                        <div class="timeline-card">
-                            <div class="timeline-header">
-                                <div class="company-logo">
-                                    <i class="fas fa-shield-alt"></i>
-                                </div>
-                                <div class="timeline-info">
-                                    <h3 class="job-title">Cybersecurity Engineer Intern → Team Lead</h3>
-                                    <h4 class="company-name">Bokeh Photogenic (Photoshooto) Pvt. Ltd.</h4>
-                                    <div class="timeline-meta">
-                                        <span class="timeline-date">
-                                            <i class="far fa-calendar"></i> Jan 2022 – Mar 2022
-                                        </span>
-                                        <span class="timeline-location">
-                                            <i class="fas fa-map-marker-alt"></i> Pune, India
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="timeline-body">
-                                <ul class="responsibilities">
-                                    <li>Conducted comprehensive VAPT engagements using OWASP methodologies and TryHackMe — covering reconnaissance, enumeration, exploitation, and post-exploitation phases</li>
-                                    <li>Delivered detailed security reports with risk ratings, proof-of-concept findings, and actionable remediation recommendations across simulated production environments</li>
-                                    <li>Promoted from intern to team lead mid-tenure; coordinated a small security team to on-time, successful delivery under tight project deadlines</li>
-                                </ul>
-                                <div class="tech-stack">
-                                    <span class="tech-tag">VAPT</span>
-                                    <span class="tech-tag">OWASP</span>
-                                    <span class="tech-tag">Ethical Hacking</span>
-                                    <span class="tech-tag">Kali Linux</span>
-                                    <span class="tech-tag">Social Engineering</span>
-                                    <span class="tech-tag">Network Security</span>
-                                    <span class="tech-tag">TryHackMe</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="timeline-item" data-aos="fade-up" data-aos-delay="400">
-                    <div class="timeline-marker">
-                        <div class="timeline-icon">
-                            <i class="fas fa-briefcase"></i>
-                        </div>
-                    </div>
-                    <div class="timeline-content">
-                        <div class="timeline-card">
-                            <div class="timeline-header">
-                                <div class="company-logo">
-                                    <i class="fas fa-microchip"></i>
-                                </div>
-                                <div class="timeline-info">
-                                    <h3 class="job-title">Engineer Intern</h3>
-                                    <h4 class="company-name">Twintech Control Systems Pvt. Ltd.</h4>
-                                    <div class="timeline-meta">
-                                        <span class="timeline-date">
-                                            <i class="far fa-calendar"></i> Dec 2018 – Jan 2019
-                                        </span>
-                                        <span class="timeline-location">
-                                            <i class="fas fa-map-marker-alt"></i> Pune, India
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="timeline-body">
-                                <ul class="responsibilities">
-                                    <li>Developed a C# .NET application for Windows 10 IoT Core on Raspberry Pi to monitor and manage industrial thermal switch systems with real-time temperature alerts and threshold configuration</li>
-                                    <li>Designed a scalable UWP architecture enabling seamless IoT hardware integration and accurate sensor-based environmental monitoring</li>
-                                </ul>
-                                <div class="tech-stack">
-                                    <span class="tech-tag">C# .NET</span>
-                                    <span class="tech-tag">UWP</span>
-                                    <span class="tech-tag">Windows 10 IoT Core</span>
-                                    <span class="tech-tag">Raspberry Pi</span>
-                                    <span class="tech-tag">IoT</span>
-                                    <span class="tech-tag">Embedded Systems</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
+      <div class="proj-toolbar reveal">
+        <div class="filters" role="tablist" aria-label="Filter projects">
+          <button data-filter="all" class="active">All <span class="mono" style="opacity:.5">03</span></button>
+          <button data-filter="ai">AI / Vision</button>
+          <button data-filter="security">Security</button>
         </div>
+        <div class="viewtoggle" aria-label="View toggle">
+          <button id="viewGrid" class="active" aria-label="Grid view">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          </button>
+          <button id="viewList" aria-label="List view">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="projects" id="projectsGrid">
+
+        <article class="proj" data-cat="ai">
+          <div class="proj-art">
+            <div class="label">SELF · ONGOING</div>
+            <div class="badge">In Progress</div>
+            <div class="glyph">α</div>
+          </div>
+          <div class="proj-body">
+            <h3>AI-based Surveillance System</h3>
+            <p>Computer-vision platform for traffic-violation detection, industrial surveillance, and human-security applications. Built on YOLO + classical CV.</p>
+            <div class="tagrow">
+              <span class="tag">YOLO</span><span class="tag">PyTorch</span>
+              <span class="tag">OpenCV</span><span class="tag">Jetson</span>
+            </div>
+            <div class="proj-meta">
+              <span>Self · Ongoing</span>
+              <div class="links">
+                <a href="#" aria-label="GitHub"><svg class="i" viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 7.77 5.07 5.07 0 0 0 19.91 4S18.73 3.65 16 5.48a13.38 13.38 0 0 0-7 0C6.27 3.65 5.09 4 5.09 4A5.07 5.07 0 0 0 5 7.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 21.13V25"/></svg></a>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="proj" data-cat="ai security">
+          <div class="proj-art">
+            <div class="label">M.TECH · THESIS</div>
+            <div class="badge">Published</div>
+            <div class="glyph">λ</div>
+          </div>
+          <div class="proj-body">
+            <h3>AI / ML Network Security Model</h3>
+            <p>Detection model for malicious network packets based on engineered markers. Published in Neuro Quantology, DOI 10.14704/nq.2022.20.9.</p>
+            <div class="tagrow">
+              <span class="tag accent">Network Security</span>
+              <span class="tag">Machine Learning</span>
+              <span class="tag">Python</span>
+            </div>
+            <div class="proj-meta">
+              <span>M.Tech · 2022</span>
+              <div class="links">
+                <a href="https://doi.org/10.14704/nq.2022.20.9" target="_blank" rel="noopener" aria-label="Paper"><svg class="i" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></a>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="proj" data-cat="ai">
+          <div class="proj-art">
+            <div class="label">B.E. · CAPSTONE</div>
+            <div class="glyph">ν</div>
+          </div>
+          <div class="proj-body">
+            <h3>Night Vision &amp; Perimeter Security</h3>
+            <p>Night-vision system built with OpenCV mounted on an unarmed vehicle for perimeter patrol. Edge-deployed on Raspberry Pi.</p>
+            <div class="tagrow">
+              <span class="tag">OpenCV</span><span class="tag">Python</span>
+              <span class="tag">Raspberry Pi</span><span class="tag">Embedded</span>
+            </div>
+            <div class="proj-meta">
+              <span>B.E. · 2020</span>
+              <div class="links">
+                <a href="#" aria-label="Source"><svg class="i" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></a>
+              </div>
+            </div>
+          </div>
+        </article>
+
+      </div>
     </section>
 
-    <!-- Education Section -->
-    <section id="education" class="section education">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title" data-aos="fade-up">Education</h2>
-                <p class="section-description" data-aos="fade-up" data-aos-delay="100">
-                    Academic foundations in engineering, cybersecurity, and cyber law
-                </p>
+    <!-- PUBLICATIONS -->
+    <section class="block" id="publications">
+      <div class="section-head">
+        <div class="eyebrow"><span class="mono">05</span> Publications</div>
+        <h2>Peer-reviewed work in <em>industrial AI</em> and network security.</h2>
+      </div>
+      <div class="work-list reveal">
+        <article class="role">
+          <div class="when">Jan — Jun 2024</div>
+          <div class="what">
+            <h3>Leveraging Potential of Industrial 4.0</h3>
+            <div class="at">A Comprehensive Analysis of Smart Manufacturing Technologies and Applications</div>
+            <ul>
+              <li>Co-authored with Bankar Mahesh and Budukh Aditya</li>
+              <li>Published in <em>IPE Journal of Management</em>, Volume 14, No. 2</li>
+            </ul>
+            <div class="tagrow">
+              <span class="tag accent">Industry 4.0</span>
+              <span class="tag">Smart Manufacturing</span>
+              <span class="tag">ISSN 2249-9040</span>
             </div>
-
-            <div class="timeline-container vertical-timeline-education" data-aos="fade-up" data-aos-delay="200">
-                <div class="timeline-item" data-aos="fade-up" data-aos-delay="250">
-                    <div class="timeline-marker">
-                        <div class="timeline-icon">
-                            <i class="fas fa-graduation-cap"></i>
-                        </div>
-                    </div>
-                    <div class="timeline-content">
-                        <div class="timeline-card">
-                            <div class="timeline-header">
-                                <div class="company-logo">
-                                    <i class="fas fa-university"></i>
-                                </div>
-                                <div class="timeline-info">
-                                    <h3 class="job-title">Diploma in Cyber Law</h3>
-                                    <h4 class="company-name">Asian School of Cyber Laws (ASCL)</h4>
-                                    <div class="timeline-meta">
-                                        <span class="timeline-date">
-                                            <i class="far fa-calendar"></i> 2023
-                                        </span>
-                                        <span class="timeline-location">
-                                            <i class="fas fa-map-marker-alt"></i> Pune, India
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="timeline-body">
-                                <ul class="responsibilities">
-                                    <li>Completed with 62% — formal grounding in Indian cyber law enabling legally-aware security practice</li>
-                                    <li>Studied key provisions: IT Act 2000, Section 43, 66, 66C, 67 and digital compliance frameworks</li>
-                                </ul>
-                                <div class="tech-stack">
-                                    <span class="tech-tag">IT Act 2000</span>
-                                    <span class="tech-tag">Section 43</span>
-                                    <span class="tech-tag">Section 66</span>
-                                    <span class="tech-tag">Section 66C</span>
-                                    <span class="tech-tag">Section 67</span>
-                                    <span class="tech-tag">Cyber Compliance</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="timeline-item" data-aos="fade-up" data-aos-delay="300">
-                    <div class="timeline-marker">
-                        <div class="timeline-icon">
-                            <i class="fas fa-graduation-cap"></i>
-                        </div>
-                    </div>
-                    <div class="timeline-content">
-                        <div class="timeline-card">
-                            <div class="timeline-header">
-                                <div class="company-logo">
-                                    <i class="fas fa-university"></i>
-                                </div>
-                                <div class="timeline-info">
-                                    <h3 class="job-title">MTech — Network Management & Cyber Security</h3>
-                                    <h4 class="company-name">MIT World Peace University (MIT-WPU)</h4>
-                                    <div class="timeline-meta">
-                                        <span class="timeline-date">
-                                            <i class="far fa-calendar"></i> Aug 2020 – Aug 2022
-                                        </span>
-                                        <span class="timeline-location">
-                                            <i class="fas fa-map-marker-alt"></i> Pune, India
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="timeline-body">
-                                <ul class="responsibilities">
-                                    <li>Graduated with First Class Honours — GPA: 9.14 / 10</li>
-                                    <li>Research focus: ML-based network intrusion detection for IoT environments — published in Neuro Quantology (2022)</li>
-                                </ul>
-                                <div class="tech-stack">
-                                    <span class="tech-tag">Network Security</span>
-                                    <span class="tech-tag">Cyber Security</span>
-                                    <span class="tech-tag">Machine Learning</span>
-                                    <span class="tech-tag">Network Protocols</span>
-                                    <span class="tech-tag">Ethical Hacking</span>
-                                    <span class="tech-tag">OSINT</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="timeline-item" data-aos="fade-up" data-aos-delay="350">
-                    <div class="timeline-marker">
-                        <div class="timeline-icon">
-                            <i class="fas fa-graduation-cap"></i>
-                        </div>
-                    </div>
-                    <div class="timeline-content">
-                        <div class="timeline-card">
-                            <div class="timeline-header">
-                                <div class="company-logo">
-                                    <i class="fas fa-university"></i>
-                                </div>
-                                <div class="timeline-info">
-                                    <h3 class="job-title">BE — Electronics & Telecommunication Engineering</h3>
-                                    <h4 class="company-name">Savitribai Phule Pune University (SPPU)</h4>
-                                    <div class="timeline-meta">
-                                        <span class="timeline-date">
-                                            <i class="far fa-calendar"></i> Aug 2016 – May 2020
-                                        </span>
-                                        <span class="timeline-location">
-                                            <i class="fas fa-map-marker-alt"></i> Pune, India
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="timeline-body">
-                                <ul class="responsibilities">
-                                    <li>Graduated with First Class — CGPA: 7.36 / 10</li>
-                                    <li>Final year project: Night vision perimeter security system using OpenCV deployed on an unmanned ground vehicle</li>
-                                </ul>
-                                <div class="tech-stack">
-                                    <span class="tech-tag">C / C++</span>
-                                    <span class="tech-tag">Python</span>
-                                    <span class="tech-tag">OpenCV</span>
-                                    <span class="tech-tag">Embedded Systems</span>
-                                    <span class="tech-tag">Networks</span>
-                                    <span class="tech-tag">Signal Processing</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+          </div>
+          <div class="where">IPE Journal<br/>Vol 14 · No 2</div>
+        </article>
+        <article class="role">
+          <div class="when">2022</div>
+          <div class="what">
+            <h3>Machine Learning Based Network Security in Internet of Things</h3>
+            <div class="at">With Dr. Sirsikar Sumedha</div>
+            <ul>
+              <li>Published in <em>Neuro Quantology</em></li>
+              <li>DOI: 10.14704/nq.2022.20.9.NQ440121</li>
+            </ul>
+            <div class="tagrow">
+              <span class="tag accent">IoT Security</span>
+              <span class="tag">Machine Learning</span>
+              <span class="tag">Network Security</span>
             </div>
-
-        </div>
+          </div>
+          <div class="where">Neuro Quantology<br/>2022 · DOI</div>
+        </article>
+      </div>
     </section>
 
-    <!-- Skills Section -->
-    <section id="skills" class="section skills">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title" data-aos="fade-up">Skills & Technologies</h2>
-                <p class="section-description" data-aos="fade-up" data-aos-delay="100">
-                    A specialized toolkit spanning AI, computer vision, cybersecurity, and edge computing
-                </p>
-            </div>
-            <div class="skills-grid">
-                <div class="skill-category" data-aos="fade-up" data-aos-delay="100">
-                    <div class="skill-category-header">
-                        <div class="skill-icon">
-                            <i class="fas fa-eye"></i>
-                        </div>
-                        <h3 class="skill-category-title">AI & Computer Vision</h3>
-                    </div>
-                    <div class="skill-list">
-                        <div class="skill-item" data-level="92">
-                            <span class="skill-name">YOLO Object Detection</span>
-                            <div class="skill-bar">
-                                <div class="skill-progress"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item" data-level="90">
-                            <span class="skill-name">OpenCV</span>
-                            <div class="skill-bar">
-                                <div class="skill-progress"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item" data-level="86">
-                            <span class="skill-name">CNN Deep Learning</span>
-                            <div class="skill-bar">
-                                <div class="skill-progress"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item" data-level="83">
-                            <span class="skill-name">PyTorch / TensorFlow</span>
-                            <div class="skill-bar">
-                                <div class="skill-progress"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item" data-level="78">
-                            <span class="skill-name">MediaPipe & Pose Estimation</span>
-                            <div class="skill-bar">
-                                <div class="skill-progress"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+    <!-- CONTACT -->
+    <section class="block" id="contact">
+      <div class="section-head">
+        <div class="eyebrow"><span class="mono">06</span> Contact</div>
+        <h2>Have a problem worth <em>solving?</em></h2>
+      </div>
 
-                <div class="skill-category" data-aos="fade-up" data-aos-delay="200">
-                    <div class="skill-category-header">
-                        <div class="skill-icon">
-                            <i class="fas fa-shield-alt"></i>
-                        </div>
-                        <h3 class="skill-category-title">Cybersecurity</h3>
-                    </div>
-                    <div class="skill-list">
-                        <div class="skill-item" data-level="85">
-                            <span class="skill-name">Penetration Testing (VAPT)</span>
-                            <div class="skill-bar">
-                                <div class="skill-progress"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item" data-level="83">
-                            <span class="skill-name">Ethical Hacking</span>
-                            <div class="skill-bar">
-                                <div class="skill-progress"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item" data-level="80">
-                            <span class="skill-name">OWASP Methodology</span>
-                            <div class="skill-bar">
-                                <div class="skill-progress"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item" data-level="76">
-                            <span class="skill-name">Red Teaming & Recon</span>
-                            <div class="skill-bar">
-                                <div class="skill-progress"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item" data-level="78">
-                            <span class="skill-name">Network Security</span>
-                            <div class="skill-bar">
-                                <div class="skill-progress"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="skill-category" data-aos="fade-up" data-aos-delay="300">
-                    <div class="skill-category-header">
-                        <div class="skill-icon">
-                            <i class="fas fa-code"></i>
-                        </div>
-                        <h3 class="skill-category-title">Programming Languages</h3>
-                    </div>
-                    <div class="skill-list">
-                        <div class="skill-item" data-level="92">
-                            <span class="skill-name">Python</span>
-                            <div class="skill-bar">
-                                <div class="skill-progress"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item" data-level="78">
-                            <span class="skill-name">C / C++</span>
-                            <div class="skill-bar">
-                                <div class="skill-progress"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item" data-level="72">
-                            <span class="skill-name">C# .NET</span>
-                            <div class="skill-bar">
-                                <div class="skill-progress"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item" data-level="68">
-                            <span class="skill-name">JavaScript</span>
-                            <div class="skill-bar">
-                                <div class="skill-progress"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="skill-category" data-aos="fade-up" data-aos-delay="400">
-                    <div class="skill-category-header">
-                        <div class="skill-icon">
-                            <i class="fas fa-microchip"></i>
-                        </div>
-                        <h3 class="skill-category-title">Edge Computing & IoT</h3>
-                    </div>
-                    <div class="skill-list">
-                        <div class="skill-item" data-level="88">
-                            <span class="skill-name">NVIDIA Jetson (Nano / AGX)</span>
-                            <div class="skill-bar">
-                                <div class="skill-progress"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item" data-level="85">
-                            <span class="skill-name">Raspberry Pi</span>
-                            <div class="skill-bar">
-                                <div class="skill-progress"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item" data-level="80">
-                            <span class="skill-name">Model Quantization</span>
-                            <div class="skill-bar">
-                                <div class="skill-progress"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item" data-level="75">
-                            <span class="skill-name">MQTT Protocol</span>
-                            <div class="skill-bar">
-                                <div class="skill-progress"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="skill-category" data-aos="fade-up" data-aos-delay="500">
-                    <div class="skill-category-header">
-                        <div class="skill-icon">
-                            <i class="fas fa-server"></i>
-                        </div>
-                        <h3 class="skill-category-title">Web & API Development</h3>
-                    </div>
-                    <div class="skill-list">
-                        <div class="skill-item" data-level="80">
-                            <span class="skill-name">FastAPI</span>
-                            <div class="skill-bar">
-                                <div class="skill-progress"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item" data-level="78">
-                            <span class="skill-name">Django</span>
-                            <div class="skill-bar">
-                                <div class="skill-progress"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item" data-level="75">
-                            <span class="skill-name">Flask</span>
-                            <div class="skill-bar">
-                                <div class="skill-progress"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item" data-level="70">
-                            <span class="skill-name">HTML / CSS / JavaScript</span>
-                            <div class="skill-bar">
-                                <div class="skill-progress"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="skill-category" data-aos="fade-up" data-aos-delay="600">
-                    <div class="skill-category-header">
-                        <div class="skill-icon">
-                            <i class="fas fa-terminal"></i>
-                        </div>
-                        <h3 class="skill-category-title">Platforms & Tools</h3>
-                    </div>
-                    <div class="skill-list">
-                        <div class="skill-item" data-level="88">
-                            <span class="skill-name">Linux</span>
-                            <div class="skill-bar">
-                                <div class="skill-progress"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item" data-level="82">
-                            <span class="skill-name">Kali Linux</span>
-                            <div class="skill-bar">
-                                <div class="skill-progress"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item" data-level="75">
-                            <span class="skill-name">Git & Version Control</span>
-                            <div class="skill-bar">
-                                <div class="skill-progress"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item" data-level="70">
-                            <span class="skill-name">UWP (Windows IoT)</span>
-                            <div class="skill-bar">
-                                <div class="skill-progress"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Projects Section -->
-    <section id="projects" class="section projects">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title" data-aos="fade-up">Featured Projects</h2>
-                <p class="section-description" data-aos="fade-up" data-aos-delay="100">
-                    From industrial AI to cybersecurity research — systems built to solve real problems
-                </p>
-            </div>
-
-            <div class="projects-grid">
-                <div class="project-card project-card-featured" data-aos="fade-up" data-aos-delay="100">
-                    <div class="project-card-header">
-                        <div class="project-icon">
-                            <i class="fas fa-video"></i>
-                        </div>
-                        <div class="project-status status-ongoing">
-                            <span class="status-dot"></span> Ongoing
-                        </div>
-                    </div>
-                    <h3 class="project-title">AI-Based Surveillance System</h3>
-                    <p class="project-summary">Multi-domain intelligent surveillance platform covering traffic violation detection, industrial monitoring, and human security — powered by real-time YOLO-based detection pipelines.</p>
-                    <div class="project-details">
-                        <div class="project-detail-item">
-                            <span class="detail-label">Problem</span>
-                            <span class="detail-value">Traditional surveillance demands constant human oversight and suffers from delayed threat response across diverse environments.</span>
-                        </div>
-                        <div class="project-detail-item">
-                            <span class="detail-label">Solution</span>
-                            <span class="detail-value">Automated detection pipeline using YOLO inference capable of flagging violations and anomalies in real time across multiple camera feeds with low-latency edge deployment.</span>
-                        </div>
-                    </div>
-                    <div class="project-tags">
-                        <span class="project-tag">Python</span>
-                        <span class="project-tag">YOLO</span>
-                        <span class="project-tag">OpenCV</span>
-                        <span class="project-tag">PyTorch</span>
-                        <span class="project-tag">FastAPI</span>
-                        <span class="project-tag">Edge AI</span>
-                    </div>
-                </div>
-
-                <div class="project-card" data-aos="fade-up" data-aos-delay="200">
-                    <div class="project-card-header">
-                        <div class="project-icon">
-                            <i class="fas fa-network-wired"></i>
-                        </div>
-                        <div class="project-status status-published">
-                            <span class="status-dot"></span> Published Research
-                        </div>
-                    </div>
-                    <h3 class="project-title">ML-Based Network Security Model</h3>
-                    <p class="project-summary">Machine learning model for detecting malicious network packets in IoT environments based on behavioral markers — research published in Neuro Quantology (2022, DOI: 10.14704/nq.2022.20.9.NQ440121).</p>
-                    <div class="project-details">
-                        <div class="project-detail-item">
-                            <span class="detail-label">Problem</span>
-                            <span class="detail-value">IoT devices are inherently vulnerable; traditional intrusion detection tools are too resource-heavy for constrained endpoints.</span>
-                        </div>
-                        <div class="project-detail-item">
-                            <span class="detail-label">Solution</span>
-                            <span class="detail-value">Lightweight ML classifier trained on network traffic behavioral markers to identify and flag malicious packet patterns with minimal computational overhead.</span>
-                        </div>
-                    </div>
-                    <div class="project-tags">
-                        <span class="project-tag">Python</span>
-                        <span class="project-tag">Machine Learning</span>
-                        <span class="project-tag">Network Security</span>
-                        <span class="project-tag">IoT</span>
-                        <span class="project-tag">MQTT</span>
-                    </div>
-                </div>
-
-                <div class="project-card" data-aos="fade-up" data-aos-delay="300">
-                    <div class="project-card-header">
-                        <div class="project-icon">
-                            <i class="fas fa-moon"></i>
-                        </div>
-                        <div class="project-status status-completed">
-                            <span class="status-dot"></span> Completed
-                        </div>
-                    </div>
-                    <h3 class="project-title">Night Vision Perimeter Security</h3>
-                    <p class="project-summary">Night vision surveillance system built with OpenCV deployed on an unmanned ground vehicle for autonomous perimeter monitoring — BE final year project at SPPU.</p>
-                    <div class="project-details">
-                        <div class="project-detail-item">
-                            <span class="detail-label">Problem</span>
-                            <span class="detail-value">Low-light perimeter security requires expensive thermal hardware or constant human patrol — both impractical at scale.</span>
-                        </div>
-                        <div class="project-detail-item">
-                            <span class="detail-label">Solution</span>
-                            <span class="detail-value">IR-enhanced vision pipeline deployed on a mobile robotic platform capable of autonomous patrol routes and real-time intruder detection.</span>
-                        </div>
-                    </div>
-                    <div class="project-tags">
-                        <span class="project-tag">OpenCV</span>
-                        <span class="project-tag">Python</span>
-                        <span class="project-tag">Raspberry Pi</span>
-                        <span class="project-tag">C++</span>
-                        <span class="project-tag">IoT</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Publications Subsection -->
-            <div class="publications-section" data-aos="fade-up" data-aos-delay="400">
-                <h3 class="publications-title">
-                    <i class="fas fa-book-open"></i> Research Publications
-                </h3>
-                <div class="publications-list">
-                    <div class="publication-item">
-                        <div class="publication-icon">
-                            <i class="fas fa-file-alt"></i>
-                        </div>
-                        <div class="publication-content">
-                            <h4>Leveraging Potential of Industrial 4.0: A Comprehensive Analysis of Smart Manufacturing Technologies and Applications</h4>
-                            <p class="publication-meta">Bankar M., Budukh A., <strong>Pankhawala P.</strong> — <em>IPE Journal of Management</em>, ISSN 2249-9040, Vol. 14, No. 2, Jan–Jun 2024</p>
-                        </div>
-                    </div>
-                    <div class="publication-item">
-                        <div class="publication-icon">
-                            <i class="fas fa-file-alt"></i>
-                        </div>
-                        <div class="publication-content">
-                            <h4>Machine Learning Based Network Security in Internet of Things</h4>
-                            <p class="publication-meta"><strong>Pankhawala P.</strong>, Dr. Sirsikar S. — <em>Neuro Quantology</em>, DOI: 10.14704/nq.2022.20.9.NQ440121, 2022</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Certifications Section -->
-    <section id="certifications" class="section certifications">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title" data-aos="fade-up">Certifications</h2>
-                <p class="section-description" data-aos="fade-up" data-aos-delay="100">
-                    Continuous learning across AI, computer vision, and cybersecurity domains
-                </p>
-            </div>
-            <div class="certs-grid">
-                <div class="cert-card" data-aos="fade-up" data-aos-delay="100">
-                    <div class="cert-icon">
-                        <i class="fas fa-shield-alt"></i>
-                    </div>
-                    <div class="cert-content">
-                        <h4>AI for Cyber Security</h4>
-                        <p class="cert-org">LinkedIn Learning</p>
-                        <span class="cert-date">May 2026</span>
-                    </div>
-                </div>
-                <div class="cert-card" data-aos="fade-up" data-aos-delay="150">
-                    <div class="cert-icon">
-                        <i class="fas fa-eye"></i>
-                    </div>
-                    <div class="cert-content">
-                        <h4>OpenCV Bootcamp</h4>
-                        <p class="cert-org">OpenCV University</p>
-                        <span class="cert-date">Feb 2026</span>
-                    </div>
-                </div>
-                <div class="cert-card" data-aos="fade-up" data-aos-delay="200">
-                    <div class="cert-icon">
-                        <i class="fas fa-brain"></i>
-                    </div>
-                    <div class="cert-content">
-                        <h4>Vision Language Models (VLM) Bootcamp</h4>
-                        <p class="cert-org">OpenCV University</p>
-                        <span class="cert-date">Feb 2026</span>
-                    </div>
-                </div>
-                <div class="cert-card" data-aos="fade-up" data-aos-delay="250">
-                    <div class="cert-icon">
-                        <i class="fab fa-python"></i>
-                    </div>
-                    <div class="cert-content">
-                        <h4>Python using AI</h4>
-                        <p class="cert-org">AI for Techies</p>
-                        <span class="cert-date">Aug 2025</span>
-                    </div>
-                </div>
-                <div class="cert-card" data-aos="fade-up" data-aos-delay="300">
-                    <div class="cert-icon">
-                        <i class="fas fa-lock"></i>
-                    </div>
-                    <div class="cert-content">
-                        <h4>Fundamentals of Information Security</h4>
-                        <p class="cert-org">Infosys</p>
-                        <span class="cert-date">Mar 2023</span>
-                    </div>
-                </div>
-                <div class="cert-card" data-aos="fade-up" data-aos-delay="350">
-                    <div class="cert-icon">
-                        <i class="fas fa-terminal"></i>
-                    </div>
-                    <div class="cert-content">
-                        <h4>Python & Ethical Hacking from Scratch</h4>
-                        <p class="cert-org">Udemy</p>
-                        <span class="cert-date">Feb 2023</span>
-                    </div>
-                </div>
-                <div class="cert-card" data-aos="fade-up" data-aos-delay="400">
-                    <div class="cert-icon">
-                        <i class="fas fa-code"></i>
-                    </div>
-                    <div class="cert-content">
-                        <h4>Introduction to Programming — Python</h4>
-                        <p class="cert-org">Udemy</p>
-                        <span class="cert-date">Jan 2019</span>
-                    </div>
-                </div>
-                <div class="cert-card" data-aos="fade-up" data-aos-delay="450">
-                    <div class="cert-icon">
-                        <i class="fas fa-database"></i>
-                    </div>
-                    <div class="cert-content">
-                        <h4>SQL Fundamentals</h4>
-                        <p class="cert-org">SoloLearn</p>
-                        <span class="cert-date">Oct 2018</span>
-                    </div>
-                </div>
-                <div class="cert-card" data-aos="fade-up" data-aos-delay="500">
-                    <div class="cert-icon">
-                        <i class="fas fa-file-code"></i>
-                    </div>
-                    <div class="cert-content">
-                        <h4>C Programming</h4>
-                        <p class="cert-org">SEED Infotech Ltd</p>
-                        <span class="cert-date">Aug 2014</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contact" class="section contact">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title" data-aos="fade-up">Get In Touch</h2>
-                <p class="section-description" data-aos="fade-up" data-aos-delay="100">
-                    Open to roles in AI engineering, computer vision, or cybersecurity — let's build something secure and intelligent
-                </p>
-            </div>
-            <div class="contact-wrapper">
-                <div class="contact-info-section" data-aos="fade-right">
-                    <h3>Contact Information</h3>
-                    <div class="contact-info-list">
-                        <div class="contact-info-item">
-                            <div class="contact-info-icon">
-                                <i class="fas fa-envelope"></i>
-                            </div>
-                            <div class="contact-info-content">
-                                <h4>Email</h4>
-                                <a href="mailto:pranav.pankhawala@gmail.com">pranav.pankhawala@gmail.com</a>
-                            </div>
-                        </div>
-                        <div class="contact-info-item">
-                            <div class="contact-info-icon">
-                                <i class="fas fa-phone"></i>
-                            </div>
-                            <div class="contact-info-content">
-                                <h4>Phone</h4>
-                                <a href="tel:+918408069188">+91 8408069188</a>
-                            </div>
-                        </div>
-                        <div class="contact-info-item">
-                            <div class="contact-info-icon">
-                                <i class="fab fa-github"></i>
-                            </div>
-                            <div class="contact-info-content">
-                                <h4>GitHub</h4>
-                                <a href="https://github.com/pranavpankhawala" target="_blank" rel="noopener noreferrer">@pranavpankhawala</a>
-                            </div>
-                        </div>
-                        <div class="contact-info-item">
-                            <div class="contact-info-icon">
-                                <i class="fab fa-linkedin"></i>
-                            </div>
-                            <div class="contact-info-content">
-                                <h4>LinkedIn</h4>
-                                <a href="https://linkedin.com/in/pranavpankhawala" target="_blank" rel="noopener noreferrer">pranavpankhawala</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <form class="contact-form" id="contactForm" data-aos="fade-left">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="name">Your Name *</label>
-                            <input type="text" id="name" name="name" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="email">Your Email *</label>
-                            <input type="email" id="email" name="email" required>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="subject">Subject *</label>
-                        <input type="text" id="subject" name="subject" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="message">Message *</label>
-                        <textarea id="message" name="message" rows="5" required></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary btn-submit">
-                        <span class="btn-text">Send Message</span>
-                        <span class="btn-loader">
-                            <i class="fas fa-spinner fa-spin"></i>
-                        </span>
-                    </button>
-                    <div class="form-status" id="formStatus" role="alert" aria-live="polite"></div>
-                </form>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-brand">
-                    <img src="https://avatars.githubusercontent.com/u/36548613?v=4" alt="Pranav Pankhawala" loading="lazy">
-                    <h3>Pranav Pankhawala</h3>
-                    <p>AI Automation & Cybersecurity Engineer</p>
-                </div>
-                <div class="footer-links">
-                    <h4>Quick Links</h4>
-                    <ul>
-                        <li><a href="#about">About</a></li>
-                        <li><a href="#experience">Experience</a></li>
-                        <li><a href="#education">Education</a></li>
-                        <li><a href="#skills">Skills</a></li>
-                        <li><a href="#projects">Projects</a></li>
-                        <li><a href="#certifications">Certifications</a></li>
-                        <li><a href="#contact">Contact</a></li>
-                    </ul>
-                </div>
-                <div class="footer-social">
-                    <h4>Connect</h4>
-                    <div class="social-links">
-                        <a href="https://github.com/pranavpankhawala" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-                            <i class="fab fa-github"></i>
-                        </a>
-                        <a href="https://linkedin.com/in/pranavpankhawala" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-                            <i class="fab fa-linkedin"></i>
-                        </a>
-                        <a href="mailto:pranav.pankhawala@gmail.com" aria-label="Email">
-                            <i class="fas fa-envelope"></i>
-                        </a>
-                        <a href="tel:+918408069188" aria-label="Phone">
-                            <i class="fas fa-phone"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2026 Pranav Pankhawala. Built with <i class="fas fa-heart"></i> and code.</p>
-            </div>
-        </div>
-    </footer>
-
-    <!-- AI Chatbot Widget -->
-    <div class="chatbot-container" id="chatbot">
-        <div class="chatbot-header">
-            <div class="chatbot-avatar">
-                <i class="fas fa-robot"></i>
-            </div>
-            <div class="chatbot-info">
-                <h4>Portfolio Assistant</h4>
-                <p class="chatbot-status">Online</p>
-            </div>
-            <button class="chatbot-close" id="chatbotClose">
-                <i class="fas fa-times"></i>
+      <div class="contact-grid">
+        <aside class="hero-side reveal" style="padding-top:0">
+          <div class="status"><span class="dot"></span> Open to AI / Vision / Security roles</div>
+          <div class="mono" style="font-size:11px;color:var(--ink-3);line-height:1.7">
+            Best for:<br/>
+            // industrial AI &amp; computer vision<br/>
+            // edge-deployed ML systems<br/>
+            // VAPT &amp; security engineering<br/>
+            // R&amp;D collaborations
+          </div>
+        </aside>
+        <div class="contact-card reveal">
+          <h2>Let's build <em>secure, intelligent</em> systems.</h2>
+          <p>
+            Currently AI Automation Engineer at C4i4 Lab and open to roles in AI, computer vision,
+            and cybersecurity engineering — especially industrial automation, smart manufacturing
+            and autonomous-driving applications.
+          </p>
+          <div class="contact-actions">
+            <a href="mailto:pranav.pankhawala@gmail.com" class="btn btn-primary">
+              <svg class="i" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+              pranav.pankhawala@gmail.com
+            </a>
+            <button class="btn btn-ghost" id="copyEmail">
+              <svg class="i" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              Copy email
             </button>
-        </div>
-        <div class="chatbot-messages" id="chatbotMessages">
-            <div class="message bot-message">
-                <div class="message-avatar">
-                    <i class="fas fa-robot"></i>
-                </div>
-                <div class="message-content">
-                    <p>Hi! I'm Pranav's AI assistant. I can help you with:</p>
-                    <ul>
-                        <li>Work experience and career timeline</li>
-                        <li>AI & Computer Vision projects</li>
-                        <li>Cybersecurity skills & certifications</li>
-                        <li>Research publications</li>
-                        <li>Getting in touch</li>
-                    </ul>
-                    <p>How can I help you today?</p>
-                </div>
+          </div>
+          <div class="contact-channels">
+            <div class="channel">
+              <div class="k">Phone</div>
+              <a href="tel:+918408069188">+91 8408 069 188</a>
             </div>
+            <div class="channel">
+              <div class="k">Location</div>
+              <a href="#">Pune, India</a>
+            </div>
+            <div class="channel">
+              <div class="k">GitHub</div>
+              <a href="https://github.com/pranavpankhawala" target="_blank" rel="noopener">@pranavpankhawala</a>
+            </div>
+          </div>
         </div>
-        <div class="chatbot-quick-replies" id="chatbotQuickReplies">
-            <button class="quick-reply" data-message="Tell me about Pranav's AI and computer vision experience">AI Experience</button>
-            <button class="quick-reply" data-message="What are Pranav's cybersecurity skills?">Cybersecurity</button>
-            <button class="quick-reply" data-message="What are Pranav's featured projects?">Projects</button>
-            <button class="quick-reply" data-message="How can I contact Pranav?">Contact</button>
-        </div>
-        <form class="chatbot-input-form" id="chatbotForm">
-            <input type="text" class="chatbot-input" id="chatbotInput" placeholder="Type your message..." autocomplete="off">
-            <button type="submit" class="chatbot-send">
-                <i class="fas fa-paper-plane"></i>
-            </button>
-        </form>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<footer>
+  <div class="shell foot">
+    <div>© 2026 Pranav Pankhawala — Built with care in Pune</div>
+    <div style="display:flex; gap:18px;">
+      <a href="#top">Back to top ↑</a>
+      <a href="https://github.com/pranavpankhawala/pranavpankhawala.github.io" target="_blank" rel="noopener">Source</a>
+      <span class="mono" style="color:var(--ink-3)">v2.0 · redesigned</span>
     </div>
+  </div>
+</footer>
 
-    <!-- Chatbot Toggle Button -->
-    <button class="chatbot-toggle" id="chatbotToggle">
-        <i class="fas fa-robot"></i>
-        <span class="chatbot-notification">1</span>
-    </button>
+<!-- Command palette -->
+<div class="cmdk-backdrop" id="cmdk">
+  <div class="cmdk" role="dialog" aria-label="Command palette">
+    <div class="cmdk-input">
+      <svg class="i" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input type="text" id="cmdkInput" placeholder="Jump to a section, project, or contact…" autocomplete="off"/>
+      <kbd>esc</kbd>
+    </div>
+    <div class="cmdk-list" id="cmdkList"></div>
+  </div>
+</div>
 
-    <!-- Back to Top Button -->
-    <button class="back-to-top" id="backToTop" aria-label="Back to top">
-        <i class="fas fa-arrow-up"></i>
-    </button>
+<div class="toast" id="toast">
+  <svg class="i" viewBox="0 0 24 24" style="color: oklch(0.78 0.16 145)"><path d="m5 12 4 4 10-10"/></svg>
+  <span id="toastText">Copied</span>
+</div>
 
-    <!-- Scripts -->
-    <script src="script.js" defer></script>
-    <script src="timeline.js" defer></script>
-    <script src="chatbot.js" defer></script>
-    <script src="advanced-features.js" defer></script>
+<script>
+/* ----- Theme ----- */
+const themeBtn = document.getElementById('themeBtn');
+const themeIcon = document.getElementById('themeIcon');
+function setTheme(t) {
+  document.documentElement.setAttribute('data-theme', t);
+  localStorage.setItem('pp-theme', t);
+  themeIcon.innerHTML = t === 'dark'
+    ? '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>'
+    : '<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>';
+}
+setTheme(localStorage.getItem('pp-theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+themeBtn.addEventListener('click', () => {
+  setTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+});
+
+/* ----- Palette switcher ----- */
+const palBtn = document.getElementById('palBtn');
+const palPop = document.getElementById('palPop');
+const palOpts = document.querySelectorAll('.pal-opt');
+function setPalette(p) {
+  if (p && p !== 'forest') document.documentElement.setAttribute('data-palette', p);
+  else document.documentElement.removeAttribute('data-palette');
+  localStorage.setItem('pp-palette', p || 'forest');
+  palOpts.forEach(o => o.classList.toggle('active', o.dataset.pal === (p || 'forest')));
+}
+setPalette(localStorage.getItem('pp-palette') || 'forest');
+palBtn.addEventListener('click', e => {
+  e.stopPropagation();
+  palPop.classList.toggle('open');
+});
+palOpts.forEach(o => o.addEventListener('click', () => {
+  setPalette(o.dataset.pal);
+  showToast('Theme · ' + o.textContent.trim());
+  setTimeout(() => palPop.classList.remove('open'), 140);
+}));
+document.addEventListener('click', e => {
+  if (!palPop.contains(e.target) && !palBtn.contains(e.target)) palPop.classList.remove('open');
+});
+
+/* ----- Nav scroll state ----- */
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 4);
+}, { passive: true });
+
+/* ----- Mobile menu ----- */
+const menuBtn = document.getElementById('menuBtn');
+const navLinks = document.getElementById('navLinks');
+menuBtn.addEventListener('click', () => navLinks.classList.toggle('open'));
+navLinks.addEventListener('click', e => {
+  if (e.target.tagName === 'A') navLinks.classList.remove('open');
+});
+
+/* ----- Reveal on scroll ----- */
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }});
+}, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+/* ----- Project filter ----- */
+const filterBtns = document.querySelectorAll('.filters button');
+const projs = document.querySelectorAll('.proj');
+filterBtns.forEach(b => b.addEventListener('click', () => {
+  filterBtns.forEach(x => x.classList.remove('active'));
+  b.classList.add('active');
+  const f = b.dataset.filter;
+  projs.forEach(p => {
+    const show = f === 'all' || p.dataset.cat.split(' ').includes(f);
+    p.classList.toggle('hidden', !show);
+  });
+}));
+
+/* ----- View toggle ----- */
+const grid = document.getElementById('projectsGrid');
+document.getElementById('viewGrid').addEventListener('click', e => {
+  grid.classList.remove('list'); e.currentTarget.classList.add('active');
+  document.getElementById('viewList').classList.remove('active');
+});
+document.getElementById('viewList').addEventListener('click', e => {
+  grid.classList.add('list'); e.currentTarget.classList.add('active');
+  document.getElementById('viewGrid').classList.remove('active');
+});
+
+/* ----- Copy email ----- */
+function showToast(text) {
+  const t = document.getElementById('toast');
+  document.getElementById('toastText').textContent = text;
+  t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 1800);
+}
+document.getElementById('copyEmail').addEventListener('click', async () => {
+  try { await navigator.clipboard.writeText('pranav.pankhawala@gmail.com'); showToast('Email copied'); } catch {}
+});
+
+/* ----- Command palette ----- */
+const cmdk = document.getElementById('cmdk');
+const cmdkInput = document.getElementById('cmdkInput');
+const cmdkList = document.getElementById('cmdkList');
+const cmdkItems = [
+  { ic: '#', label: 'Go to Work', target: '#work', hint: '⏎' },
+  { ic: '#', label: 'Go to About', target: '#about', hint: '⏎' },
+  { ic: '#', label: 'Go to Capabilities', target: '#capabilities', hint: '⏎' },
+  { ic: '#', label: 'Go to Projects', target: '#projects', hint: '⏎' },
+  { ic: '#', label: 'Go to Publications', target: '#publications', hint: '⏎' },
+  { ic: '#', label: 'Go to Contact', target: '#contact', hint: '⏎' },
+  { ic: '@', label: 'Email Pranav', action: () => location.href = 'mailto:pranav.pankhawala@gmail.com', hint: 'mail' },
+  { ic: '☎', label: 'Call Pranav', action: () => location.href = 'tel:+918408069188', hint: 'tel' },
+  { ic: '↗', label: 'Open GitHub', action: () => window.open('https://github.com/pranavpankhawala','_blank'), hint: 'ext' },
+  { ic: '◐', label: 'Toggle theme', action: () => themeBtn.click(), hint: '⇧T' },
+];
+function renderCmdk(q = '') {
+  const filtered = cmdkItems.filter(i => i.label.toLowerCase().includes(q.toLowerCase()));
+  cmdkList.innerHTML = filtered.map((i, idx) => `
+    <div class="cmdk-item ${idx === 0 ? 'active' : ''}" data-idx="${cmdkItems.indexOf(i)}">
+      <span class="ic mono">${i.ic}</span>
+      <span>${i.label}</span>
+      <span class="hint">${i.hint}</span>
+    </div>`).join('') || '<div class="cmdk-item" style="opacity:.5">No results</div>';
+}
+function openCmdk() { cmdk.classList.add('open'); renderCmdk(); cmdkInput.value=''; cmdkInput.focus(); }
+function closeCmdk() { cmdk.classList.remove('open'); }
+document.getElementById('cmdkBtn').addEventListener('click', openCmdk);
+cmdkInput.addEventListener('input', e => renderCmdk(e.target.value));
+cmdkList.addEventListener('click', e => {
+  const item = e.target.closest('.cmdk-item');
+  if (!item) return;
+  const i = cmdkItems[+item.dataset.idx];
+  if (i.target) { location.hash = i.target; }
+  else if (i.action) { i.action(); }
+  closeCmdk();
+});
+cmdk.addEventListener('click', e => { if (e.target === cmdk) closeCmdk(); });
+window.addEventListener('keydown', e => {
+  if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); openCmdk(); }
+  else if (e.key === 'Escape') { closeCmdk(); navLinks.classList.remove('open'); }
+  else if (e.key === 'Enter' && cmdk.classList.contains('open')) {
+    const active = cmdkList.querySelector('.cmdk-item.active') || cmdkList.querySelector('.cmdk-item');
+    if (active) active.click();
+  }
+});
+</script>
 </body>
 </html>
