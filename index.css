@@ -382,14 +382,14 @@ h1, h2, h3, h4 { margin: 0; font-weight: 500; color: var(--ink); }
 .btn:hover .arrow { transform: translate(2px, -2px); }
 
 .nav-cta { white-space: nowrap; }
-.cmdk-trigger { width: auto; padding: 0 10px; gap: 6px; display: flex; align-items: center; }
+.icon-btn.cmdk-trigger { width: auto; padding: 0 10px; gap: 6px; display: flex; align-items: center; }
 .cmdk-shortcut {
   font-family: "JetBrains Mono", monospace; font-size: 10px;
   background: var(--chip-bg); color: var(--ink-3);
   padding: 2px 5px; border-radius: 4px; border: 1px solid var(--rule);
   white-space: nowrap; pointer-events: none;
 }
-@media (max-width: 1080px) { .cmdk-shortcut { display: none; } .cmdk-trigger { width: 36px; padding: 0; } }
+@media (max-width: 1080px) { .cmdk-shortcut { display: none; } .icon-btn.cmdk-trigger { width: 36px; padding: 0; } }
 .menu-btn { display: none; }
 @media (max-width: 880px) {
   .nav-links { display: none; }
