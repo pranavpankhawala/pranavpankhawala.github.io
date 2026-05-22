@@ -68,6 +68,55 @@ const navHIO = new IntersectionObserver(entries => {
 }, { rootMargin: '-40% 0px -55% 0px' });
 navSections.forEach(s => navHIO.observe(s));
 
+/* ----- Hero role cycle ----- */
+const heroRoles = ['AI Automation Engineer', 'Computer Vision Developer', 'Edge ML Engineer', 'Cybersecurity Researcher'];
+let heroRoleIdx = 0;
+const heroRoleEl = document.getElementById('heroRole');
+setInterval(() => {
+  heroRoleEl.classList.add('fade');
+  setTimeout(() => {
+    heroRoleIdx = (heroRoleIdx + 1) % heroRoles.length;
+    heroRoleEl.textContent = heroRoles[heroRoleIdx];
+    heroRoleEl.classList.remove('fade');
+  }, 280);
+}, 2800);
+
+/* ----- Animated counters ----- */
+function easeOutCubic(t) { return 1 - Math.pow(1 - t, 3); }
+function animateCount(el, target, duration) {
+  const start = performance.now();
+  (function tick(now) {
+    const p = Math.min((now - start) / duration, 1);
+    el.textContent = Math.round(easeOutCubic(p) * target);
+    if (p < 1) requestAnimationFrame(tick);
+  })(start);
+}
+const countEls = document.querySelectorAll('[data-count]');
+if (countEls.length) {
+  const countIO = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        animateCount(e.target, +e.target.dataset.count, 1000);
+        countIO.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.6 });
+  countEls.forEach(el => countIO.observe(el));
+}
+
+/* ----- Card tilt ----- */
+const projGrid = document.getElementById('projectsGrid');
+document.querySelectorAll('.proj').forEach(card => {
+  card.addEventListener('mousemove', e => {
+    if (projGrid.classList.contains('list')) return;
+    const r = card.getBoundingClientRect();
+    const x = (e.clientX - r.left) / r.width - 0.5;
+    const y = (e.clientY - r.top) / r.height - 0.5;
+    card.style.transform = `perspective(700px) rotateY(${x * 10}deg) rotateX(${-y * 8}deg) translateY(-3px)`;
+  });
+  card.addEventListener('mouseleave', () => { card.style.transform = ''; });
+});
+
 /* ----- Reveal on scroll ----- */
 const io = new IntersectionObserver(entries => {
   entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }});
