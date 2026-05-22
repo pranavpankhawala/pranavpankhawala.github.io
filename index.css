@@ -668,7 +668,7 @@ section.block:first-of-type { border-top: 0; }
   color: var(--ink-3);
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  margin-bottom: 14px;
+  margin-bottom: 20px;
 }
 @media (max-width: 720px) {
   .skills-grid { grid-template-columns: 1fr; }
@@ -677,57 +677,45 @@ section.block:first-of-type { border-top: 0; }
 }
 
 /* ---------- Certifications ---------- */
-.cert-list {
-  border-top: 1px solid var(--rule);
-}
-.cert-header {
+.cert-grid {
   display: grid;
-  grid-template-columns: 1fr 180px 120px;
-  gap: 24px;
-  padding: 10px 0;
-  border-bottom: 1px solid var(--rule);
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+.cert-card {
+  border: 1px solid var(--rule);
+  border-radius: 14px;
+  padding: 20px;
+  background: var(--bg-elev);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: transform 240ms cubic-bezier(.2,.7,.2,1), box-shadow 240ms ease, border-color 240ms ease;
+}
+.cert-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-lift); border-color: var(--ink-3); }
+.cert-card-platform {
   font-family: "JetBrains Mono", monospace;
   font-size: 10.5px;
-  color: var(--ink-3);
   text-transform: uppercase;
   letter-spacing: 0.1em;
+  color: var(--accent);
 }
-.cert-row {
-  display: grid;
-  grid-template-columns: 1fr 180px 120px;
-  gap: 24px;
-  padding: 14px 0;
-  border-bottom: 1px solid var(--rule-2);
-  align-items: center;
-  border-radius: 0;
-  transition: background 200ms ease, padding 200ms ease;
-  cursor: default;
-  position: relative;
+.cert-card-name {
+  font-size: 14.5px;
+  color: var(--ink);
+  font-weight: 500;
+  line-height: 1.35;
+  flex: 1;
 }
-.cert-row::before {
-  content: "";
-  position: absolute;
-  left: -16px; right: -16px; top: 0; bottom: 0;
-  background: var(--chip-bg);
-  opacity: 0;
-  transition: opacity 200ms ease;
-  pointer-events: none;
-  border-radius: 10px;
-  z-index: -1;
-}
-.cert-row:hover::before { opacity: 0.8; }
-.cert-name { font-size: 14.5px; color: var(--ink); }
-.cert-platform { font-size: 13.5px; color: var(--ink-2); }
-.cert-date {
+.cert-card-date {
   font-family: "JetBrains Mono", monospace;
-  font-size: 12px;
+  font-size: 11px;
   color: var(--ink-3);
+  margin-top: 4px;
 }
-@media (max-width: 720px) {
-  .cert-header { display: none; }
-  .cert-row { grid-template-columns: 1fr; gap: 4px; }
-  .cert-platform, .cert-date { font-size: 12.5px; color: var(--ink-3); }
-}
+@media (max-width: 1080px) { .cert-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 720px) { .cert-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 480px) { .cert-grid { grid-template-columns: 1fr; } }
 
 /* ---------- Interests / Hobbies ---------- */
 .hobbies-grid {
@@ -740,27 +728,19 @@ section.block:first-of-type { border-top: 0; }
   border-radius: 16px;
   padding: 28px 24px;
   background: var(--bg-elev);
+  display: flex;
+  align-items: center;
   transition: transform 240ms cubic-bezier(.2,.7,.2,1), box-shadow 240ms ease, border-color 240ms ease;
 }
 .hobby-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lift); border-color: var(--ink-3); }
-.hobby-glyph {
-  font-family: "Instrument Serif", serif;
-  font-style: italic;
-  font-size: 52px;
-  color: var(--accent);
-  opacity: 0.55;
-  margin-bottom: 12px;
-  line-height: 1;
-}
 .hobby-card h3 {
   font-family: "Instrument Serif", serif;
   font-weight: 400;
-  font-size: 20px;
-  margin-bottom: 8px;
+  font-size: 22px;
   letter-spacing: -0.005em;
   color: var(--ink);
+  margin: 0;
 }
-.hobby-card p { font-size: 13.5px; color: var(--ink-2); margin: 0; line-height: 1.55; }
 @media (max-width: 1080px) { .hobbies-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 600px) { .hobbies-grid { grid-template-columns: 1fr; } }
 
