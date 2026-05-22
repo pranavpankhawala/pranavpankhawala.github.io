@@ -48,6 +48,7 @@ window.addEventListener('scroll', () => {
   nav.classList.toggle('scrolled', window.scrollY > 4);
   const pct = window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100;
   scrollProg.style.width = pct + '%';
+  backToTop.classList.toggle('visible', window.scrollY > 400);
 }, { passive: true });
 backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
@@ -154,7 +155,9 @@ cmdkList.addEventListener('click', e => {
 });
 cmdk.addEventListener('click', e => { if (e.target === cmdk) closeCmdk(); });
 window.addEventListener('keydown', e => {
-  if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); openCmdk(); }
+  const tag = document.activeElement.tagName;
+  const editable = tag === 'INPUT' || tag === 'TEXTAREA' || document.activeElement.isContentEditable;
+  if (e.key === 's' && !editable && !e.metaKey && !e.ctrlKey && !e.altKey) { e.preventDefault(); openCmdk(); }
   else if (e.key === 'Escape') { closeCmdk(); navLinks.classList.remove('open'); document.querySelectorAll('.proj.flipped').forEach(c => c.classList.remove('flipped')); }
   else if (e.key === 'Enter' && cmdk.classList.contains('open')) {
     const active = cmdkList.querySelector('.cmdk-item.active') || cmdkList.querySelector('.cmdk-item');
