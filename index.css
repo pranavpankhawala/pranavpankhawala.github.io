@@ -367,16 +367,9 @@ section.block:first-of-type { border-top: 0; }
 /* ---------- Hero ---------- */
 .hero { padding: 56px 0 96px; position: relative; }
 
-.hero-ident { margin-bottom: 40px; }
-.hero-ident-name {
-  font-size: 17px; font-weight: 600; color: var(--ink); line-height: 1.2;
-}
-.hero-ident-role {
-  font-family: "JetBrains Mono", monospace; font-size: 11px;
-  color: var(--ink-3); letter-spacing: 0.05em; margin: 4px 0 16px;
-}
 .hero-inline-meta {
   display: flex; align-items: center; gap: 24px; flex-wrap: wrap;
+  margin-bottom: 40px;
 }
 .hero-inline-meta .hero-meta {
   display: flex; gap: 20px; flex-wrap: wrap;
