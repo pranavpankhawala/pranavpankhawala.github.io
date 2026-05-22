@@ -37,14 +37,17 @@ document.addEventListener('click', e => {
   if (!palPop.contains(e.target) && !palBtn.contains(e.target)) palPop.classList.remove('open');
 });
 
-/* ----- Nav scroll state + scroll progress ----- */
+/* ----- Nav scroll state + scroll progress + back to top ----- */
 const nav = document.getElementById('nav');
 const scrollProg = document.getElementById('scroll-progress');
+const backToTop = document.getElementById('backToTop');
 window.addEventListener('scroll', () => {
   nav.classList.toggle('scrolled', window.scrollY > 4);
   const pct = window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100;
   scrollProg.style.width = pct + '%';
+  backToTop.classList.toggle('visible', window.scrollY > 300);
 }, { passive: true });
+backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
 /* ----- Mobile menu ----- */
 const menuBtn = document.getElementById('menuBtn');

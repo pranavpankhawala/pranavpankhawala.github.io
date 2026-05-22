@@ -234,9 +234,34 @@ html { scroll-behavior: smooth; }
 
 /* ---------- Scroll progress ---------- */
 #scroll-progress {
-  position: fixed; top: 0; left: 0; height: 2px; width: 0%;
-  background: var(--accent); z-index: 200;
-  transition: width 80ms linear; pointer-events: none;
+  position: fixed; top: 0; left: 0; height: 3px; width: 0%;
+  background: linear-gradient(90deg, var(--accent), color-mix(in oklch, var(--accent) 70%, white));
+  box-shadow: 0 0 8px 1px color-mix(in oklch, var(--accent) 60%, transparent);
+  border-radius: 0 2px 2px 0;
+  z-index: 200;
+  transition: width 80ms linear;
+  pointer-events: none;
+}
+
+/* ---------- Back to top ---------- */
+.back-to-top {
+  position: fixed; bottom: 24px; right: 24px;
+  width: 40px; height: 40px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--bg-elev); color: var(--ink-2);
+  border: 1px solid var(--rule); border-radius: 12px;
+  box-shadow: var(--shadow);
+  cursor: pointer; z-index: 90;
+  opacity: 0; transform: translateY(8px);
+  transition: opacity 240ms ease, transform 240ms ease, background 160ms ease, color 160ms ease;
+  pointer-events: none;
+}
+.back-to-top.visible {
+  opacity: 1; transform: none; pointer-events: auto;
+}
+.back-to-top:hover {
+  background: var(--chip-bg); color: var(--accent);
+  transform: translateY(-2px);
 }
 body {
   margin: 0;
