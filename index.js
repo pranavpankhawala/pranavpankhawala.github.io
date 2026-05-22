@@ -155,7 +155,7 @@ cmdkList.addEventListener('click', e => {
 cmdk.addEventListener('click', e => { if (e.target === cmdk) closeCmdk(); });
 window.addEventListener('keydown', e => {
   if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); openCmdk(); }
-  else if (e.key === 'Escape') { closeCmdk(); navLinks.classList.remove('open'); closeProjectModal(); }
+  else if (e.key === 'Escape') { closeCmdk(); navLinks.classList.remove('open'); document.querySelectorAll('.proj.flipped').forEach(c => c.classList.remove('flipped')); }
   else if (e.key === 'Enter' && cmdk.classList.contains('open')) {
     const active = cmdkList.querySelector('.cmdk-item.active') || cmdkList.querySelector('.cmdk-item');
     if (active) active.click();
@@ -256,49 +256,35 @@ const projectDetails = {
   },
 };
 
-const projModal = document.getElementById('projModal');
-const modalContent = document.getElementById('modalContent');
-
-function openProjectModal(id) {
+function buildProjectBack(card) {
+  const id = card.dataset.projectId;
   const d = projectDetails[id];
   if (!d) return;
-  modalContent.innerHTML = `
-    <div class="modal-header">
-      <div class="modal-glyph">${d.glyph}</div>
-      <div>
-        <div class="modal-label">${d.label}</div>
-        <h2 class="modal-title" id="modalTitle">${d.title}</h2>
-        ${d.badge ? `<span class="badge">${d.badge}</span>` : ''}
-      </div>
+  const back = card.querySelector('.proj-back');
+  back.innerHTML = `
+    <button class="icon-btn proj-flip-close" aria-label="Flip back">
+      <svg class="i" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+    <div class="proj-back-label">${d.label}${d.badge ? ' · ' + d.badge : ''}</div>
+    <h3 class="proj-back-title">${d.title}</h3>
+    <div>
+      <div class="proj-back-section-label">Highlights</div>
+      <ul class="proj-back-highlights">${d.highlights.map(h => `<li>${h}</li>`).join('')}</ul>
     </div>
-    <div class="tagrow" style="margin-bottom:24px">${d.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
-    <div class="modal-sections">
-      <div><div class="modal-section-label">Problem</div><div class="modal-section-body">${d.problem}</div></div>
-      <div><div class="modal-section-label">Approach</div><div class="modal-section-body">${d.approach}</div></div>
-      <div><div class="modal-section-label">Outcome</div><div class="modal-section-body">${d.outcome}</div></div>
-    </div>
-    <ul class="modal-highlights">${d.highlights.map(h => `<li>${h}</li>`).join('')}</ul>
-    <div class="modal-links">${d.links.map(l =>
-      `<a href="${l.href}" target="_blank" rel="noopener noreferrer" class="btn btn-ghost">${l.label}<svg class="i arrow" viewBox="0 0 24 24" width="13" height="13"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg></a>`
+    <div class="tagrow">${d.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
+    <div class="proj-back-links">${d.links.map(l =>
+      `<a href="${l.href}" target="_blank" rel="noopener noreferrer" class="btn btn-ghost" style="font-size:12px">${l.label}<svg class="i arrow" viewBox="0 0 24 24" width="12" height="12"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg></a>`
     ).join('')}</div>`;
-  projModal.classList.add('open');
-  projModal.removeAttribute('aria-hidden');
-  document.body.classList.add('modal-open');
-  document.getElementById('modalClose').focus();
-}
-
-function closeProjectModal() {
-  if (!projModal.classList.contains('open')) return;
-  projModal.classList.remove('open');
-  projModal.setAttribute('aria-hidden', 'true');
-  document.body.classList.remove('modal-open');
+  back.querySelector('.proj-flip-close').addEventListener('click', e => {
+    e.stopPropagation();
+    card.classList.remove('flipped');
+  });
 }
 
 document.querySelectorAll('.proj[data-project-id]').forEach(card => {
+  buildProjectBack(card);
   card.addEventListener('click', e => {
-    if (e.target.closest('a')) return;
-    openProjectModal(card.dataset.projectId);
+    if (e.target.closest('a') || e.target.closest('.proj-flip-close')) return;
+    card.classList.toggle('flipped');
   });
 });
-document.getElementById('modalClose').addEventListener('click', closeProjectModal);
-projModal.addEventListener('click', e => { if (e.target === projModal) closeProjectModal(); });
