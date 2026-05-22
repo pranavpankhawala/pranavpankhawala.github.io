@@ -155,7 +155,7 @@ cmdkList.addEventListener('click', e => {
 cmdk.addEventListener('click', e => { if (e.target === cmdk) closeCmdk(); });
 window.addEventListener('keydown', e => {
   if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); openCmdk(); }
-  else if (e.key === 'Escape') { closeCmdk(); navLinks.classList.remove('open'); }
+  else if (e.key === 'Escape') { closeCmdk(); navLinks.classList.remove('open'); document.querySelectorAll('.proj.flipped').forEach(c => c.classList.remove('flipped')); }
   else if (e.key === 'Enter' && cmdk.classList.contains('open')) {
     const active = cmdkList.querySelector('.cmdk-item.active') || cmdkList.querySelector('.cmdk-item');
     if (active) active.click();
@@ -256,16 +256,48 @@ const projectDetails = {
   },
 };
 
-/* ----- Project card highlights ----- */
+/* ----- Project cards: highlights (list view) + flip (grid view) ----- */
 document.querySelectorAll('.proj[data-project-id]').forEach(card => {
   const d = projectDetails[card.dataset.projectId];
   if (!d) return;
+
+  // Populate list-view inline content (CSS hides these in grid)
   const ul = card.querySelector('.proj-highlights');
   if (ul) ul.innerHTML = d.highlights.map(h => `<li>${h}</li>`).join('');
   const linksEl = card.querySelector('.proj-links');
   if (linksEl) linksEl.innerHTML = d.links.map(l =>
     `<a href="${l.href}" target="_blank" rel="noopener noreferrer" class="btn btn-ghost" style="font-size:12px;height:30px">${l.label}<svg class="i arrow" viewBox="0 0 24 24" width="12" height="12"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg></a>`
   ).join('');
+
+  // Build back face for grid flip
+  const back = card.querySelector('.proj-back');
+  if (back) {
+    back.innerHTML = `
+      <button class="icon-btn proj-flip-close" aria-label="Flip back">
+        <svg class="i" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+      <div class="proj-back-label">${d.label}${d.badge ? ' · ' + d.badge : ''}</div>
+      <h3 class="proj-back-title">${d.title}</h3>
+      <div>
+        <div class="proj-back-section-label">Highlights</div>
+        <ul class="proj-back-highlights">${d.highlights.map(h => `<li>${h}</li>`).join('')}</ul>
+      </div>
+      <div class="tagrow">${d.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
+      <div class="proj-back-links">${d.links.map(l =>
+        `<a href="${l.href}" target="_blank" rel="noopener noreferrer" class="btn btn-ghost" style="font-size:12px">${l.label}<svg class="i arrow" viewBox="0 0 24 24" width="12" height="12"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg></a>`
+      ).join('')}</div>`;
+    back.querySelector('.proj-flip-close').addEventListener('click', e => {
+      e.stopPropagation();
+      card.classList.remove('flipped');
+    });
+  }
+
+  // Flip on click — grid view only
+  card.addEventListener('click', e => {
+    if (e.target.closest('a') || e.target.closest('.proj-flip-close')) return;
+    if (card.closest('.projects.list')) return;
+    card.classList.toggle('flipped');
+  });
 });
 
 /* ----- Section dots TOC ----- */
