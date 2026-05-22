@@ -37,10 +37,13 @@ document.addEventListener('click', e => {
   if (!palPop.contains(e.target) && !palBtn.contains(e.target)) palPop.classList.remove('open');
 });
 
-/* ----- Nav scroll state ----- */
+/* ----- Nav scroll state + scroll progress ----- */
 const nav = document.getElementById('nav');
+const scrollProg = document.getElementById('scroll-progress');
 window.addEventListener('scroll', () => {
   nav.classList.toggle('scrolled', window.scrollY > 4);
+  const pct = window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100;
+  scrollProg.style.width = pct + '%';
 }, { passive: true });
 
 /* ----- Mobile menu ----- */
@@ -50,6 +53,17 @@ menuBtn.addEventListener('click', () => navLinks.classList.toggle('open'));
 navLinks.addEventListener('click', e => {
   if (e.target.tagName === 'A') navLinks.classList.remove('open');
 });
+
+/* ----- Active nav highlight ----- */
+const navSections = document.querySelectorAll('section[id]');
+const navLinkEls = document.querySelectorAll('.nav-links a[href^="#"]');
+const navHIO = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    const link = document.querySelector(`.nav-links a[href="#${e.target.id}"]`);
+    if (link) link.classList.toggle('active', e.isIntersecting);
+  });
+}, { rootMargin: '-40% 0px -55% 0px' });
+navSections.forEach(s => navHIO.observe(s));
 
 /* ----- Reveal on scroll ----- */
 const io = new IntersectionObserver(entries => {
@@ -101,10 +115,14 @@ const cmdkItems = [
   { ic: '#', label: 'Go to Capabilities', target: '#capabilities', hint: '⏎' },
   { ic: '#', label: 'Go to Projects', target: '#projects', hint: '⏎' },
   { ic: '#', label: 'Go to Publications', target: '#publications', hint: '⏎' },
+  { ic: '#', label: 'Go to Skills', target: '#skills', hint: '⏎' },
+  { ic: '#', label: 'Go to Certifications', target: '#certifications', hint: '⏎' },
+  { ic: '#', label: 'Go to Interests', target: '#interests', hint: '⏎' },
   { ic: '#', label: 'Go to Contact', target: '#contact', hint: '⏎' },
   { ic: '@', label: 'Email Pranav', action: () => location.href = 'mailto:pranav.pankhawala@gmail.com', hint: 'mail' },
   { ic: '☎', label: 'Call Pranav', action: () => location.href = 'tel:+918408069188', hint: 'tel' },
   { ic: '↗', label: 'Open GitHub', action: () => window.open('https://github.com/pranavpankhawala','_blank'), hint: 'ext' },
+  { ic: '↗', label: 'Open LinkedIn', action: () => window.open('https://www.linkedin.com/in/pranavpankhawala','_blank'), hint: 'ext' },
   { ic: '↓', label: 'Download Resume', action: () => { const a = document.createElement('a'); a.href = 'resume.pdf'; a.download = ''; a.click(); }, hint: 'pdf' },
   { ic: '◐', label: 'Toggle theme', action: () => themeBtn.click(), hint: '⇧T' },
 ];

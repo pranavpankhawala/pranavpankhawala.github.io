@@ -5,14 +5,23 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Pranav Pankhawala — AI Automation & Cybersecurity Engineer</title>
 <meta name="description" content="Pranav Pankhawala — AI automation & cybersecurity engineer building secure, real-time computer-vision systems for industrial environments." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://pranavpankhawala.github.io" />
+<meta property="og:title" content="Pranav Pankhawala — AI Automation & Cybersecurity Engineer" />
+<meta property="og:description" content="AI & cybersecurity engineer building secure, real-time computer-vision systems for industrial automation. CNNs and YOLO on the edge." />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Pranav Pankhawala — AI Automation & Cybersecurity Engineer" />
+<meta name="twitter:description" content="AI & cybersecurity engineer building secure, real-time computer-vision systems for industrial automation." />
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Geist:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="index.css" />
+<link rel="stylesheet" href="index.css?v=11" />
 
 </head>
 <body data-screen-label="Portfolio">
+
+<div id="scroll-progress"></div>
 
 <!-- NAV -->
 <nav class="nav" id="nav">
@@ -22,6 +31,17 @@
       <span>
         Pranav Pankhawala
         <small>AI &amp; Cybersecurity Engineer</small>
+        <span class="brand-meta">
+          <span class="brand-meta-row">
+            <span class="brand-dot"></span>Available for select work
+          </span>
+          <span class="brand-meta-row">
+            <span class="brand-meta-key">Role</span>AI / Cyber Security
+          </span>
+          <span class="brand-meta-row">
+            <span class="brand-meta-key">Based</span>Pune, India
+          </span>
+        </span>
       </span>
     </a>
     <div class="nav-links" id="navLinks">
@@ -30,6 +50,9 @@
       <a href="#capabilities">Capabilities</a>
       <a href="#projects">Projects</a>
       <a href="#publications">Publications</a>
+      <a href="#skills">Skills</a>
+      <a href="#certifications">Certs</a>
+      <a href="#interests">Interests</a>
       <a href="#contact">Contact</a>
     </div>
     <div class="nav-actions">
@@ -80,51 +103,37 @@
 
     <!-- HERO -->
     <section class="hero">
-      <div class="hero-grid">
-        <aside class="hero-side reveal">
-          <div class="status">
-            <span class="dot"></span>
-            Available for select work
-          </div>
-          <div class="hero-meta">
-            <div class="row"><span>Role</span><span>AI / Cybersec</span></div>
-            <div class="row"><span>Based</span><span>Pune, India</span></div>
-            <div class="row"><span>Tz</span><span>GMT+5:30</span></div>
-            <div class="row"><span>Since</span><span>2018</span></div>
-          </div>
-        </aside>
-        <div class="hero-main reveal">
-          <h1>
-            Secure, scalable,<br/>
-            <em>real-time</em> intelligent<br/>
-            systems.
-          </h1>
-          <p class="lede">
-            I'm <strong>Pranav</strong> — an AI&nbsp;Automation &amp; Cybersecurity Engineer
-            building computer-vision systems for industrial automation,
-            smart manufacturing, and autonomous driving. CNNs and YOLO on the edge;
-            secure-by-design from network up.
-          </p>
-          <div class="hero-cta">
-            <a href="#projects" class="btn btn-primary">
-              See selected work
-              <svg class="i arrow" viewBox="0 0 24 24" width="14" height="14"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg>
-            </a>
-            <a href="#contact" class="btn btn-ghost">
-              Start a project
-            </a>
-            <a href="resume.pdf" download class="btn btn-ghost">
-              <svg class="i" viewBox="0 0 24 24" width="14" height="14"><path d="M12 2v13"/><path d="m7 12 5 5 5-5"/><path d="M5 20h14"/></svg>
-              Download Resume
-            </a>
-          </div>
+      <div class="hero-main reveal">
+        <h1>
+          Secure, scalable,<br/>
+          <em>real-time</em> intelligent<br/>
+          systems.
+        </h1>
+        <p class="lede">
+          AI&nbsp;Automation &amp; Cybersecurity Engineer building computer-vision systems
+          for industrial automation, smart manufacturing, and autonomous driving —
+          CNNs and YOLO on the edge, secure-by-design from network up.
+        </p>
+        <div class="hero-cta">
+          <a href="#projects" class="btn btn-primary">
+            See selected work
+            <svg class="i arrow" viewBox="0 0 24 24" width="14" height="14"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg>
+          </a>
+          <a href="#contact" class="btn btn-ghost">
+            Start a project
+          </a>
+          <a href="resume.pdf" download class="btn btn-ghost">
+            <svg class="i" viewBox="0 0 24 24" width="14" height="14"><path d="M12 2v13"/><path d="m7 12 5 5 5-5"/><path d="M5 20h14"/></svg>
+            Download Resume
+          </a>
+        </div>
 
-          <div class="hero-ticker">
-            <div class="ticker-cell"><div class="k">Focus</div><div class="v">Vision · AI · Security</div></div>
-            <div class="ticker-cell"><div class="k">Stack</div><div class="v">PyTorch · YOLO</div></div>
-            <div class="ticker-cell"><div class="k">Edge</div><div class="v">Jetson · Pi</div></div>
-            <div class="ticker-cell"><div class="k">Papers</div><div class="v">2<small>published</small></div></div>
-          </div>
+        <div class="hero-ticker">
+          <div class="ticker-cell"><div class="k">Focus</div><div class="v">Vision · AI · Security</div></div>
+          <div class="ticker-cell"><div class="k">Stack</div><div class="v">PyTorch · YOLO</div></div>
+          <div class="ticker-cell"><div class="k">Edge</div><div class="v">Jetson · Pi</div></div>
+          <div class="ticker-cell"><div class="k">Papers</div><div class="v">2<small>published</small></div></div>
+          <div class="ticker-cell"><div class="k">Currently</div><div class="v">C4i4 Lab</div></div>
         </div>
       </div>
     </section>
@@ -137,6 +146,7 @@
       </div>
       <div class="about-grid reveal">
         <aside class="about-side">
+          <div class="about-avatar">PP</div>
           <div>// bio</div>
         </aside>
         <div class="about-body">
@@ -413,7 +423,7 @@
             <div class="proj-meta">
               <span>Self · Ongoing</span>
               <div class="links">
-                <a href="#" aria-label="GitHub"><svg class="i" viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 7.77 5.07 5.07 0 0 0 19.91 4S18.73 3.65 16 5.48a13.38 13.38 0 0 0-7 0C6.27 3.65 5.09 4 5.09 4A5.07 5.07 0 0 0 5 7.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 21.13V25"/></svg></a>
+                <a href="https://github.com/pranavpankhawala" target="_blank" rel="noopener" aria-label="GitHub"><svg class="i" viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 7.77 5.07 5.07 0 0 0 19.91 4S18.73 3.65 16 5.48a13.38 13.38 0 0 0-7 0C6.27 3.65 5.09 4 5.09 4A5.07 5.07 0 0 0 5 7.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 21.13V25"/></svg></a>
               </div>
             </div>
           </div>
@@ -457,7 +467,7 @@
             <div class="proj-meta">
               <span>B.E. · 2020</span>
               <div class="links">
-                <a href="#" aria-label="Source"><svg class="i" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></a>
+                <a href="https://github.com/pranavpankhawala" target="_blank" rel="noopener" aria-label="GitHub"><svg class="i" viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 7.77 5.07 5.07 0 0 0 19.91 4S18.73 3.65 16 5.48a13.38 13.38 0 0 0-7 0C6.27 3.65 5.09 4 5.09 4A5.07 5.07 0 0 0 5 7.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 21.13V25"/></svg></a>
               </div>
             </div>
           </div>
@@ -510,10 +520,185 @@
       </div>
     </section>
 
+    <!-- SKILLS -->
+    <section class="block" id="skills">
+      <div class="section-head">
+        <div class="eyebrow"><span class="mono">06</span> Skills</div>
+        <h2>Hands-on expertise across <em>AI, security</em> &amp; systems.</h2>
+      </div>
+      <div class="skills-grid reveal">
+        <div class="skill-cat">
+          <div class="skill-cat-name">Cybersecurity &amp; Hacking</div>
+          <div class="tagrow">
+            <span class="tag accent">OWASP</span>
+            <span class="tag">Penetration Testing</span>
+            <span class="tag">Red Teaming</span>
+            <span class="tag">VAPT</span>
+            <span class="tag">Vulnerability Scanning</span>
+            <span class="tag">Social Engineering</span>
+            <span class="tag">Ethical Hacking</span>
+            <span class="tag">Network Security</span>
+            <span class="tag">Information Security</span>
+          </div>
+        </div>
+        <div class="skill-cat">
+          <div class="skill-cat-name">AI &amp; Machine Learning</div>
+          <div class="tagrow">
+            <span class="tag accent">PyTorch</span>
+            <span class="tag">Artificial Intelligence</span>
+            <span class="tag">Machine Learning</span>
+            <span class="tag">Computer Vision</span>
+            <span class="tag">CNN</span>
+            <span class="tag">Deep Learning</span>
+          </div>
+        </div>
+        <div class="skill-cat">
+          <div class="skill-cat-name">Computer Vision &amp; Frameworks</div>
+          <div class="tagrow">
+            <span class="tag accent">YOLO</span>
+            <span class="tag">OpenCV</span>
+            <span class="tag">Pose Estimation</span>
+            <span class="tag">MediaPipe</span>
+            <span class="tag">Edge Detection</span>
+            <span class="tag">Contour Analysis</span>
+          </div>
+        </div>
+        <div class="skill-cat">
+          <div class="skill-cat-name">Networking &amp; IoT</div>
+          <div class="tagrow">
+            <span class="tag">Internet of Things</span>
+            <span class="tag">MQTT</span>
+            <span class="tag">Network Protocols</span>
+          </div>
+        </div>
+        <div class="skill-cat">
+          <div class="skill-cat-name">Operating Systems &amp; Platforms</div>
+          <div class="tagrow">
+            <span class="tag">Linux</span>
+            <span class="tag">Kali Linux</span>
+            <span class="tag">Universal Windows Platform</span>
+            <span class="tag">Windows 10 IoT Core</span>
+          </div>
+        </div>
+        <div class="skill-cat">
+          <div class="skill-cat-name">Web &amp; API Development</div>
+          <div class="tagrow">
+            <span class="tag">FastAPI</span>
+            <span class="tag">Flask</span>
+            <span class="tag">Django</span>
+            <span class="tag">REST APIs</span>
+          </div>
+        </div>
+        <div class="skill-cat">
+          <div class="skill-cat-name">Programming Languages</div>
+          <div class="tagrow">
+            <span class="tag accent">Python</span>
+            <span class="tag">C / C++</span>
+            <span class="tag">C#</span>
+            <span class="tag">JavaScript</span>
+            <span class="tag">SQL</span>
+            <span class="tag">Java</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CERTIFICATIONS -->
+    <section class="block" id="certifications">
+      <div class="section-head">
+        <div class="eyebrow"><span class="mono">07</span> Certifications</div>
+        <h2>Continuously learning across <em>AI, vision</em> &amp; security.</h2>
+      </div>
+      <div class="cert-grid reveal">
+        <div class="cert-card">
+          <div class="cert-card-platform">LinkedIn Learning</div>
+          <div class="cert-card-name">AI for Cyber Security</div>
+          <div class="cert-card-date">May 2026</div>
+        </div>
+        <div class="cert-card">
+          <div class="cert-card-platform">OpenCV University</div>
+          <div class="cert-card-name">OpenCV Bootcamp</div>
+          <div class="cert-card-date">Feb 2026</div>
+        </div>
+        <div class="cert-card">
+          <div class="cert-card-platform">OpenCV University</div>
+          <div class="cert-card-name">Vision Language Models (VLM) Bootcamp</div>
+          <div class="cert-card-date">Feb 2026</div>
+        </div>
+        <div class="cert-card">
+          <div class="cert-card-platform">AI for Techies</div>
+          <div class="cert-card-name">Python using AI</div>
+          <div class="cert-card-date">Aug 2025</div>
+        </div>
+        <div class="cert-card">
+          <div class="cert-card-platform">Infosys</div>
+          <div class="cert-card-name">Fundamentals of Information Security</div>
+          <div class="cert-card-date">Mar 2023</div>
+        </div>
+        <div class="cert-card">
+          <div class="cert-card-platform">Udemy</div>
+          <div class="cert-card-name">Learn Python and Ethical Hacking from Scratch</div>
+          <div class="cert-card-date">Feb 2023</div>
+        </div>
+        <div class="cert-card">
+          <div class="cert-card-platform">Solo Learn</div>
+          <div class="cert-card-name">C Tutorial Course</div>
+          <div class="cert-card-date">Jun 2019</div>
+        </div>
+        <div class="cert-card">
+          <div class="cert-card-platform">Udemy</div>
+          <div class="cert-card-name">Introduction to Programming Using Python</div>
+          <div class="cert-card-date">Jan 2019</div>
+        </div>
+        <div class="cert-card">
+          <div class="cert-card-platform">Udemy</div>
+          <div class="cert-card-name">Shell Scripting</div>
+          <div class="cert-card-date">Dec 2018</div>
+        </div>
+        <div class="cert-card">
+          <div class="cert-card-platform">Solo Learn</div>
+          <div class="cert-card-name">SQL Fundamentals</div>
+          <div class="cert-card-date">Oct 2018</div>
+        </div>
+        <div class="cert-card">
+          <div class="cert-card-platform">Solo Learn</div>
+          <div class="cert-card-name">Introduction to Programming Using Java</div>
+          <div class="cert-card-date">Aug 2018</div>
+        </div>
+        <div class="cert-card">
+          <div class="cert-card-platform">SEED Infotech Ltd</div>
+          <div class="cert-card-name">C Programming</div>
+          <div class="cert-card-date">Aug 2014</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- INTERESTS -->
+    <section class="block" id="interests">
+      <div class="section-head">
+        <div class="eyebrow"><span class="mono">08</span> Interests</div>
+        <h2>Beyond the terminal — <em>passions</em> that fuel the work.</h2>
+      </div>
+      <div class="hobbies-grid reveal">
+        <div class="hobby-card">
+          <h3>Motorcycle Riding</h3>
+        </div>
+        <div class="hobby-card">
+          <h3>Gym &amp; Fitness</h3>
+        </div>
+        <div class="hobby-card">
+          <h3>Music</h3>
+        </div>
+        <div class="hobby-card">
+          <h3>Bug Bounty &amp; Ethical Hacking</h3>
+        </div>
+      </div>
+    </section>
+
     <!-- CONTACT -->
     <section class="block" id="contact">
       <div class="section-head">
-        <div class="eyebrow"><span class="mono">06</span> Contact</div>
+        <div class="eyebrow"><span class="mono">09</span> Contact</div>
         <h2>Have a problem worth <em>solving?</em></h2>
       </div>
 
@@ -558,6 +743,10 @@
               <div class="k">GitHub</div>
               <a href="https://github.com/pranavpankhawala" target="_blank" rel="noopener">@pranavpankhawala</a>
             </div>
+            <div class="channel">
+              <div class="k">LinkedIn</div>
+              <a href="https://www.linkedin.com/in/pranavpankhawala" target="_blank" rel="noopener">@pranavpankhawala</a>
+            </div>
           </div>
         </div>
       </div>
@@ -569,11 +758,18 @@
 <footer>
   <div class="shell foot">
     <div>© 2026 Pranav Pankhawala — Built with care in Pune</div>
-    <div style="display:flex; gap:18px;">
-      <a href="#top">Back to top ↑</a>
-      <!-- <a href="https://github.com/pranavpankhawala/pranavpankhawala.github.io" target="_blank" rel="noopener">Source</a> -->
-      <!-- <span class="mono" style="color:var(--ink-3)">v2.0 · redesigned</span> -->
+    <div class="foot-social">
+      <a href="https://github.com/pranavpankhawala" target="_blank" rel="noopener" aria-label="GitHub">
+        <svg class="i" viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 7.77 5.07 5.07 0 0 0 19.91 4S18.73 3.65 16 5.48a13.38 13.38 0 0 0-7 0C6.27 3.65 5.09 4 5.09 4A5.07 5.07 0 0 0 5 7.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 21.13V25"/></svg>
+      </a>
+      <a href="https://www.linkedin.com/in/pranavpankhawala" target="_blank" rel="noopener" aria-label="LinkedIn">
+        <svg class="i" viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+      </a>
+      <a href="mailto:pranav.pankhawala@gmail.com" aria-label="Email">
+        <svg class="i" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+      </a>
     </div>
+    <a href="#top" class="foot-top">Back to top ↑</a>
   </div>
 </footer>
 
