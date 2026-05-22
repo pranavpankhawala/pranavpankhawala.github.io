@@ -45,6 +45,7 @@ window.addEventListener('scroll', () => {
   const pct = window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100;
   scrollProg.style.width = pct + '%';
 }, { passive: true });
+backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
 /* ----- Mobile menu ----- */
 const menuBtn = document.getElementById('menuBtn');
