@@ -37,14 +37,22 @@ document.addEventListener('click', e => {
   if (!palPop.contains(e.target) && !palBtn.contains(e.target)) palPop.classList.remove('open');
 });
 
-/* ----- Nav scroll state + scroll progress ----- */
+/* ----- Reduced motion ----- */
+const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ----- Nav scroll state + scroll progress + back to top + section dots ----- */
 const nav = document.getElementById('nav');
 const scrollProg = document.getElementById('scroll-progress');
+const backToTop = document.getElementById('backToTop');
+const sectionDots = document.getElementById('sectionDots');
 window.addEventListener('scroll', () => {
   nav.classList.toggle('scrolled', window.scrollY > 4);
   const pct = window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100;
   scrollProg.style.width = pct + '%';
+  backToTop.classList.toggle('visible', window.scrollY > 300);
+  sectionDots.classList.toggle('visible', window.scrollY > 300);
 }, { passive: true });
+backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
 /* ----- Mobile menu ----- */
 const menuBtn = document.getElementById('menuBtn');
@@ -64,6 +72,95 @@ const navHIO = new IntersectionObserver(entries => {
   });
 }, { rootMargin: '-40% 0px -55% 0px' });
 navSections.forEach(s => navHIO.observe(s));
+
+/* ----- Hero role cycle ----- */
+const heroRoles = ['AI Automation Engineer', 'Computer Vision Developer', 'Edge ML Engineer', 'Cybersecurity Researcher'];
+let heroRoleIdx = 0;
+const heroRoleEl = document.getElementById('heroRole');
+if (!reducedMotion) {
+  setInterval(() => {
+    heroRoleEl.classList.add('fade');
+    setTimeout(() => {
+      heroRoleIdx = (heroRoleIdx + 1) % heroRoles.length;
+      heroRoleEl.textContent = heroRoles[heroRoleIdx];
+      heroRoleEl.classList.remove('fade');
+    }, 280);
+  }, 2800);
+}
+
+/* ----- Animated counters ----- */
+function easeOutCubic(t) { return 1 - Math.pow(1 - t, 3); }
+function animateCount(el, target, duration) {
+  const start = performance.now();
+  (function tick(now) {
+    const p = Math.min((now - start) / duration, 1);
+    el.textContent = Math.round(easeOutCubic(p) * target);
+    if (p < 1) requestAnimationFrame(tick);
+  })(start);
+}
+const countEls = document.querySelectorAll('[data-count]');
+if (countEls.length) {
+  const countIO = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        if (reducedMotion) e.target.textContent = e.target.dataset.count;
+        else animateCount(e.target, +e.target.dataset.count, 1000);
+        countIO.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.6 });
+  countEls.forEach(el => countIO.observe(el));
+}
+
+/* ----- Card tilt ----- */
+const projGrid = document.getElementById('projectsGrid');
+if (!reducedMotion) {
+  document.querySelectorAll('.proj').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      if (projGrid.classList.contains('list')) return;
+      const r = card.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width - 0.5;
+      const y = (e.clientY - r.top) / r.height - 0.5;
+      card.style.transform = `perspective(700px) rotateY(${x * 10}deg) rotateX(${-y * 8}deg) translateY(-3px)`;
+    });
+    card.addEventListener('mouseleave', () => { card.style.transform = ''; });
+  });
+}
+
+/* ----- Section dots ----- */
+const dotIO = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    const dot = document.querySelector(`.section-dot[data-section="${e.target.id}"]`);
+    if (dot) dot.classList.toggle('active', e.isIntersecting);
+  });
+}, { rootMargin: '-40% 0px -55% 0px' });
+document.querySelectorAll('section[id]').forEach(s => dotIO.observe(s));
+
+/* ----- Staggered reveal for grid children ----- */
+['.projects > .proj', '.cert-grid > .cert-card', '.hobbies-grid > .hobby-card', '.skills-grid > .skill-cat'].forEach(sel => {
+  document.querySelectorAll(sel).forEach((el, i) => {
+    el.style.setProperty('--stagger-delay', `${i * 55}ms`);
+    el.classList.add('reveal');
+  });
+});
+
+/* ----- Cert card flip ----- */
+document.querySelectorAll('.cert-card').forEach(card => {
+  const platform = card.querySelector('.cert-card-platform').textContent;
+  const name = card.querySelector('.cert-card-name').textContent;
+  const date = card.querySelector('.cert-card-date').textContent;
+  const inner = document.createElement('div');
+  inner.className = 'cert-card-inner';
+  const front = document.createElement('div');
+  front.className = 'cert-card-front';
+  while (card.firstChild) front.appendChild(card.firstChild);
+  const back = document.createElement('div');
+  back.className = 'cert-card-back';
+  back.innerHTML = `<div class="cert-back-badge">✓</div><div class="cert-back-name">${name}</div><div class="cert-back-meta">${platform} · ${date}</div>`;
+  inner.appendChild(front);
+  inner.appendChild(back);
+  card.appendChild(inner);
+});
 
 /* ----- Reveal on scroll ----- */
 const io = new IntersectionObserver(entries => {
