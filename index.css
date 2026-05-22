@@ -275,7 +275,7 @@ h1, h2, h3, h4 { margin: 0; font-weight: 500; color: var(--ink); }
 .nav.scrolled { border-bottom-color: var(--rule); }
 .nav-inner {
   display: flex; align-items: center; justify-content: space-between;
-  height: 64px;
+  height: 76px;
 }
 .brand {
   display: inline-flex; align-items: center; gap: 12px;
@@ -292,6 +292,17 @@ h1, h2, h3, h4 { margin: 0; font-weight: 500; color: var(--ink); }
 .brand small {
   display: block; font-size: 11px; color: var(--ink-3);
   font-family: "JetBrains Mono", monospace; letter-spacing: 0.05em;
+}
+.brand-meta {
+  display: flex; align-items: center; gap: 6px; flex-wrap: nowrap;
+  font-family: "JetBrains Mono", monospace; font-size: 10px;
+  color: var(--ink-3); margin-top: 3px; white-space: nowrap;
+}
+.brand-meta .dot { width: 6px; height: 6px; flex-shrink: 0; }
+.brand-meta b { color: var(--ink-2); font-weight: 500; }
+.brand-meta-div {
+  width: 1px; height: 10px; background: var(--rule);
+  display: inline-block; flex-shrink: 0;
 }
 .nav-links { display: flex; align-items: center; gap: 4px; }
 .nav-links a {
