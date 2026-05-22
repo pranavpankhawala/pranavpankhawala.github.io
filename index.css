@@ -322,6 +322,7 @@ h1, h2, h3, h4 { margin: 0; font-weight: 500; color: var(--ink); }
 .btn .arrow { transition: transform 200ms ease; }
 .btn:hover .arrow { transform: translate(2px, -2px); }
 
+.nav-cta { white-space: nowrap; }
 .menu-btn { display: none; }
 @media (max-width: 880px) {
   .nav-links { display: none; }
@@ -365,11 +366,18 @@ section.block:first-of-type { border-top: 0; }
 
 /* ---------- Hero ---------- */
 .hero { padding: 56px 0 96px; position: relative; }
-.hero-grid {
-  display: grid; grid-template-columns: 200px 1fr; gap: 48px;
-  align-items: start;
+.hero-inline-meta {
+  display: flex; align-items: center; gap: 32px;
+  flex-wrap: wrap; margin-bottom: 32px;
 }
-.hero-side { display: flex; flex-direction: column; gap: 24px; padding-top: 16px; }
+.hero-inline-meta .hero-meta {
+  display: flex; gap: 24px; flex-wrap: wrap;
+  font-family: "JetBrains Mono", monospace; font-size: 11.5px; color: var(--ink-3);
+}
+.hero-inline-meta .hero-meta .row {
+  display: flex; gap: 8px; align-items: center;
+}
+.hero-inline-meta .hero-meta .row span:last-child { color: var(--ink-2); }
 .status {
   display: inline-flex; align-items: center; gap: 10px;
   font-family: "JetBrains Mono", monospace; font-size: 12px; color: var(--ink-2);
@@ -384,13 +392,6 @@ section.block:first-of-type { border-top: 0; }
   0%,100% { box-shadow: 0 0 0 0 oklch(0.7 0.16 145 / 0.4); }
   50% { box-shadow: 0 0 0 6px oklch(0.7 0.16 145 / 0); }
 }
-.hero-meta {
-  display: flex; flex-direction: column; gap: 6px;
-  font-family: "JetBrains Mono", monospace; font-size: 11.5px; color: var(--ink-3);
-}
-.hero-meta .row { display: flex; justify-content: space-between; gap: 12px; }
-.hero-meta .row span:last-child { color: var(--ink-2); }
-
 .hero-main h1 {
   font-family: "Instrument Serif", serif; font-weight: 400;
   font-size: clamp(54px, 9vw, 116px); line-height: 0.95;
@@ -422,9 +423,6 @@ section.block:first-of-type { border-top: 0; }
   font-family: "Geist", sans-serif; font-size: 12px; color: var(--ink-3); margin-left: 6px;
 }
 @media (max-width: 880px) {
-  .hero-grid { grid-template-columns: 1fr; gap: 24px; }
-  .hero-side { flex-direction: row; flex-wrap: wrap; gap: 16px 32px; padding-top: 0; }
-  .hero-meta { flex: 1; min-width: 0; }
   .hero-ticker { grid-template-columns: repeat(2, 1fr); gap: 20px 32px; margin-top: 48px; }
 }
 
