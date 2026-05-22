@@ -815,9 +815,18 @@ section.block:first-of-type { border-top: 0; }
   display: flex;
   flex-direction: column;
   gap: 8px;
+  position: relative;
   transition: transform 240ms cubic-bezier(.2,.7,.2,1), box-shadow 240ms ease, border-color 240ms ease;
 }
 .cert-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-lift); border-color: var(--ink-3); }
+a.cert-card { text-decoration: none; color: inherit; cursor: pointer; }
+.cert-card-ext {
+  position: absolute; top: 14px; right: 14px;
+  font-size: 13px; color: var(--ink-3);
+  transition: color 160ms ease, transform 160ms ease;
+  line-height: 1;
+}
+a.cert-card:hover .cert-card-ext { color: var(--accent); transform: translate(2px, -2px); }
 .cert-card-platform {
   font-family: "JetBrains Mono", monospace;
   font-size: 10.5px;
