@@ -280,7 +280,7 @@ h1, h2, h3, h4 { margin: 0; font-weight: 500; color: var(--ink); }
 .brand {
   display: inline-flex; align-items: flex-start; gap: 12px;
   color: var(--ink); text-decoration: none; font-weight: 500;
-  flex-shrink: 0; white-space: nowrap;
+  flex-shrink: 0; white-space: nowrap; padding-right: 40px;
 }
 .brand-mark {
   width: 28px; height: 28px; border-radius: 8px;
