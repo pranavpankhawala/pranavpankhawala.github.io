@@ -2,11 +2,13 @@
 const themeBtn = document.getElementById('themeBtn');
 const themeIcon = document.getElementById('themeIcon');
 function setTheme(t) {
+  document.documentElement.classList.add('theme-transitioning');
   document.documentElement.setAttribute('data-theme', t);
   localStorage.setItem('pp-theme', t);
   themeIcon.innerHTML = t === 'dark'
     ? '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>'
     : '<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>';
+  setTimeout(() => document.documentElement.classList.remove('theme-transitioning'), 300);
 }
 setTheme(localStorage.getItem('pp-theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
 themeBtn.addEventListener('click', () => {
@@ -18,10 +20,12 @@ const palBtn = document.getElementById('palBtn');
 const palPop = document.getElementById('palPop');
 const palOpts = document.querySelectorAll('.pal-opt');
 function setPalette(p) {
+  document.documentElement.classList.add('theme-transitioning');
   if (p && p !== 'forest') document.documentElement.setAttribute('data-palette', p);
   else document.documentElement.removeAttribute('data-palette');
   localStorage.setItem('pp-palette', p || 'forest');
   palOpts.forEach(o => o.classList.toggle('active', o.dataset.pal === (p || 'forest')));
+  setTimeout(() => document.documentElement.classList.remove('theme-transitioning'), 300);
 }
 setPalette(localStorage.getItem('pp-palette') || 'forest');
 palBtn.addEventListener('click', e => {
@@ -151,9 +155,150 @@ cmdkList.addEventListener('click', e => {
 cmdk.addEventListener('click', e => { if (e.target === cmdk) closeCmdk(); });
 window.addEventListener('keydown', e => {
   if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); openCmdk(); }
-  else if (e.key === 'Escape') { closeCmdk(); navLinks.classList.remove('open'); }
+  else if (e.key === 'Escape') { closeCmdk(); navLinks.classList.remove('open'); closeProjectModal(); }
   else if (e.key === 'Enter' && cmdk.classList.contains('open')) {
     const active = cmdkList.querySelector('.cmdk-item.active') || cmdkList.querySelector('.cmdk-item');
     if (active) active.click();
   }
 });
+
+/* ----- Role cycler ----- */
+const heroRole = document.getElementById('heroRole');
+const roles = [
+  'AI Automation Engineer',
+  'Computer Vision Engineer',
+  'Cybersecurity Engineer',
+  'Edge AI Specialist',
+];
+let roleIdx = 0;
+if (heroRole) {
+  setInterval(() => {
+    heroRole.classList.add('fade');
+    setTimeout(() => {
+      roleIdx = (roleIdx + 1) % roles.length;
+      heroRole.textContent = roles[roleIdx];
+      heroRole.classList.remove('fade');
+    }, 280);
+  }, 3200);
+}
+
+/* ----- Animated counters ----- */
+function animateCount(el) {
+  const target = +el.dataset.target;
+  const duration = 1400;
+  const startTime = performance.now();
+  function tick(now) {
+    const pct = Math.min((now - startTime) / duration, 1);
+    const eased = 1 - Math.pow(1 - pct, 3);
+    el.textContent = Math.round(eased * target);
+    if (pct < 1) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+const counterEls = document.querySelectorAll('.count[data-target]');
+if (counterEls.length) {
+  const tickerEl = document.querySelector('.hero-ticker');
+  const counterIO = new IntersectionObserver(entries => {
+    if (entries[0].isIntersecting) {
+      counterEls.forEach(animateCount);
+      counterIO.disconnect();
+    }
+  }, { threshold: 0.6 });
+  if (tickerEl) counterIO.observe(tickerEl);
+}
+
+/* ----- Project modals ----- */
+const projectDetails = {
+  'surveillance': {
+    label: 'SELF · ONGOING', badge: 'In Progress', glyph: 'α',
+    title: 'AI-based Surveillance System',
+    tags: ['YOLO', 'PyTorch', 'OpenCV', 'Jetson'],
+    problem: 'Industrial and urban environments need automated, real-time monitoring without continuous human oversight. Traditional CCTV relies entirely on post-incident review and misses violations as they happen.',
+    approach: 'Multi-module computer-vision pipeline combining YOLO-based object detection with classical CV techniques — color filtering, contour analysis, motion tracking. Deployed on NVIDIA Jetson Nano for sub-50ms edge inference with no cloud dependency.',
+    outcome: 'Ongoing platform with configurable detection modules for traffic-violation detection, industrial site surveillance, and human-security applications. Supports alert pipelines with adjustable confidence thresholds.',
+    highlights: [
+      'Real-time YOLO inference at the edge — no cloud dependency',
+      'Classical CV preprocessing significantly cuts false-positive rate',
+      'Modular design: swap detection heads per deployment context',
+      'Targeting Jetson AGX Xavier for production-grade throughput',
+    ],
+    links: [{ label: 'GitHub', href: 'https://github.com/pranavpankhawala' }],
+  },
+  'network-security': {
+    label: 'M.TECH · THESIS', badge: 'Published', glyph: 'λ',
+    title: 'AI / ML Network Security Model',
+    tags: ['Network Security', 'Machine Learning', 'Python'],
+    problem: 'IoT networks generate heterogeneous traffic that rule-based intrusion detection systems struggle to classify — especially under novel attack patterns that don\'t match known signatures, producing high false-positive rates.',
+    approach: 'Engineered a set of packet-level markers from raw network traffic features and trained an ML classification model to distinguish benign from malicious packets. Applied feature selection and cross-validation to minimize false positives and improve generalization across traffic types.',
+    outcome: 'Published in Neuro Quantology, Volume 20, Issue 9, 2022 (DOI: 10.14704/nq.2022.20.9.NQ440121). Demonstrated improved detection accuracy over baseline rule-based approaches on the validation dataset.',
+    highlights: [
+      'Feature engineering on raw packet metadata — no deep payload inspection needed',
+      'Cross-validated to reduce false positives on unseen traffic patterns',
+      'Peer-reviewed and published in Neuro Quantology',
+      'Supervised by Dr. Sirsikar Sumedha, MIT World Peace University',
+    ],
+    links: [{ label: 'View Paper (DOI)', href: 'https://doi.org/10.14704/nq.2022.20.9' }],
+  },
+  'night-vision': {
+    label: 'B.E. · CAPSTONE', badge: null, glyph: 'ν',
+    title: 'Night Vision & Perimeter Security',
+    tags: ['OpenCV', 'Python', 'Raspberry Pi', 'Embedded'],
+    problem: 'Perimeter security in zero-light conditions requires expensive thermal cameras or constant human attention. Unmanned patrol vehicles need autonomous, battery-powered vision that works in full darkness.',
+    approach: 'Built a night-vision system using IR-enhanced cameras with OpenCV-based processing: histogram equalization, edge detection, and motion-triggered alerting. Mounted on an unmanned ground vehicle and edge-deployed on Raspberry Pi for fully offline operation.',
+    outcome: 'Functional B.E. capstone prototype demonstrating autonomous perimeter patrol with configurable detection zones and motion-triggered alert logging. Battery-powered with full-dark operation validated in field tests.',
+    highlights: [
+      'IR camera integration with OpenCV night-vision preprocessing pipeline',
+      'Motion-triggered alerts with configurable detection zone polygons',
+      'Edge-deployed on Raspberry Pi — battery-powered, zero cloud dependency',
+      'Mounted on unmanned ground vehicle for fully autonomous perimeter patrol',
+    ],
+    links: [{ label: 'GitHub', href: 'https://github.com/pranavpankhawala' }],
+  },
+};
+
+const projModal = document.getElementById('projModal');
+const modalContent = document.getElementById('modalContent');
+
+function openProjectModal(id) {
+  const d = projectDetails[id];
+  if (!d) return;
+  modalContent.innerHTML = `
+    <div class="modal-header">
+      <div class="modal-glyph">${d.glyph}</div>
+      <div>
+        <div class="modal-label">${d.label}</div>
+        <h2 class="modal-title" id="modalTitle">${d.title}</h2>
+        ${d.badge ? `<span class="badge">${d.badge}</span>` : ''}
+      </div>
+    </div>
+    <div class="tagrow" style="margin-bottom:24px">${d.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
+    <div class="modal-sections">
+      <div><div class="modal-section-label">Problem</div><div class="modal-section-body">${d.problem}</div></div>
+      <div><div class="modal-section-label">Approach</div><div class="modal-section-body">${d.approach}</div></div>
+      <div><div class="modal-section-label">Outcome</div><div class="modal-section-body">${d.outcome}</div></div>
+    </div>
+    <ul class="modal-highlights">${d.highlights.map(h => `<li>${h}</li>`).join('')}</ul>
+    <div class="modal-links">${d.links.map(l =>
+      `<a href="${l.href}" target="_blank" rel="noopener noreferrer" class="btn btn-ghost">${l.label}<svg class="i arrow" viewBox="0 0 24 24" width="13" height="13"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg></a>`
+    ).join('')}</div>`;
+  projModal.classList.add('open');
+  projModal.removeAttribute('aria-hidden');
+  document.body.classList.add('modal-open');
+  document.getElementById('modalClose').focus();
+}
+
+function closeProjectModal() {
+  if (!projModal.classList.contains('open')) return;
+  projModal.classList.remove('open');
+  projModal.setAttribute('aria-hidden', 'true');
+  document.body.classList.remove('modal-open');
+}
+
+document.querySelectorAll('.proj[data-project-id]').forEach(card => {
+  card.addEventListener('click', e => {
+    if (e.target.closest('a')) return;
+    openProjectModal(card.dataset.projectId);
+  });
+});
+document.getElementById('modalClose').addEventListener('click', closeProjectModal);
+projModal.addEventListener('click', e => { if (e.target === projModal) closeProjectModal(); });
