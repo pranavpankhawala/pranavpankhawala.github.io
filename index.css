@@ -644,6 +644,126 @@ section.block:first-of-type { border-top: 0; }
   .projects.list .proj-body h3 { flex: none; }
 }
 
+/* ---------- Skills ---------- */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0;
+  border-top: 1px solid var(--rule);
+}
+.skill-cat {
+  padding: 28px 28px 28px 0;
+  border-bottom: 1px solid var(--rule);
+}
+.skill-cat:nth-child(odd) {
+  border-right: 1px solid var(--rule);
+  padding-right: 28px;
+}
+.skill-cat:nth-child(even) {
+  padding-left: 28px;
+}
+.skill-cat-name {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  color: var(--ink-3);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 14px;
+}
+@media (max-width: 720px) {
+  .skills-grid { grid-template-columns: 1fr; }
+  .skill-cat, .skill-cat:nth-child(odd) { border-right: 0; padding: 20px 0; }
+  .skill-cat:nth-child(even) { padding-left: 0; }
+}
+
+/* ---------- Certifications ---------- */
+.cert-list {
+  border-top: 1px solid var(--rule);
+}
+.cert-header {
+  display: grid;
+  grid-template-columns: 1fr 180px 120px;
+  gap: 24px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--rule);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10.5px;
+  color: var(--ink-3);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+.cert-row {
+  display: grid;
+  grid-template-columns: 1fr 180px 120px;
+  gap: 24px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--rule-2);
+  align-items: center;
+  border-radius: 0;
+  transition: background 200ms ease, padding 200ms ease;
+  cursor: default;
+  position: relative;
+}
+.cert-row::before {
+  content: "";
+  position: absolute;
+  left: -16px; right: -16px; top: 0; bottom: 0;
+  background: var(--chip-bg);
+  opacity: 0;
+  transition: opacity 200ms ease;
+  pointer-events: none;
+  border-radius: 10px;
+  z-index: -1;
+}
+.cert-row:hover::before { opacity: 0.8; }
+.cert-name { font-size: 14.5px; color: var(--ink); }
+.cert-platform { font-size: 13.5px; color: var(--ink-2); }
+.cert-date {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  color: var(--ink-3);
+}
+@media (max-width: 720px) {
+  .cert-header { display: none; }
+  .cert-row { grid-template-columns: 1fr; gap: 4px; }
+  .cert-platform, .cert-date { font-size: 12.5px; color: var(--ink-3); }
+}
+
+/* ---------- Interests / Hobbies ---------- */
+.hobbies-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+.hobby-card {
+  border: 1px solid var(--rule);
+  border-radius: 16px;
+  padding: 28px 24px;
+  background: var(--bg-elev);
+  transition: transform 240ms cubic-bezier(.2,.7,.2,1), box-shadow 240ms ease, border-color 240ms ease;
+}
+.hobby-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lift); border-color: var(--ink-3); }
+.hobby-glyph {
+  font-family: "Instrument Serif", serif;
+  font-style: italic;
+  font-size: 52px;
+  color: var(--accent);
+  opacity: 0.55;
+  margin-bottom: 12px;
+  line-height: 1;
+}
+.hobby-card h3 {
+  font-family: "Instrument Serif", serif;
+  font-weight: 400;
+  font-size: 20px;
+  margin-bottom: 8px;
+  letter-spacing: -0.005em;
+  color: var(--ink);
+}
+.hobby-card p { font-size: 13.5px; color: var(--ink-2); margin: 0; line-height: 1.55; }
+@media (max-width: 1080px) { .hobbies-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px) { .hobbies-grid { grid-template-columns: 1fr; } }
+
 /* ---------- Contact ---------- */
 .contact-grid {
   display: grid; grid-template-columns: 200px 1fr; gap: 48px;
