@@ -799,6 +799,74 @@ section.block:first-of-type { border-top: 0; }
 @media (max-width: 1080px) { .hobbies-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 600px) { .hobbies-grid { grid-template-columns: 1fr; } }
 
+/* ---------- Recommendations ---------- */
+.reco-list {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.reco-card {
+  border: 1px solid var(--rule);
+  border-radius: 20px;
+  padding: 36px 40px;
+  background: var(--bg-elev);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  transition: transform 240ms cubic-bezier(.2,.7,.2,1), box-shadow 240ms ease, border-color 240ms ease;
+}
+.reco-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-lift); border-color: var(--ink-3); }
+.reco-card-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+.reco-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: color-mix(in oklab, var(--accent) 20%, var(--bg-elev));
+  color: var(--accent);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: 1px solid color-mix(in oklab, var(--accent) 30%, transparent);
+}
+.reco-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.reco-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ink);
+}
+.reco-title {
+  font-size: 13px;
+  color: var(--ink-2);
+  line-height: 1.4;
+}
+.reco-date {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  color: var(--ink-3);
+  margin-top: 2px;
+}
+.reco-body {
+  font-size: 15px;
+  line-height: 1.75;
+  color: var(--ink-2);
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+@media (max-width: 600px) { .reco-card { padding: 24px 20px; } }
+
 /* ---------- Contact ---------- */
 .contact-grid {
   display: grid; grid-template-columns: 200px 1fr; gap: 48px;
