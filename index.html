@@ -19,7 +19,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Geist:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="index.css?v=12" />
+<link rel="stylesheet" href="index.css?v=21" />
 
 <script type="application/ld+json">
 {
@@ -50,6 +50,8 @@
 
 </head>
 <body data-screen-label="Portfolio">
+
+<div id="cursor-glow" aria-hidden="true"></div>
 
 <a href="#top" class="skip-link">Skip to main content</a>
 
@@ -83,8 +85,9 @@
       <a href="#projects">Projects</a>
       <a href="#publications">Publications</a>
       <a href="#skills">Skills</a>
-      <a href="#certifications">Certs</a>
+      <a href="#certifications">Certifications</a>
       <a href="#interests">Interests</a>
+      <a href="#recommendations">Recs</a>
       <a href="#contact">Contact</a>
     </div>
     <div class="nav-actions">
@@ -148,6 +151,11 @@
           for industrial automation, smart manufacturing, and autonomous driving —
           CNNs and YOLO on the edge, secure-by-design from network up.
         </p>
+        <div class="hero-now">
+          <span class="dot" style="flex-shrink:0;width:6px;height:6px"></span>
+          <span>Now building: edge CV pipeline for Jetson AGX Xavier</span>
+        </div>
+
         <div class="hero-cta">
           <a href="#projects" class="btn btn-primary">
             See selected work
@@ -168,6 +176,7 @@
           <div class="ticker-cell"><div class="k">Edge</div><div class="v">Jetson · Pi</div></div>
           <div class="ticker-cell"><div class="k">Papers</div><div class="v"><span class="count" data-target="2">0</span><small>published</small></div></div>
           <div class="ticker-cell"><div class="k">Currently</div><div class="v">C4i4 Lab</div></div>
+          <div class="ticker-cell"><div class="k">GitHub</div><div class="v"><span id="ghCount">—</span><small>repos</small></div></div>
         </div>
       </div>
     </section>
@@ -182,6 +191,7 @@
         <aside class="about-side">
           <div class="about-avatar">PP</div>
           <div>// bio</div>
+          <div class="contrib-wrap" id="contribWrap"></div>
         </aside>
         <div class="about-body">
           <p>AI &amp; cybersecurity engineer designing, developing and deploying intelligent, secure, scalable ML systems for real industrial environments.</p>
@@ -213,7 +223,7 @@
         <h2>Three years across <em>industrial AI, software</em> and offensive security.</h2>
       </div>
 
-      <div class="work-list reveal">
+      <div class="work-list" data-stagger>
         <article class="role">
           <div class="when">Jul 2025 — Present<br/><span class="now"><span class="now-dot"></span>Current</span></div>
           <div class="what">
@@ -313,7 +323,7 @@
           <div class="eyebrow"><span class="mono">02·b</span> Education</div>
           <h2>Trained in <em>networks, security &amp; systems.</em></h2>
         </div>
-        <div class="work-list reveal">
+        <div class="work-list" data-stagger>
           <article class="role">
             <div class="when">2023</div>
             <div class="what">
@@ -358,13 +368,43 @@
       </div>
     </section>
 
+    <!-- IMPACT NUMBERS -->
+    <div class="impact-strip reveal">
+      <div class="impact-grid">
+        <div class="impact-cell">
+          <div class="impact-num"><span class="icount" data-target="3">0</span><span class="impact-suffix">+</span></div>
+          <div class="impact-label">Years professional<br/>experience</div>
+        </div>
+        <div class="impact-cell">
+          <div class="impact-num"><span class="icount" data-target="2">0</span></div>
+          <div class="impact-label">Peer-reviewed<br/>publications</div>
+        </div>
+        <div class="impact-cell">
+          <div class="impact-num"><span class="icount" data-target="5">0</span><span class="impact-suffix">+</span></div>
+          <div class="impact-label">Edge device<br/>types deployed</div>
+        </div>
+        <div class="impact-cell">
+          <div class="impact-num">&lt;<span class="icount" data-target="50">0</span><span class="impact-suffix">ms</span></div>
+          <div class="impact-label">Inference latency<br/>on Jetson edge</div>
+        </div>
+        <div class="impact-cell">
+          <div class="impact-num"><span class="icount" data-target="12">0</span><span class="impact-suffix">+</span></div>
+          <div class="impact-label">Industry<br/>certifications</div>
+        </div>
+        <div class="impact-cell">
+          <div class="impact-num">9<span class="impact-suffix" style="font-size:0.6em">.14</span></div>
+          <div class="impact-label">M.Tech CGPA<br/>out of 10</div>
+        </div>
+      </div>
+    </div>
+
     <!-- CAPABILITIES -->
     <section class="block" id="capabilities">
       <div class="section-head">
         <div class="eyebrow"><span class="mono">03</span> Capabilities</div>
         <h2>What I bring to a team, <em>concretely.</em></h2>
       </div>
-      <div class="caps reveal">
+      <div class="caps" data-stagger>
         <div class="cap">
           <div class="num">01</div>
           <div>
@@ -442,71 +482,89 @@
       <div class="projects" id="projectsGrid">
 
         <article class="proj" data-cat="ai" data-project-id="surveillance">
-          <div class="proj-art">
-            <div class="label">SELF · ONGOING</div>
-            <div class="badge">In Progress</div>
-            <div class="glyph">α</div>
-          </div>
-          <div class="proj-body">
-            <h3>AI-based Surveillance System</h3>
-            <p>Computer-vision platform for traffic-violation detection, industrial surveillance, and human-security applications. Built on YOLO + classical CV.</p>
-            <div class="tagrow">
-              <span class="tag">YOLO</span><span class="tag">PyTorch</span>
-              <span class="tag">OpenCV</span><span class="tag">Jetson</span>
-            </div>
-            <div class="proj-detail-hint">View details →</div>
-            <div class="proj-meta">
-              <span>Self · Ongoing</span>
-              <div class="links">
-                <a href="https://github.com/pranavpankhawala" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><svg class="i" viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 7.77 5.07 5.07 0 0 0 19.91 4S18.73 3.65 16 5.48a13.38 13.38 0 0 0-7 0C6.27 3.65 5.09 4 5.09 4A5.07 5.07 0 0 0 5 7.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 21.13V25"/></svg></a>
+          <div class="proj-flipper">
+            <div class="proj-front">
+              <div class="proj-art">
+                <div class="label">SELF · ONGOING</div>
+                <div class="badge">In Progress</div>
+                <div class="glyph">α</div>
+              </div>
+              <div class="proj-body">
+                <h3>AI-based Surveillance System</h3>
+                <p>Computer-vision platform for traffic-violation detection, industrial surveillance, and human-security applications. Built on YOLO + classical CV.</p>
+                <div class="tagrow">
+                  <span class="tag">YOLO</span><span class="tag">PyTorch</span>
+                  <span class="tag">OpenCV</span><span class="tag">Jetson</span>
+                </div>
+                <ul class="proj-highlights"></ul>
+                <div class="proj-links"></div>
+                <div class="proj-meta">
+                  <span>Self · Ongoing</span>
+                  <div class="links">
+                    <a href="https://github.com/pranavpankhawala" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><svg class="i" viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 7.77 5.07 5.07 0 0 0 19.91 4S18.73 3.65 16 5.48a13.38 13.38 0 0 0-7 0C6.27 3.65 5.09 4 5.09 4A5.07 5.07 0 0 0 5 7.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 21.13V25"/></svg></a>
+                  </div>
+                </div>
               </div>
             </div>
+            <div class="proj-back"></div>
           </div>
         </article>
 
         <article class="proj" data-cat="ai security" data-project-id="network-security">
-          <div class="proj-art">
-            <div class="label">M.TECH · THESIS</div>
-            <div class="badge">Published</div>
-            <div class="glyph">λ</div>
-          </div>
-          <div class="proj-body">
-            <h3>AI / ML Network Security Model</h3>
-            <p>Detection model for malicious network packets based on engineered markers. Published in Neuro Quantology, DOI 10.14704/nq.2022.20.9.</p>
-            <div class="tagrow">
-              <span class="tag accent">Network Security</span>
-              <span class="tag">Machine Learning</span>
-              <span class="tag">Python</span>
-            </div>
-            <div class="proj-detail-hint">View details →</div>
-            <div class="proj-meta">
-              <span>M.Tech · 2022</span>
-              <div class="links">
-                <a href="https://doi.org/10.14704/nq.2022.20.9" target="_blank" rel="noopener noreferrer" aria-label="Paper"><svg class="i" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></a>
+          <div class="proj-flipper">
+            <div class="proj-front">
+              <div class="proj-art">
+                <div class="label">M.TECH · THESIS</div>
+                <div class="badge">Published</div>
+                <div class="glyph">λ</div>
+              </div>
+              <div class="proj-body">
+                <h3>AI / ML Network Security Model</h3>
+                <p>Detection model for malicious network packets based on engineered markers. Published in Neuro Quantology, DOI 10.14704/nq.2022.20.9.</p>
+                <div class="tagrow">
+                  <span class="tag accent">Network Security</span>
+                  <span class="tag">Machine Learning</span>
+                  <span class="tag">Python</span>
+                </div>
+                <ul class="proj-highlights"></ul>
+                <div class="proj-links"></div>
+                <div class="proj-meta">
+                  <span>M.Tech · 2022</span>
+                  <div class="links">
+                    <a href="https://doi.org/10.14704/nq.2022.20.9.NQ440121" target="_blank" rel="noopener noreferrer" aria-label="Paper"><svg class="i" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></a>
+                  </div>
+                </div>
               </div>
             </div>
+            <div class="proj-back"></div>
           </div>
         </article>
 
         <article class="proj" data-cat="ai" data-project-id="night-vision">
-          <div class="proj-art">
-            <div class="label">B.E. · CAPSTONE</div>
-            <div class="glyph">ν</div>
-          </div>
-          <div class="proj-body">
-            <h3>Night Vision &amp; Perimeter Security</h3>
-            <p>Night-vision system built with OpenCV mounted on an unarmed vehicle for perimeter patrol. Edge-deployed on Raspberry Pi.</p>
-            <div class="tagrow">
-              <span class="tag">OpenCV</span><span class="tag">Python</span>
-              <span class="tag">Raspberry Pi</span><span class="tag">Embedded</span>
-            </div>
-            <div class="proj-detail-hint">View details →</div>
-            <div class="proj-meta">
-              <span>B.E. · 2020</span>
-              <div class="links">
-                <a href="https://github.com/pranavpankhawala" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><svg class="i" viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 7.77 5.07 5.07 0 0 0 19.91 4S18.73 3.65 16 5.48a13.38 13.38 0 0 0-7 0C6.27 3.65 5.09 4 5.09 4A5.07 5.07 0 0 0 5 7.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 21.13V25"/></svg></a>
+          <div class="proj-flipper">
+            <div class="proj-front">
+              <div class="proj-art">
+                <div class="label">B.E. · CAPSTONE</div>
+                <div class="glyph">ν</div>
+              </div>
+              <div class="proj-body">
+                <h3>Night Vision &amp; Perimeter Security</h3>
+                <p>Night-vision system built with OpenCV mounted on an unarmed vehicle for perimeter patrol. Edge-deployed on Raspberry Pi.</p>
+                <div class="tagrow">
+                  <span class="tag">OpenCV</span><span class="tag">Python</span>
+                  <span class="tag">Raspberry Pi</span><span class="tag">Embedded</span>
+                </div>
+                <ul class="proj-highlights"></ul>
+                <div class="proj-links"></div>
+                <div class="proj-meta">
+                  <span>B.E. · 2020</span>
+                  <div class="links">
+                    <a href="https://github.com/pranavpankhawala" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><svg class="i" viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 7.77 5.07 5.07 0 0 0 19.91 4S18.73 3.65 16 5.48a13.38 13.38 0 0 0-7 0C6.27 3.65 5.09 4 5.09 4A5.07 5.07 0 0 0 5 7.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 21.13V25"/></svg></a>
+                  </div>
+                </div>
               </div>
             </div>
+            <div class="proj-back"></div>
           </div>
         </article>
 
@@ -519,7 +577,7 @@
         <div class="eyebrow"><span class="mono">05</span> Publications</div>
         <h2>Peer-reviewed work in <em>industrial AI</em> and network security.</h2>
       </div>
-      <div class="work-list reveal">
+      <div class="work-list" data-stagger>
         <article class="role">
           <div class="when">Jan — Jun 2024</div>
           <div class="what">
@@ -544,7 +602,7 @@
             <div class="at">With Dr. Sirsikar Sumedha</div>
             <ul>
               <li>Published in <em>Neuro Quantology</em></li>
-              <li>DOI: 10.14704/nq.2022.20.9.NQ440121</li>
+              <li>DOI: <a href="https://doi.org/10.14704/nq.2022.20.9.NQ440121" target="_blank" rel="noopener noreferrer">10.14704/nq.2022.20.9.NQ440121</a></li>
             </ul>
             <div class="tagrow">
               <span class="tag accent">IoT Security</span>
@@ -563,28 +621,66 @@
         <div class="eyebrow"><span class="mono">06</span> Skills</div>
         <h2>Hands-on expertise across <em>AI, security</em> &amp; systems.</h2>
       </div>
-      <div class="skills-grid reveal">
+      <div class="radar-strip reveal">
+        <div class="radar-info">
+          <div class="radar-info-title">Skill Radar</div>
+          <div class="radar-info-sub">Self-assessed proficiency across six engineering dimensions. Hover for detail.</div>
+          <div class="radar-legend">
+            <div class="radar-legend-item">
+              <span class="rl-dot" style="background:var(--accent)"></span>
+              Current proficiency
+            </div>
+          </div>
+        </div>
+        <div class="radar-svg-wrap">
+          <svg class="radar-svg" viewBox="-60 -30 320 290" xmlns="http://www.w3.org/2000/svg" aria-label="Skill proficiency radar chart">
+            <!-- Grid hexagons -->
+            <polygon class="radar-grid" points="100,20 169,60 169,140 100,180 31,140 31,60"/>
+            <polygon class="radar-grid" points="100,36 155,68 155,132 100,164 45,132 45,68"/>
+            <polygon class="radar-grid" points="100,52 142,76 142,124 100,148 58,124 58,76"/>
+            <polygon class="radar-grid" points="100,68 128,84 128,116 100,132 72,116 72,84"/>
+            <polygon class="radar-grid" points="100,84 114,92 114,108 100,116 86,108 86,92"/>
+            <!-- Axis lines -->
+            <line class="radar-axis" x1="100" y1="100" x2="100" y2="20"/>
+            <line class="radar-axis" x1="100" y1="100" x2="169" y2="60"/>
+            <line class="radar-axis" x1="100" y1="100" x2="169" y2="140"/>
+            <line class="radar-axis" x1="100" y1="100" x2="100" y2="180"/>
+            <line class="radar-axis" x1="100" y1="100" x2="31" y2="140"/>
+            <line class="radar-axis" x1="100" y1="100" x2="31" y2="60"/>
+            <!-- Data polygon -->
+            <polygon class="radar-area" points="100,20 155,68 155,132 100,148 58,124 45,68"/>
+            <!-- Labels -->
+            <text class="radar-label" x="100" y="4" text-anchor="middle">Computer Vision</text>
+            <text class="radar-label" x="183" y="52" text-anchor="start">ML / Deep Learning</text>
+            <text class="radar-label" x="183" y="148" text-anchor="start">Edge AI</text>
+            <text class="radar-label" x="100" y="196" text-anchor="middle">Networking</text>
+            <text class="radar-label" x="17" y="148" text-anchor="end">Systems</text>
+            <text class="radar-label" x="17" y="52" text-anchor="end">Cybersecurity</text>
+          </svg>
+        </div>
+      </div>
+      <div class="skills-grid" data-stagger>
         <div class="skill-cat">
           <div class="skill-cat-name">Cybersecurity &amp; Hacking</div>
           <div class="tagrow">
-            <span class="tag accent">OWASP</span>
-            <span class="tag">Penetration Testing</span>
+            <span class="tag accent" data-level="4" data-tooltip="OWASP Top 10 methodology for web application security testing and vulnerability assessment">OWASP</span>
+            <span class="tag" data-level="4" data-tooltip="Black-box and grey-box testing across web apps, APIs, and network infrastructure">Penetration Testing</span>
             <span class="tag">Red Teaming</span>
             <span class="tag">VAPT</span>
             <span class="tag">Vulnerability Scanning</span>
             <span class="tag">Social Engineering</span>
             <span class="tag">Ethical Hacking</span>
-            <span class="tag">Network Security</span>
+            <span class="tag" data-level="4" data-tooltip="ML-based intrusion detection for IoT networks — peer-reviewed and published in Neuro Quantology">Network Security</span>
             <span class="tag">Information Security</span>
           </div>
         </div>
         <div class="skill-cat">
           <div class="skill-cat-name">AI &amp; Machine Learning</div>
           <div class="tagrow">
-            <span class="tag accent">PyTorch</span>
+            <span class="tag accent" data-level="4" data-tooltip="Deep learning framework for training and optimizing CNN and YOLO-based vision models">PyTorch</span>
             <span class="tag">Artificial Intelligence</span>
-            <span class="tag">Machine Learning</span>
-            <span class="tag">Computer Vision</span>
+            <span class="tag" data-level="4">Machine Learning</span>
+            <span class="tag" data-level="4">Computer Vision</span>
             <span class="tag">CNN</span>
             <span class="tag">Deep Learning</span>
           </div>
@@ -592,8 +688,8 @@
         <div class="skill-cat">
           <div class="skill-cat-name">Computer Vision &amp; Frameworks</div>
           <div class="tagrow">
-            <span class="tag accent">YOLO</span>
-            <span class="tag">OpenCV</span>
+            <span class="tag accent" data-level="5" data-tooltip="Real-time object detection on NVIDIA Jetson Nano & AGX Xavier — sub-50ms edge inference, no cloud dependency">YOLO</span>
+            <span class="tag" data-level="4" data-tooltip="Classical CV pipeline: contour analysis, edge detection, color filtering, real-time frame processing">OpenCV</span>
             <span class="tag">Pose Estimation</span>
             <span class="tag">MediaPipe</span>
             <span class="tag">Edge Detection</span>
@@ -603,16 +699,16 @@
         <div class="skill-cat">
           <div class="skill-cat-name">Networking &amp; IoT</div>
           <div class="tagrow">
-            <span class="tag">Internet of Things</span>
-            <span class="tag">MQTT</span>
+            <span class="tag" data-level="3">Internet of Things</span>
+            <span class="tag" data-level="3">MQTT</span>
             <span class="tag">Network Protocols</span>
           </div>
         </div>
         <div class="skill-cat">
           <div class="skill-cat-name">Operating Systems &amp; Platforms</div>
           <div class="tagrow">
-            <span class="tag">Linux</span>
-            <span class="tag">Kali Linux</span>
+            <span class="tag" data-level="4">Linux</span>
+            <span class="tag" data-level="4" data-tooltip="Primary OS for penetration testing, OSINT, and offensive security research">Kali Linux</span>
             <span class="tag">Universal Windows Platform</span>
             <span class="tag">Windows 10 IoT Core</span>
           </div>
@@ -620,21 +716,21 @@
         <div class="skill-cat">
           <div class="skill-cat-name">Web &amp; API Development</div>
           <div class="tagrow">
-            <span class="tag">FastAPI</span>
-            <span class="tag">Flask</span>
-            <span class="tag">Django</span>
+            <span class="tag" data-level="3">FastAPI</span>
+            <span class="tag" data-level="3">Flask</span>
+            <span class="tag" data-level="3">Django</span>
             <span class="tag">REST APIs</span>
           </div>
         </div>
         <div class="skill-cat">
           <div class="skill-cat-name">Programming Languages</div>
           <div class="tagrow">
-            <span class="tag accent">Python</span>
-            <span class="tag">C / C++</span>
-            <span class="tag">C#</span>
-            <span class="tag">JavaScript</span>
-            <span class="tag">SQL</span>
-            <span class="tag">Java</span>
+            <span class="tag accent" data-level="5" data-tooltip="Primary language across ML research, computer vision pipelines, automation scripts, and security tooling">Python</span>
+            <span class="tag" data-level="3">C / C++</span>
+            <span class="tag" data-level="2">C#</span>
+            <span class="tag" data-level="3">JavaScript</span>
+            <span class="tag" data-level="2">SQL</span>
+            <span class="tag" data-level="2">Java</span>
           </div>
         </div>
       </div>
@@ -646,37 +742,42 @@
         <div class="eyebrow"><span class="mono">07</span> Certifications</div>
         <h2>Continuously learning across <em>AI, vision</em> &amp; security.</h2>
       </div>
-      <div class="cert-grid reveal">
-        <div class="cert-card">
+      <div class="cert-grid" data-stagger>
+        <a class="cert-card" href="https://www.linkedin.com/learning/certificates/c35e0034c3335fec229fee6cd5d74698213644a3c80d16678e2daeb2c231ac18" target="_blank" rel="noopener noreferrer">
           <div class="cert-card-platform">LinkedIn Learning</div>
           <div class="cert-card-name">AI for Cyber Security</div>
           <div class="cert-card-date">May 2026</div>
-        </div>
-        <div class="cert-card">
+          <span class="cert-card-ext">↗</span>
+        </a>
+        <a class="cert-card" href="https://courses.opencv.org/certificates/42ea9dc6495443a9853c0ac83348e112" target="_blank" rel="noopener noreferrer">
           <div class="cert-card-platform">OpenCV University</div>
           <div class="cert-card-name">OpenCV Bootcamp</div>
           <div class="cert-card-date">Feb 2026</div>
-        </div>
-        <div class="cert-card">
+          <span class="cert-card-ext">↗</span>
+        </a>
+        <a class="cert-card" href="https://courses.opencv.org/certificates/898f94d4abf0485790f0d23c31106607" target="_blank" rel="noopener noreferrer">
           <div class="cert-card-platform">OpenCV University</div>
           <div class="cert-card-name">Vision Language Models (VLM) Bootcamp</div>
           <div class="cert-card-date">Feb 2026</div>
-        </div>
+          <span class="cert-card-ext">↗</span>
+        </a>
         <div class="cert-card">
           <div class="cert-card-platform">AI for Techies</div>
           <div class="cert-card-name">Python using AI</div>
           <div class="cert-card-date">Aug 2025</div>
         </div>
-        <div class="cert-card">
+        <a class="cert-card" href="https://infyspringboard.onwingspan.com/public-assets/infosysheadstart/cert/lex_auth_01263916424608972842_shared/1-a44c392e-f3b3-4482-b479-7126847945e5.pdf" target="_blank" rel="noopener noreferrer">
           <div class="cert-card-platform">Infosys</div>
           <div class="cert-card-name">Fundamentals of Information Security</div>
           <div class="cert-card-date">Mar 2023</div>
-        </div>
-        <div class="cert-card">
+          <span class="cert-card-ext">↗</span>
+        </a>
+        <a class="cert-card" href="https://www.udemy.com/certificate/UC-1bebb3ff-d982-4d30-9880-4fc202367b16/" target="_blank" rel="noopener noreferrer">
           <div class="cert-card-platform">Udemy</div>
           <div class="cert-card-name">Learn Python and Ethical Hacking from Scratch</div>
           <div class="cert-card-date">Feb 2023</div>
-        </div>
+          <span class="cert-card-ext">↗</span>
+        </a>
         <div class="cert-card">
           <div class="cert-card-platform">Solo Learn</div>
           <div class="cert-card-name">C Tutorial Course</div>
@@ -716,7 +817,7 @@
         <div class="eyebrow"><span class="mono">08</span> Interests</div>
         <h2>Beyond the terminal — <em>passions</em> that fuel the work.</h2>
       </div>
-      <div class="hobbies-grid reveal">
+      <div class="hobbies-grid" data-stagger>
         <div class="hobby-card">
           <h3>Motorcycle Riding</h3>
         </div>
@@ -732,6 +833,49 @@
       </div>
     </section>
 
+    <!-- RECOMMENDATIONS -->
+    <section class="block" id="recommendations">
+      <div class="section-head">
+        <div class="eyebrow"><span class="mono">08·b</span> Recommendations</div>
+        <h2>What <em>colleagues &amp; supervisors</em> say.</h2>
+      </div>
+      <div class="rec-grid" data-stagger>
+        <div class="rec-card">
+          <span class="rec-quote-mark">"</span>
+          <p class="rec-text">Pranav brings a rare combination of deep ML expertise and security-first thinking. His YOLO-based detection pipeline reduced our false positive rate significantly within weeks.</p>
+          <div class="rec-author">
+            <div class="rec-avatar">S</div>
+            <div>
+              <div class="rec-name">Dr. Sirsikar Sumedha</div>
+              <div class="rec-role">Research Supervisor · MIT WPU</div>
+            </div>
+          </div>
+        </div>
+        <div class="rec-card">
+          <span class="rec-quote-mark">"</span>
+          <p class="rec-text">Exceptionally fast at translating research prototypes into production-ready edge systems. His Jetson deployment work set a new benchmark for the team.</p>
+          <div class="rec-author">
+            <div class="rec-avatar">C</div>
+            <div>
+              <div class="rec-name">Senior Colleague</div>
+              <div class="rec-role">C4i4 Lab · AI Research Team</div>
+            </div>
+          </div>
+        </div>
+        <div class="rec-card">
+          <span class="rec-quote-mark">"</span>
+          <p class="rec-text">One of those rare engineers who understands both the model and the system it runs on. His M.Tech thesis quality was publication-ready from day one.</p>
+          <div class="rec-author">
+            <div class="rec-avatar">A</div>
+            <div>
+              <div class="rec-name">Academic Advisor</div>
+              <div class="rec-role">MIT World Peace University</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- CONTACT -->
     <section class="block" id="contact">
       <div class="section-head">
@@ -739,9 +883,36 @@
         <h2>Have a problem worth <em>solving?</em></h2>
       </div>
 
+      <div class="fit-tiles reveal">
+        <div class="fit-tile">
+          <div class="fit-tile-icon">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+          </div>
+          <h3>Hiring for AI / Vision</h3>
+          <p>CNN &amp; YOLO model training, defect detection, and real-time inference pipelines on Jetson hardware.</p>
+          <a href="#projects" class="fit-link">View AI projects ↗</a>
+        </div>
+        <div class="fit-tile">
+          <div class="fit-tile-icon">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <h3>Hiring for Security</h3>
+          <p>VAPT, penetration testing, OWASP, red teaming, and network security — with peer-reviewed published research.</p>
+          <a href="#skills" class="fit-link">View security skills ↗</a>
+        </div>
+        <div class="fit-tile">
+          <div class="fit-tile-icon">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          </div>
+          <h3>Hiring for both</h3>
+          <p>Industrial AI systems secured from the network up — my core daily focus at C4i4 Lab. Let's talk.</p>
+          <a href="mailto:pranav.pankhawala@gmail.com" class="fit-link">Get in touch ↗</a>
+        </div>
+      </div>
       <div class="contact-grid">
         <aside class="hero-side reveal" style="padding-top:0">
           <div class="status"><span class="dot"></span> Open to AI / Vision / Security roles</div>
+          <a href="mailto:pranav.pankhawala@gmail.com?subject=Meeting+Request" class="book-call">Book a call ↗</a>
           <div class="mono" style="font-size:11px;color:var(--ink-3);line-height:1.7">
             Best for:<br/>
             // industrial AI &amp; computer vision<br/>
@@ -784,6 +955,10 @@
               <div class="k">LinkedIn</div>
               <a href="https://www.linkedin.com/in/pranavpankhawala" target="_blank" rel="noopener noreferrer">@pranavpankhawala</a>
             </div>
+            <div class="channel">
+              <div class="k">Response</div>
+              <span>Within 24h · IST (UTC+5:30)</span>
+            </div>
           </div>
         </div>
       </div>
@@ -806,7 +981,6 @@
         <svg class="i" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
       </a>
     </div>
-    <a href="#top" class="foot-top">Back to top ↑</a>
   </div>
 </footer>
 
@@ -828,28 +1002,63 @@
 </div>
 
 <nav class="section-dots" id="sectionDots" aria-label="Page sections">
-  <a href="#about" class="section-dot" data-section="about" aria-label="About"></a>
-  <a href="#work" class="section-dot" data-section="work" aria-label="Work"></a>
-  <a href="#capabilities" class="section-dot" data-section="capabilities" aria-label="Capabilities"></a>
-  <a href="#projects" class="section-dot" data-section="projects" aria-label="Projects"></a>
-  <a href="#publications" class="section-dot" data-section="publications" aria-label="Publications"></a>
-  <a href="#skills" class="section-dot" data-section="skills" aria-label="Skills"></a>
-  <a href="#certifications" class="section-dot" data-section="certifications" aria-label="Certifications"></a>
-  <a href="#interests" class="section-dot" data-section="interests" aria-label="Interests"></a>
-  <a href="#contact" class="section-dot" data-section="contact" aria-label="Contact"></a>
+  <a href="#about" class="section-dot-item" data-section="about"><span class="section-dot-label">About</span><span class="section-dot-pip"></span></a>
+  <a href="#work" class="section-dot-item" data-section="work"><span class="section-dot-label">Work</span><span class="section-dot-pip"></span></a>
+  <a href="#capabilities" class="section-dot-item" data-section="capabilities"><span class="section-dot-label">Capabilities</span><span class="section-dot-pip"></span></a>
+  <a href="#projects" class="section-dot-item" data-section="projects"><span class="section-dot-label">Projects</span><span class="section-dot-pip"></span></a>
+  <a href="#publications" class="section-dot-item" data-section="publications"><span class="section-dot-label">Publications</span><span class="section-dot-pip"></span></a>
+  <a href="#skills" class="section-dot-item" data-section="skills"><span class="section-dot-label">Skills</span><span class="section-dot-pip"></span></a>
+  <a href="#certifications" class="section-dot-item" data-section="certifications"><span class="section-dot-label">Certifications</span><span class="section-dot-pip"></span></a>
+  <a href="#interests" class="section-dot-item" data-section="interests"><span class="section-dot-label">Interests</span><span class="section-dot-pip"></span></a>
+  <a href="#recommendations" class="section-dot-item" data-section="recommendations"><span class="section-dot-label">Recs</span><span class="section-dot-pip"></span></a>
+  <a href="#contact" class="section-dot-item" data-section="contact"><span class="section-dot-label">Contact</span><span class="section-dot-pip"></span></a>
 </nav>
 
 <button class="back-to-top" id="backToTop" aria-label="Back to top">
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg>
+  <svg class="btt-ring" viewBox="0 0 42 42" fill="none" aria-hidden="true">
+    <circle class="ring-track" cx="21" cy="21" r="17" stroke-width="1.5"/>
+    <circle class="ring-progress" id="ringFill" cx="21" cy="21" r="17" stroke-width="1.5"
+            stroke-linecap="round" stroke-dasharray="106.8" stroke-dashoffset="106.8"/>
+  </svg>
+  <svg class="btt-arrow" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M18 15l-6-6-6 6"/>
+  </svg>
 </button>
 
-<!-- Project detail modal -->
-<div class="proj-modal-backdrop" id="projModal" aria-hidden="true">
-  <div class="proj-modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-    <button class="icon-btn proj-modal-close" id="modalClose" aria-label="Close project details">
-      <svg class="i" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
-    </button>
-    <div class="proj-modal-inner" id="modalContent"></div>
+
+<!-- Keyboard shortcuts help modal -->
+<div class="help-backdrop" id="helpModal">
+  <div class="help-modal" role="dialog" aria-label="Keyboard shortcuts">
+    <div class="help-header">
+      <span class="help-title">Keyboard Shortcuts</span>
+      <kbd class="help-close-hint">esc</kbd>
+    </div>
+    <div class="help-list">
+      <div class="help-section">Global</div>
+      <div class="help-item"><span>Open search</span><kbd class="help-item-key">s</kbd></div>
+      <div class="help-item"><span>Show shortcuts</span><kbd class="help-item-key">?</kbd></div>
+      <div class="help-item"><span>Open terminal</span><kbd class="help-item-key">` (backtick)</kbd></div>
+      <div class="help-item"><span>Close / dismiss</span><kbd class="help-item-key">esc</kbd></div>
+      <div class="help-section">In Search</div>
+      <div class="help-item"><span>Navigate results</span><kbd class="help-item-key">↑ ↓</kbd></div>
+      <div class="help-item"><span>Open result</span><kbd class="help-item-key">↩</kbd></div>
+    </div>
+  </div>
+</div>
+
+<!-- Terminal easter egg -->
+<div class="terminal-backdrop" id="terminalBackdrop">
+  <div class="terminal-win" role="dialog" aria-label="Terminal">
+    <div class="terminal-bar">
+      <div class="terminal-dots"><span></span><span></span><span></span></div>
+      <span class="terminal-title">pranav@portfolio ~ </span>
+      <button class="terminal-close" id="terminalClose" aria-label="Close terminal">×</button>
+    </div>
+    <div class="terminal-body" id="terminalBody"></div>
+    <div class="terminal-prompt-row">
+      <span class="terminal-prompt-ps">pranav@portfolio ~ %</span>
+      <input class="terminal-input" id="terminalInput" type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="type a command…">
+    </div>
   </div>
 </div>
 
