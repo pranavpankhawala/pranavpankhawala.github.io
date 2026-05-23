@@ -131,6 +131,7 @@ const cmdkItems = [
   { ic: '↗', label: 'Open LinkedIn', action: () => window.open('https://www.linkedin.com/in/pranavpankhawala','_blank'), hint: 'ext' },
   { ic: '↓', label: 'Download Resume', action: () => { const a = document.createElement('a'); a.href = 'resume.pdf'; a.download = ''; a.click(); }, hint: 'pdf' },
   { ic: '◐', label: 'Toggle theme', action: () => themeBtn.click(), hint: '⇧T' },
+  { ic: '?', label: 'Keyboard shortcuts', action: () => openHelp(), hint: '?' },
 ];
 function renderCmdk(q = '') {
   const filtered = cmdkItems.filter(i => i.label.toLowerCase().includes(q.toLowerCase()));
@@ -158,14 +159,25 @@ window.addEventListener('keydown', e => {
   const tag = document.activeElement.tagName;
   const editable = tag === 'INPUT' || tag === 'TEXTAREA' || document.activeElement.isContentEditable;
   if (e.key === 's' && !editable && !e.metaKey && !e.ctrlKey && !e.altKey) { e.preventDefault(); openCmdk(); }
-  else if (e.key === 'Escape') { closeCmdk(); navLinks.classList.remove('open'); document.querySelectorAll('.proj.flipped').forEach(c => c.classList.remove('flipped')); }
+  else if (e.key === '?' && !editable) { e.preventDefault(); openHelp(); }
+  else if (e.key === 'Escape') { closeCmdk(); closeHelp(); navLinks.classList.remove('open'); document.querySelectorAll('.proj.flipped').forEach(c => c.classList.remove('flipped')); }
   else if (e.key === 'Enter' && cmdk.classList.contains('open')) {
     const active = cmdkList.querySelector('.cmdk-item.active') || cmdkList.querySelector('.cmdk-item');
     if (active) active.click();
+  } else if (cmdk.classList.contains('open') && (e.key === 'ArrowDown' || e.key === 'ArrowUp')) {
+    e.preventDefault();
+    const items = [...cmdkList.querySelectorAll('.cmdk-item')];
+    const activeIdx = items.findIndex(i => i.classList.contains('active'));
+    const nextIdx = e.key === 'ArrowDown'
+      ? (activeIdx + 1) % items.length
+      : (activeIdx - 1 + items.length) % items.length;
+    items[activeIdx]?.classList.remove('active');
+    items[nextIdx]?.classList.add('active');
+    items[nextIdx]?.scrollIntoView({ block: 'nearest' });
   }
 });
 
-/* ----- Role cycler ----- */
+/* ----- Role cycler (typewriter) ----- */
 const heroRole = document.getElementById('heroRole');
 const roles = [
   'AI Automation Engineer',
@@ -173,16 +185,37 @@ const roles = [
   'Cybersecurity Engineer',
   'Edge AI Specialist',
 ];
-let roleIdx = 0;
 if (heroRole) {
-  setInterval(() => {
-    heroRole.classList.add('fade');
-    setTimeout(() => {
-      roleIdx = (roleIdx + 1) % roles.length;
-      heroRole.textContent = roles[roleIdx];
-      heroRole.classList.remove('fade');
-    }, 280);
-  }, 3200);
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reducedMotion) {
+    heroRole.textContent = roles[0];
+  } else {
+    heroRole.textContent = '';
+    let rIdx = 0, cIdx = 0, deleting = false;
+    function typewrite() {
+      const full = roles[rIdx];
+      if (!deleting) {
+        cIdx++;
+        heroRole.textContent = full.slice(0, cIdx);
+        if (cIdx === full.length) {
+          setTimeout(() => { deleting = true; typewrite(); }, 2000);
+          return;
+        }
+        setTimeout(typewrite, 70);
+      } else {
+        cIdx--;
+        heroRole.textContent = full.slice(0, cIdx);
+        if (cIdx === 0) {
+          deleting = false;
+          rIdx = (rIdx + 1) % roles.length;
+          setTimeout(typewrite, 320);
+          return;
+        }
+        setTimeout(typewrite, 38);
+      }
+    }
+    setTimeout(typewrite, 600);
+  }
 }
 
 /* ----- Animated counters ----- */
@@ -315,3 +348,61 @@ const dotIO = new IntersectionObserver(entries => {
   });
 }, { rootMargin: '-35% 0px -55% 0px' });
 navSections.forEach(s => dotIO.observe(s));
+
+/* ----- Staggered reveals ----- */
+const staggerIO = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    const children = Array.from(e.target.children);
+    children.forEach((child, i) => {
+      setTimeout(() => {
+        child.style.transition = 'opacity 500ms ease, transform 500ms cubic-bezier(.2,.7,.2,1)';
+        child.style.opacity = '1';
+        child.style.transform = 'none';
+        setTimeout(() => {
+          child.style.opacity = '';
+          child.style.transform = '';
+          child.style.transition = '';
+        }, 520);
+      }, i * 60);
+    });
+    e.target.classList.add('revealed');
+    staggerIO.unobserve(e.target);
+  });
+}, { threshold: 0.05, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('[data-stagger]').forEach(container => {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    container.classList.add('revealed');
+    return;
+  }
+  Array.from(container.children).forEach(child => {
+    child.style.opacity = '0';
+    child.style.transform = 'translateY(14px)';
+  });
+  staggerIO.observe(container);
+});
+
+/* ----- Ambient cursor spotlight ----- */
+if (window.matchMedia('(hover: hover)').matches && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  document.addEventListener('mousemove', e => {
+    document.body.style.setProperty('--cursor-x', e.clientX + 'px');
+    document.body.style.setProperty('--cursor-y', e.clientY + 'px');
+  }, { passive: true });
+}
+
+/* ----- Skills proficiency dots ----- */
+document.querySelectorAll('.skills-grid .tag[data-level]').forEach(tag => {
+  const level = parseInt(tag.dataset.level, 10);
+  const dots = document.createElement('span');
+  dots.className = 'skill-dots';
+  dots.innerHTML = Array.from({ length: 5 }, (_, i) =>
+    `<span class="skill-dot${i < level ? ' filled' : ''}" style="--dot-delay:${i * 50}ms"></span>`
+  ).join('');
+  tag.appendChild(dots);
+});
+
+/* ----- Keyboard shortcuts help modal ----- */
+const helpModal = document.getElementById('helpModal');
+function openHelp() { helpModal.classList.add('open'); }
+function closeHelp() { helpModal.classList.remove('open'); }
+helpModal.addEventListener('click', e => { if (e.target === helpModal) closeHelp(); });

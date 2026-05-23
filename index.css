@@ -508,7 +508,7 @@ section.block:first-of-type { border-top: 0; }
 }
 
 /* ---------- Work (experience + education) ---------- */
-.work-list { display: flex; flex-direction: column; gap: 0; border-top: 1px solid var(--rule); }
+.work-list { display: flex; flex-direction: column; gap: 0; border-top: 1px solid var(--rule); position: relative; }
 .role {
   display: grid; grid-template-columns: 200px 1fr 200px; gap: 48px;
   padding: 28px 0; border-bottom: 1px solid var(--rule);
@@ -643,6 +643,7 @@ section.block:first-of-type { border-top: 0; }
   backface-visibility: hidden; -webkit-backface-visibility: hidden;
   border: 1px solid var(--rule); border-radius: 16px;
   background: var(--bg-elev); overflow: hidden;
+  position: relative;
   transition: box-shadow 240ms ease, border-color 240ms ease, transform 240ms cubic-bezier(.2,.7,.2,1);
 }
 .proj:not(.flipped):hover .proj-front {
@@ -864,6 +865,7 @@ a.cert-card:hover .cert-card-ext { color: var(--accent); transform: translate(2p
   background: var(--bg-elev);
   display: flex;
   align-items: center;
+  position: relative;
   transition: transform 240ms cubic-bezier(.2,.7,.2,1), box-shadow 240ms ease, border-color 240ms ease;
 }
 .hobby-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lift); border-color: var(--ink-3); }
@@ -1124,5 +1126,129 @@ footer {
 .theme-transitioning * {
   transition: background-color 240ms ease, color 240ms ease,
               border-color 240ms ease, box-shadow 240ms ease !important;
+}
+
+/* ---------- Ambient cursor spotlight ---------- */
+#cursor-glow {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background: radial-gradient(
+    700px circle at var(--cursor-x, -200%) var(--cursor-y, -200%),
+    color-mix(in oklab, var(--accent) 7%, transparent),
+    transparent 70%
+  );
+}
+
+/* ---------- Typewriter blinking cursor ---------- */
+.hero-role::after {
+  content: '|';
+  color: var(--accent);
+  margin-left: 1px;
+  font-weight: 300;
+  animation: blink 1s step-end infinite;
+}
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+/* ---------- Work timeline draw ---------- */
+.work-list::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0;
+  width: 1px; height: 100%;
+  background: linear-gradient(to bottom, var(--accent), color-mix(in oklab, var(--accent) 15%, transparent));
+  transform-origin: top;
+  transform: scaleY(0);
+  opacity: 0.45;
+  transition: transform 1.4s cubic-bezier(0.16, 1, 0.3, 1) 0.15s;
+  pointer-events: none;
+}
+.work-list.revealed::before { transform: scaleY(1); }
+@media (max-width: 880px) { .work-list::before { display: none; } }
+
+/* ---------- Skills proficiency dots ---------- */
+.skill-dots {
+  display: inline-flex; gap: 3px; margin-left: 8px;
+  vertical-align: middle; position: relative; top: -1px;
+}
+.skill-dot {
+  width: 4px; height: 4px; border-radius: 50%;
+  background: var(--rule);
+  transition: background 300ms ease var(--dot-delay, 0ms), transform 300ms ease var(--dot-delay, 0ms);
+}
+.skill-dot.filled { background: var(--ink-3); }
+.skills-grid.revealed .skill-dot.filled { background: var(--accent); transform: scale(1.15); }
+
+/* ---------- Hero "Now building" badge ---------- */
+.hero-now {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: "JetBrains Mono", monospace; font-size: 11px;
+  color: var(--ink-3); padding: 5px 12px;
+  background: var(--chip-bg); border: 1px solid var(--rule);
+  border-radius: 20px; margin-top: 20px; margin-bottom: 8px;
+}
+
+/* ---------- Grain / noise texture on cards ---------- */
+.cert-card::after, .hobby-card::after, .proj-front::after, .contact-card::after {
+  content: '';
+  position: absolute; inset: 0; border-radius: inherit;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.045; pointer-events: none; mix-blend-mode: overlay; z-index: 1;
+}
+
+/* ---------- Keyboard shortcuts help modal ---------- */
+.help-backdrop {
+  position: fixed; inset: 0; z-index: 100;
+  background: color-mix(in oklab, var(--bg) 50%, oklch(0 0 0 / 0.4));
+  backdrop-filter: blur(8px);
+  display: none; align-items: flex-start; justify-content: center;
+  padding-top: 12vh;
+}
+.help-backdrop.open { display: flex; }
+.help-modal {
+  width: min(480px, calc(100vw - 32px));
+  background: var(--bg-elev); border: 1px solid var(--rule);
+  border-radius: 16px; box-shadow: var(--shadow-lift); overflow: hidden;
+}
+.help-header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 16px 18px; border-bottom: 1px solid var(--rule);
+}
+.help-title { font-family: "Instrument Serif", serif; font-size: 18px; color: var(--ink); }
+.help-close-hint {
+  font-family: "JetBrains Mono", monospace; font-size: 11px;
+  background: var(--chip-bg); color: var(--ink-3);
+  padding: 3px 6px; border-radius: 5px; border: 1px solid var(--rule);
+}
+.help-list { padding: 8px 8px 12px; }
+.help-section {
+  font-family: "JetBrains Mono", monospace; font-size: 10px;
+  text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-3);
+  padding: 8px 12px 4px;
+}
+.help-item {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 9px 12px; border-radius: 8px; color: var(--ink-2); font-size: 14px;
+}
+.help-item:hover { background: var(--chip-bg); }
+.help-item-key {
+  font-family: "JetBrains Mono", monospace; font-size: 11px;
+  background: var(--chip-bg); color: var(--ink-3);
+  padding: 3px 8px; border-radius: 5px; border: 1px solid var(--rule);
+  min-width: 36px; text-align: center; white-space: nowrap;
+}
+
+/* ---------- Prefers-reduced-motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .reveal { opacity: 1 !important; transform: none !important; }
+  .work-list::before { transform: scaleY(1) !important; transition: none !important; }
+  #cursor-glow { display: none; }
+  .hero-role::after { animation: none !important; }
 }
 
