@@ -1,6 +1,10 @@
+/* ----- Global flags ----- */
+const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
 /* ----- Theme ----- */
 const themeBtn = document.getElementById('themeBtn');
 const themeIcon = document.getElementById('themeIcon');
+function autoTheme() { const h = new Date().getHours(); return h >= 19 || h < 7 ? 'dark' : 'light'; }
 function setTheme(t) {
   document.documentElement.classList.add('theme-transitioning');
   document.documentElement.setAttribute('data-theme', t);
@@ -10,7 +14,7 @@ function setTheme(t) {
     : '<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>';
   setTimeout(() => document.documentElement.classList.remove('theme-transitioning'), 300);
 }
-setTheme(localStorage.getItem('pp-theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+setTheme(localStorage.getItem('pp-theme') || autoTheme());
 themeBtn.addEventListener('click', () => {
   setTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
 });
@@ -44,11 +48,15 @@ document.addEventListener('click', e => {
 /* ----- Nav scroll state + scroll progress ----- */
 const nav = document.getElementById('nav');
 const scrollProg = document.getElementById('scroll-progress');
+const ringFill = document.getElementById('ringFill');
+const heroH1 = document.querySelector('.hero-main h1');
 window.addEventListener('scroll', () => {
   nav.classList.toggle('scrolled', window.scrollY > 4);
   const pct = window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100;
   scrollProg.style.width = pct + '%';
   backToTop.classList.toggle('visible', window.scrollY > 400);
+  if (ringFill) ringFill.style.strokeDashoffset = String(106.8 * (1 - pct / 100));
+  if (heroH1 && !reducedMotion) heroH1.style.transform = `translateY(${window.scrollY * 0.28}px)`;
 }, { passive: true });
 backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
@@ -132,9 +140,21 @@ const cmdkItems = [
   { ic: '↓', label: 'Download Resume', action: () => { const a = document.createElement('a'); a.href = 'resume.pdf'; a.download = ''; a.click(); }, hint: 'pdf' },
   { ic: '◐', label: 'Toggle theme', action: () => themeBtn.click(), hint: '⇧T' },
   { ic: '?', label: 'Keyboard shortcuts', action: () => openHelp(), hint: '?' },
+  { ic: '>', label: 'Open terminal', action: () => openTerminal(), hint: '`' },
 ];
+function fuzzyMatch(q, s) {
+  if (!q) return true;
+  q = q.toLowerCase(); s = s.toLowerCase();
+  let si = 0;
+  for (let qi = 0; qi < q.length; qi++) {
+    si = s.indexOf(q[qi], si);
+    if (si < 0) return false;
+    si++;
+  }
+  return true;
+}
 function renderCmdk(q = '') {
-  const filtered = cmdkItems.filter(i => i.label.toLowerCase().includes(q.toLowerCase()));
+  const filtered = cmdkItems.filter(i => fuzzyMatch(q, i.label));
   cmdkList.innerHTML = filtered.map((i, idx) => `
     <div class="cmdk-item ${idx === 0 ? 'active' : ''}" data-idx="${cmdkItems.indexOf(i)}">
       <span class="ic mono">${i.ic}</span>
@@ -159,8 +179,9 @@ window.addEventListener('keydown', e => {
   const tag = document.activeElement.tagName;
   const editable = tag === 'INPUT' || tag === 'TEXTAREA' || document.activeElement.isContentEditable;
   if (e.key === 's' && !editable && !e.metaKey && !e.ctrlKey && !e.altKey) { e.preventDefault(); openCmdk(); }
+  else if (e.key === '`' && !editable) { e.preventDefault(); openTerminal(); }
   else if (e.key === '?' && !editable) { e.preventDefault(); openHelp(); }
-  else if (e.key === 'Escape') { closeCmdk(); closeHelp(); navLinks.classList.remove('open'); document.querySelectorAll('.proj.flipped').forEach(c => c.classList.remove('flipped')); }
+  else if (e.key === 'Escape') { closeCmdk(); closeHelp(); closeTerminal(); navLinks.classList.remove('open'); document.querySelectorAll('.proj.flipped').forEach(c => c.classList.remove('flipped')); }
   else if (e.key === 'Enter' && cmdk.classList.contains('open')) {
     const active = cmdkList.querySelector('.cmdk-item.active') || cmdkList.querySelector('.cmdk-item');
     if (active) active.click();
@@ -186,7 +207,6 @@ const roles = [
   'Edge AI Specialist',
 ];
 if (heroRole) {
-  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (reducedMotion) {
     heroRole.textContent = roles[0];
   } else {
@@ -406,3 +426,132 @@ const helpModal = document.getElementById('helpModal');
 function openHelp() { helpModal.classList.add('open'); }
 function closeHelp() { helpModal.classList.remove('open'); }
 helpModal.addEventListener('click', e => { if (e.target === helpModal) closeHelp(); });
+
+/* ----- Magnetic buttons ----- */
+if (!reducedMotion) {
+  document.querySelectorAll('.btn-primary').forEach(btn => {
+    btn.addEventListener('mousemove', e => {
+      const r = btn.getBoundingClientRect();
+      const dx = e.clientX - (r.left + r.width / 2);
+      const dy = e.clientY - (r.top + r.height / 2);
+      btn.style.transform = `translate(${dx * 0.18}px, ${dy * 0.18}px)`;
+    });
+    btn.addEventListener('mouseleave', () => { btn.style.transform = ''; });
+  });
+}
+
+/* ----- Click ripple ----- */
+document.querySelectorAll('.btn-primary').forEach(btn => {
+  btn.addEventListener('click', e => {
+    const r = btn.getBoundingClientRect();
+    const size = Math.max(r.width, r.height) * 2;
+    const s = document.createElement('span');
+    s.className = 'ripple';
+    s.style.cssText = `width:${size}px;height:${size}px;left:${e.clientX - r.left - size / 2}px;top:${e.clientY - r.top - size / 2}px`;
+    btn.appendChild(s);
+    s.addEventListener('animationend', () => s.remove());
+  });
+});
+
+/* ----- Section copy-link buttons ----- */
+document.querySelectorAll('section[id] .section-head .eyebrow').forEach(eyebrow => {
+  const sectionId = eyebrow.closest('section[id]').id;
+  const btn = document.createElement('button');
+  btn.className = 'section-link-btn';
+  btn.title = 'Copy link to section';
+  btn.setAttribute('aria-label', 'Copy link to section');
+  btn.innerHTML = '<svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>';
+  btn.addEventListener('click', async () => {
+    const url = `${location.origin}${location.pathname}#${sectionId}`;
+    try { await navigator.clipboard.writeText(url); showToast('Link copied'); } catch {}
+  });
+  eyebrow.appendChild(btn);
+});
+
+/* ----- Terminal easter egg ----- */
+const terminalBackdrop = document.getElementById('terminalBackdrop');
+const terminalBody = document.getElementById('terminalBody');
+const terminalInput = document.getElementById('terminalInput');
+const terminalCommands = {
+  help: () => [
+    { cls: 't-dim', text: 'Available commands:' },
+    { cls: 't-cmd', text: 'whoami    skills    contact    clear    help' },
+  ],
+  whoami: () => [
+    { cls: '', text: 'Pranav Pankhawala' },
+    { cls: 't-dim', text: 'AI Automation & Cybersecurity Engineer' },
+    { cls: 't-dim', text: 'Pune, India · C4i4 Lab' },
+  ],
+  skills: () => [
+    { cls: 't-dim', text: 'Top skills:' },
+    { cls: 't-cmd', text: 'Python · PyTorch · YOLO · OpenCV · OWASP · Kali Linux' },
+    { cls: 't-dim', text: 'Edge: Jetson Nano · Jetson AGX Xavier · Raspberry Pi' },
+  ],
+  contact: () => [
+    { cls: '', text: 'Email    pranav.pankhawala@gmail.com' },
+    { cls: '', text: 'GitHub   github.com/pranavpankhawala' },
+    { cls: '', text: 'LinkedIn linkedin.com/in/pranavpankhawala' },
+  ],
+  clear: () => { terminalBody.innerHTML = ''; return []; },
+};
+function termPrint(lines) {
+  lines.forEach(({ cls, text }) => {
+    const d = document.createElement('div');
+    d.className = 't-line' + (cls ? ' ' + cls : '');
+    d.textContent = text;
+    terminalBody.appendChild(d);
+  });
+  terminalBody.scrollTop = terminalBody.scrollHeight;
+}
+function openTerminal() {
+  terminalBackdrop.classList.add('open');
+  if (!terminalBody.children.length) {
+    termPrint([{ cls: 't-dim', text: 'Type help for available commands. Press Esc to close.' }]);
+  }
+  terminalInput.focus();
+}
+function closeTerminal() { terminalBackdrop.classList.remove('open'); }
+document.getElementById('terminalClose').addEventListener('click', closeTerminal);
+terminalBackdrop.addEventListener('click', e => { if (e.target === terminalBackdrop) closeTerminal(); });
+terminalInput.addEventListener('keydown', e => {
+  if (e.key !== 'Enter') return;
+  const cmd = terminalInput.value.trim().toLowerCase();
+  terminalInput.value = '';
+  if (cmd) termPrint([{ cls: 't-ps', text: `% ${cmd}` }]);
+  if (!cmd) return;
+  const fn = terminalCommands[cmd];
+  if (fn) { const out = fn(); if (out.length) termPrint(out); }
+  else termPrint([{ cls: 't-err', text: `command not found: ${cmd}` }]);
+});
+
+/* ----- GitHub live repo count ----- */
+fetch('https://api.github.com/users/pranavpankhawala')
+  .then(r => r.json())
+  .then(d => {
+    const el = document.getElementById('ghCount');
+    if (el && d.public_repos != null) el.textContent = d.public_repos;
+  })
+  .catch(() => {});
+
+/* ----- Skill tag tooltips ----- */
+const skillTip = document.createElement('div');
+skillTip.className = 'skill-tip';
+document.body.appendChild(skillTip);
+let tipTimer;
+document.querySelectorAll('.tag[data-tooltip]').forEach(tag => {
+  tag.addEventListener('mouseenter', () => {
+    clearTimeout(tipTimer);
+    tipTimer = setTimeout(() => {
+      skillTip.textContent = tag.dataset.tooltip;
+      skillTip.classList.add('visible');
+    }, 120);
+  });
+  tag.addEventListener('mousemove', e => {
+    skillTip.style.left = e.clientX + 14 + 'px';
+    skillTip.style.top = e.clientY - 42 + 'px';
+  });
+  tag.addEventListener('mouseleave', () => {
+    clearTimeout(tipTimer);
+    skillTip.classList.remove('visible');
+  });
+});

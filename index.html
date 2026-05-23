@@ -19,7 +19,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Geist:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="index.css?v=18" />
+<link rel="stylesheet" href="index.css?v=19" />
 
 <script type="application/ld+json">
 {
@@ -175,6 +175,7 @@
           <div class="ticker-cell"><div class="k">Edge</div><div class="v">Jetson · Pi</div></div>
           <div class="ticker-cell"><div class="k">Papers</div><div class="v"><span class="count" data-target="2">0</span><small>published</small></div></div>
           <div class="ticker-cell"><div class="k">Currently</div><div class="v">C4i4 Lab</div></div>
+          <div class="ticker-cell"><div class="k">GitHub</div><div class="v"><span id="ghCount">—</span><small>repos</small></div></div>
         </div>
       </div>
     </section>
@@ -592,21 +593,21 @@
         <div class="skill-cat">
           <div class="skill-cat-name">Cybersecurity &amp; Hacking</div>
           <div class="tagrow">
-            <span class="tag accent" data-level="4">OWASP</span>
-            <span class="tag" data-level="4">Penetration Testing</span>
+            <span class="tag accent" data-level="4" data-tooltip="OWASP Top 10 methodology for web application security testing and vulnerability assessment">OWASP</span>
+            <span class="tag" data-level="4" data-tooltip="Black-box and grey-box testing across web apps, APIs, and network infrastructure">Penetration Testing</span>
             <span class="tag">Red Teaming</span>
             <span class="tag">VAPT</span>
             <span class="tag">Vulnerability Scanning</span>
             <span class="tag">Social Engineering</span>
             <span class="tag">Ethical Hacking</span>
-            <span class="tag" data-level="4">Network Security</span>
+            <span class="tag" data-level="4" data-tooltip="ML-based intrusion detection for IoT networks — peer-reviewed and published in Neuro Quantology">Network Security</span>
             <span class="tag">Information Security</span>
           </div>
         </div>
         <div class="skill-cat">
           <div class="skill-cat-name">AI &amp; Machine Learning</div>
           <div class="tagrow">
-            <span class="tag accent" data-level="4">PyTorch</span>
+            <span class="tag accent" data-level="4" data-tooltip="Deep learning framework for training and optimizing CNN and YOLO-based vision models">PyTorch</span>
             <span class="tag">Artificial Intelligence</span>
             <span class="tag" data-level="4">Machine Learning</span>
             <span class="tag" data-level="4">Computer Vision</span>
@@ -617,8 +618,8 @@
         <div class="skill-cat">
           <div class="skill-cat-name">Computer Vision &amp; Frameworks</div>
           <div class="tagrow">
-            <span class="tag accent" data-level="5">YOLO</span>
-            <span class="tag" data-level="4">OpenCV</span>
+            <span class="tag accent" data-level="5" data-tooltip="Real-time object detection on NVIDIA Jetson Nano & AGX Xavier — sub-50ms edge inference, no cloud dependency">YOLO</span>
+            <span class="tag" data-level="4" data-tooltip="Classical CV pipeline: contour analysis, edge detection, color filtering, real-time frame processing">OpenCV</span>
             <span class="tag">Pose Estimation</span>
             <span class="tag">MediaPipe</span>
             <span class="tag">Edge Detection</span>
@@ -637,7 +638,7 @@
           <div class="skill-cat-name">Operating Systems &amp; Platforms</div>
           <div class="tagrow">
             <span class="tag" data-level="4">Linux</span>
-            <span class="tag" data-level="4">Kali Linux</span>
+            <span class="tag" data-level="4" data-tooltip="Primary OS for penetration testing, OSINT, and offensive security research">Kali Linux</span>
             <span class="tag">Universal Windows Platform</span>
             <span class="tag">Windows 10 IoT Core</span>
           </div>
@@ -654,7 +655,7 @@
         <div class="skill-cat">
           <div class="skill-cat-name">Programming Languages</div>
           <div class="tagrow">
-            <span class="tag accent" data-level="5">Python</span>
+            <span class="tag accent" data-level="5" data-tooltip="Primary language across ML research, computer vision pipelines, automation scripts, and security tooling">Python</span>
             <span class="tag" data-level="3">C / C++</span>
             <span class="tag" data-level="2">C#</span>
             <span class="tag" data-level="3">JavaScript</span>
@@ -869,7 +870,14 @@
 </nav>
 
 <button class="back-to-top" id="backToTop" aria-label="Back to top">
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg>
+  <svg class="btt-ring" viewBox="0 0 42 42" fill="none" aria-hidden="true">
+    <circle class="ring-track" cx="21" cy="21" r="17" stroke-width="1.5"/>
+    <circle class="ring-progress" id="ringFill" cx="21" cy="21" r="17" stroke-width="1.5"
+            stroke-linecap="round" stroke-dasharray="106.8" stroke-dashoffset="106.8"/>
+  </svg>
+  <svg class="btt-arrow" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M18 15l-6-6-6 6"/>
+  </svg>
 </button>
 
 
@@ -884,10 +892,27 @@
       <div class="help-section">Global</div>
       <div class="help-item"><span>Open search</span><kbd class="help-item-key">s</kbd></div>
       <div class="help-item"><span>Show shortcuts</span><kbd class="help-item-key">?</kbd></div>
+      <div class="help-item"><span>Open terminal</span><kbd class="help-item-key">` (backtick)</kbd></div>
       <div class="help-item"><span>Close / dismiss</span><kbd class="help-item-key">esc</kbd></div>
       <div class="help-section">In Search</div>
       <div class="help-item"><span>Navigate results</span><kbd class="help-item-key">↑ ↓</kbd></div>
       <div class="help-item"><span>Open result</span><kbd class="help-item-key">↩</kbd></div>
+    </div>
+  </div>
+</div>
+
+<!-- Terminal easter egg -->
+<div class="terminal-backdrop" id="terminalBackdrop">
+  <div class="terminal-win" role="dialog" aria-label="Terminal">
+    <div class="terminal-bar">
+      <div class="terminal-dots"><span></span><span></span><span></span></div>
+      <span class="terminal-title">pranav@portfolio ~ </span>
+      <button class="terminal-close" id="terminalClose" aria-label="Close terminal">×</button>
+    </div>
+    <div class="terminal-body" id="terminalBody"></div>
+    <div class="terminal-prompt-row">
+      <span class="terminal-prompt-ps">pranav@portfolio ~ %</span>
+      <input class="terminal-input" id="terminalInput" type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="type a command…">
     </div>
   </div>
 </div>
