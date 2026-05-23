@@ -1351,22 +1351,65 @@ footer {
 
 /* ---------- Print stylesheet ---------- */
 @media print {
-  .nav, #cursor-glow, .section-dots, .back-to-top, #cmdk, .help-backdrop,
-  .terminal-backdrop, .toast, .scroll-progress, .hero-cta, .pal-wrap,
-  #themeBtn, .menu-btn, #cmdkBtn, .filters, .view-toggle, .proj-back,
-  .proj-flip-close, .hero-now, .section-link-btn { display: none !important; }
+  /* Force print-safe design tokens regardless of dark/palette mode */
+  html, :root, [data-theme], [data-theme="dark"], [data-theme="light"],
+  [data-palette], [data-palette="slate"], [data-palette="ember"], [data-palette="plum"],
+  [data-palette="crimson"], [data-palette="ocean"], [data-palette="sand"], [data-palette="mono"] {
+    --bg: #ffffff;
+    --bg-elev: #f8f8f8;
+    --ink: #111111;
+    --ink-2: #333333;
+    --ink-3: #666666;
+    --rule: #dddddd;
+    --rule-2: #eeeeee;
+    --accent: #2a6b3c;
+    --accent-ink: #ffffff;
+    --chip-bg: #f0f0f0;
+    --chip-ink: #333333;
+    --code-bg: #f5f5f5;
+    --shadow: none;
+    --shadow-lift: none;
+  }
 
-  body { background: #fff !important; color: #111 !important; }
+  /* Hide all interactive/decorative chrome */
+  .nav, #cursor-glow, .section-dots, .back-to-top, #cmdk, .help-backdrop,
+  .terminal-backdrop, .toast, #scroll-progress, .hero-cta, .pal-wrap,
+  #themeBtn, .menu-btn, #cmdkBtn, .filters, .view-toggle, .proj-back,
+  .proj-flip-close, .hero-now, .section-link-btn,
+  .skill-dots, .skill-tip { display: none !important; }
+
+  /* Reset ALL animation / JS-applied inline transforms */
+  *,
+  [data-stagger] > *,
+  .hero-main h1,
+  .proj-flipper,
+  .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+
+  /* Base */
+  body { background: #fff !important; color: #111 !important; font-size: 11pt; }
   * { box-shadow: none !important; text-shadow: none !important; }
   a { color: inherit !important; text-decoration: underline; }
+  a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 9pt; color: #666; }
 
-  .shell { max-width: 100%; padding: 0 24px; }
-  .hero { padding-top: 24px; }
-  .hero-ticker { grid-template-columns: repeat(3, 1fr) !important; gap: 16px !important; }
-  .about-grid { grid-template-columns: 1fr 1fr !important; }
-  .work-list, .caps, .cert-grid, .skills-grid, .hobbies-grid { columns: 1; }
-  .proj { page-break-inside: avoid; }
-  section { page-break-before: auto; }
-  .reveal { opacity: 1 !important; transform: none !important; }
+  /* Layout */
+  .shell { max-width: 100% !important; padding: 0 20px; }
+  .hero { padding-top: 16px; }
+  .hero-ticker { grid-template-columns: repeat(3, 1fr) !important; gap: 12px !important; margin-top: 24px !important; }
+  .about-grid { grid-template-columns: 180px 1fr !important; gap: 24px !important; }
+  .caps { grid-template-columns: repeat(2, 1fr) !important; }
+  .cert-grid { grid-template-columns: repeat(2, 1fr) !important; }
+  .hobbies-grid { grid-template-columns: repeat(2, 1fr) !important; }
+  .skills-grid { grid-template-columns: repeat(2, 1fr) !important; }
+  .projects { grid-template-columns: repeat(2, 1fr) !important; }
+
+  /* 3-D flip card — show front face only */
+  .proj-flipper { transform-style: flat !important; }
+  .proj-front { backface-visibility: visible !important; -webkit-backface-visibility: visible !important; }
+  .proj-back { display: none !important; }
+
+  /* Page breaks */
+  section { break-before: auto; break-inside: avoid; }
+  .proj, .role, .cert-card, .hobby-card { break-inside: avoid; }
+  #work, #projects, #skills { break-before: page; }
 }
 
