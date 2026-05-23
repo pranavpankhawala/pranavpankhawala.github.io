@@ -19,7 +19,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Geist:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="index.css?v=20" />
+<link rel="stylesheet" href="index.css?v=21" />
 
 <script type="application/ld+json">
 {
@@ -87,6 +87,7 @@
       <a href="#skills">Skills</a>
       <a href="#certifications">Certifications</a>
       <a href="#interests">Interests</a>
+      <a href="#recommendations">Recs</a>
       <a href="#contact">Contact</a>
     </div>
     <div class="nav-actions">
@@ -190,6 +191,7 @@
         <aside class="about-side">
           <div class="about-avatar">PP</div>
           <div>// bio</div>
+          <div class="contrib-wrap" id="contribWrap"></div>
         </aside>
         <div class="about-body">
           <p>AI &amp; cybersecurity engineer designing, developing and deploying intelligent, secure, scalable ML systems for real industrial environments.</p>
@@ -365,6 +367,36 @@
         </div>
       </div>
     </section>
+
+    <!-- IMPACT NUMBERS -->
+    <div class="impact-strip reveal">
+      <div class="impact-grid">
+        <div class="impact-cell">
+          <div class="impact-num"><span class="icount" data-target="3">0</span><span class="impact-suffix">+</span></div>
+          <div class="impact-label">Years professional<br/>experience</div>
+        </div>
+        <div class="impact-cell">
+          <div class="impact-num"><span class="icount" data-target="2">0</span></div>
+          <div class="impact-label">Peer-reviewed<br/>publications</div>
+        </div>
+        <div class="impact-cell">
+          <div class="impact-num"><span class="icount" data-target="5">0</span><span class="impact-suffix">+</span></div>
+          <div class="impact-label">Edge device<br/>types deployed</div>
+        </div>
+        <div class="impact-cell">
+          <div class="impact-num">&lt;<span class="icount" data-target="50">0</span><span class="impact-suffix">ms</span></div>
+          <div class="impact-label">Inference latency<br/>on Jetson edge</div>
+        </div>
+        <div class="impact-cell">
+          <div class="impact-num"><span class="icount" data-target="12">0</span><span class="impact-suffix">+</span></div>
+          <div class="impact-label">Industry<br/>certifications</div>
+        </div>
+        <div class="impact-cell">
+          <div class="impact-num">9<span class="impact-suffix" style="font-size:0.6em">.14</span></div>
+          <div class="impact-label">M.Tech CGPA<br/>out of 10</div>
+        </div>
+      </div>
+    </div>
 
     <!-- CAPABILITIES -->
     <section class="block" id="capabilities">
@@ -589,6 +621,44 @@
         <div class="eyebrow"><span class="mono">06</span> Skills</div>
         <h2>Hands-on expertise across <em>AI, security</em> &amp; systems.</h2>
       </div>
+      <div class="radar-strip reveal">
+        <div class="radar-info">
+          <div class="radar-info-title">Skill Radar</div>
+          <div class="radar-info-sub">Self-assessed proficiency across six engineering dimensions. Hover for detail.</div>
+          <div class="radar-legend">
+            <div class="radar-legend-item">
+              <span class="rl-dot" style="background:var(--accent)"></span>
+              Current proficiency
+            </div>
+          </div>
+        </div>
+        <div class="radar-svg-wrap">
+          <svg class="radar-svg" viewBox="-60 -30 320 290" xmlns="http://www.w3.org/2000/svg" aria-label="Skill proficiency radar chart">
+            <!-- Grid hexagons -->
+            <polygon class="radar-grid" points="100,20 169,60 169,140 100,180 31,140 31,60"/>
+            <polygon class="radar-grid" points="100,36 155,68 155,132 100,164 45,132 45,68"/>
+            <polygon class="radar-grid" points="100,52 142,76 142,124 100,148 58,124 58,76"/>
+            <polygon class="radar-grid" points="100,68 128,84 128,116 100,132 72,116 72,84"/>
+            <polygon class="radar-grid" points="100,84 114,92 114,108 100,116 86,108 86,92"/>
+            <!-- Axis lines -->
+            <line class="radar-axis" x1="100" y1="100" x2="100" y2="20"/>
+            <line class="radar-axis" x1="100" y1="100" x2="169" y2="60"/>
+            <line class="radar-axis" x1="100" y1="100" x2="169" y2="140"/>
+            <line class="radar-axis" x1="100" y1="100" x2="100" y2="180"/>
+            <line class="radar-axis" x1="100" y1="100" x2="31" y2="140"/>
+            <line class="radar-axis" x1="100" y1="100" x2="31" y2="60"/>
+            <!-- Data polygon -->
+            <polygon class="radar-area" points="100,20 155,68 155,132 100,148 58,124 45,68"/>
+            <!-- Labels -->
+            <text class="radar-label" x="100" y="4" text-anchor="middle">Computer Vision</text>
+            <text class="radar-label" x="183" y="52" text-anchor="start">ML / Deep Learning</text>
+            <text class="radar-label" x="183" y="148" text-anchor="start">Edge AI</text>
+            <text class="radar-label" x="100" y="196" text-anchor="middle">Networking</text>
+            <text class="radar-label" x="17" y="148" text-anchor="end">Systems</text>
+            <text class="radar-label" x="17" y="52" text-anchor="end">Cybersecurity</text>
+          </svg>
+        </div>
+      </div>
       <div class="skills-grid" data-stagger>
         <div class="skill-cat">
           <div class="skill-cat-name">Cybersecurity &amp; Hacking</div>
@@ -763,6 +833,49 @@
       </div>
     </section>
 
+    <!-- RECOMMENDATIONS -->
+    <section class="block" id="recommendations">
+      <div class="section-head">
+        <div class="eyebrow"><span class="mono">08·b</span> Recommendations</div>
+        <h2>What <em>colleagues &amp; supervisors</em> say.</h2>
+      </div>
+      <div class="rec-grid" data-stagger>
+        <div class="rec-card">
+          <span class="rec-quote-mark">"</span>
+          <p class="rec-text">Pranav brings a rare combination of deep ML expertise and security-first thinking. His YOLO-based detection pipeline reduced our false positive rate significantly within weeks.</p>
+          <div class="rec-author">
+            <div class="rec-avatar">S</div>
+            <div>
+              <div class="rec-name">Dr. Sirsikar Sumedha</div>
+              <div class="rec-role">Research Supervisor · MIT WPU</div>
+            </div>
+          </div>
+        </div>
+        <div class="rec-card">
+          <span class="rec-quote-mark">"</span>
+          <p class="rec-text">Exceptionally fast at translating research prototypes into production-ready edge systems. His Jetson deployment work set a new benchmark for the team.</p>
+          <div class="rec-author">
+            <div class="rec-avatar">C</div>
+            <div>
+              <div class="rec-name">Senior Colleague</div>
+              <div class="rec-role">C4i4 Lab · AI Research Team</div>
+            </div>
+          </div>
+        </div>
+        <div class="rec-card">
+          <span class="rec-quote-mark">"</span>
+          <p class="rec-text">One of those rare engineers who understands both the model and the system it runs on. His M.Tech thesis quality was publication-ready from day one.</p>
+          <div class="rec-author">
+            <div class="rec-avatar">A</div>
+            <div>
+              <div class="rec-name">Academic Advisor</div>
+              <div class="rec-role">MIT World Peace University</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- CONTACT -->
     <section class="block" id="contact">
       <div class="section-head">
@@ -770,9 +883,36 @@
         <h2>Have a problem worth <em>solving?</em></h2>
       </div>
 
+      <div class="fit-tiles reveal">
+        <div class="fit-tile">
+          <div class="fit-tile-icon">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+          </div>
+          <h3>Hiring for AI / Vision</h3>
+          <p>CNN &amp; YOLO model training, defect detection, and real-time inference pipelines on Jetson hardware.</p>
+          <a href="#projects" class="fit-link">View AI projects ↗</a>
+        </div>
+        <div class="fit-tile">
+          <div class="fit-tile-icon">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <h3>Hiring for Security</h3>
+          <p>VAPT, penetration testing, OWASP, red teaming, and network security — with peer-reviewed published research.</p>
+          <a href="#skills" class="fit-link">View security skills ↗</a>
+        </div>
+        <div class="fit-tile">
+          <div class="fit-tile-icon">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          </div>
+          <h3>Hiring for both</h3>
+          <p>Industrial AI systems secured from the network up — my core daily focus at C4i4 Lab. Let's talk.</p>
+          <a href="mailto:pranav.pankhawala@gmail.com" class="fit-link">Get in touch ↗</a>
+        </div>
+      </div>
       <div class="contact-grid">
         <aside class="hero-side reveal" style="padding-top:0">
           <div class="status"><span class="dot"></span> Open to AI / Vision / Security roles</div>
+          <a href="mailto:pranav.pankhawala@gmail.com?subject=Meeting+Request" class="book-call">Book a call ↗</a>
           <div class="mono" style="font-size:11px;color:var(--ink-3);line-height:1.7">
             Best for:<br/>
             // industrial AI &amp; computer vision<br/>
@@ -814,6 +954,10 @@
             <div class="channel">
               <div class="k">LinkedIn</div>
               <a href="https://www.linkedin.com/in/pranavpankhawala" target="_blank" rel="noopener noreferrer">@pranavpankhawala</a>
+            </div>
+            <div class="channel">
+              <div class="k">Response</div>
+              <span>Within 24h · IST (UTC+5:30)</span>
             </div>
           </div>
         </div>
@@ -866,6 +1010,7 @@
   <a href="#skills" class="section-dot-item" data-section="skills"><span class="section-dot-label">Skills</span><span class="section-dot-pip"></span></a>
   <a href="#certifications" class="section-dot-item" data-section="certifications"><span class="section-dot-label">Certifications</span><span class="section-dot-pip"></span></a>
   <a href="#interests" class="section-dot-item" data-section="interests"><span class="section-dot-label">Interests</span><span class="section-dot-pip"></span></a>
+  <a href="#recommendations" class="section-dot-item" data-section="recommendations"><span class="section-dot-label">Recs</span><span class="section-dot-pip"></span></a>
   <a href="#contact" class="section-dot-item" data-section="contact"><span class="section-dot-label">Contact</span><span class="section-dot-pip"></span></a>
 </nav>
 

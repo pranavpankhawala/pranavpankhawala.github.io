@@ -263,10 +263,23 @@ if (counterEls.length) {
   if (tickerEl) counterIO.observe(tickerEl);
 }
 
+/* ----- Impact strip counters ----- */
+const iCountEls = document.querySelectorAll('.icount[data-target]');
+if (iCountEls.length) {
+  const impactEl = document.querySelector('.impact-strip');
+  const impactIO = new IntersectionObserver(entries => {
+    if (entries[0].isIntersecting) { iCountEls.forEach(animateCount); impactIO.disconnect(); }
+  }, { threshold: 0.4 });
+  if (impactEl) impactIO.observe(impactEl);
+}
+
 /* ----- Project modals ----- */
 const projectDetails = {
   'surveillance': {
     label: 'SELF · ONGOING', badge: 'In Progress', glyph: 'α',
+    plainEng: "Teaches cameras to catch problems on factory floors instantly — no human needed",
+    meta: "Solo · Ongoing · YOLO + classical CV pipeline",
+    codePeek: `# Core detection loop\nresults = model(frame)\nfor box in results[0].boxes:\n    conf = float(box.conf)\n    if conf > THRESHOLD:\n        cls = int(box.cls)\n        alert(cls, conf, frame)`,
     title: 'AI-based Surveillance System',
     tags: ['YOLO', 'PyTorch', 'OpenCV', 'Jetson'],
     problem: 'Industrial and urban environments need automated, real-time monitoring without continuous human oversight. Traditional CCTV relies entirely on post-incident review and misses violations as they happen.',
@@ -282,6 +295,9 @@ const projectDetails = {
   },
   'network-security': {
     label: 'M.TECH · THESIS', badge: 'Published', glyph: 'λ',
+    plainEng: "Spots network attacks using AI trained on real IoT traffic — published research",
+    meta: "Solo · M.Tech thesis · 2022 · Published",
+    codePeek: `# Feature extraction\nfeatures = extract_packet_features(pcap)\nX = scaler.transform(features)\npred = model.predict(X)\nflag_malicious(pred, threshold=0.85)`,
     title: 'AI / ML Network Security Model',
     tags: ['Network Security', 'Machine Learning', 'Python'],
     problem: 'IoT networks generate heterogeneous traffic that rule-based intrusion detection systems struggle to classify — especially under novel attack patterns that don\'t match known signatures, producing high false-positive rates.',
@@ -297,6 +313,9 @@ const projectDetails = {
   },
   'night-vision': {
     label: 'B.E. · CAPSTONE', badge: null, glyph: 'ν',
+    plainEng: "Lets robots see in pitch darkness and autonomously patrol perimeters on battery power",
+    meta: "Team · B.E. capstone · Embedded · Raspberry Pi",
+    codePeek: `# Night-vision preprocessing\ngray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)\neq = cv2.equalizeHist(gray)\nedges = cv2.Canny(eq, 50, 150)\nmotion = detect_motion(prev, eq)`,
     title: 'Night Vision & Perimeter Security',
     tags: ['OpenCV', 'Python', 'Raspberry Pi', 'Embedded'],
     problem: 'Perimeter security in zero-light conditions requires expensive thermal cameras or constant human attention. Unmanned patrol vehicles need autonomous, battery-powered vision that works in full darkness.',
@@ -316,6 +335,40 @@ const projectDetails = {
 document.querySelectorAll('.proj[data-project-id]').forEach(card => {
   const d = projectDetails[card.dataset.projectId];
   if (!d) return;
+
+  // Inject plain-English description and meta row into front face
+  if (d.meta || d.plainEng) {
+    const h3 = card.querySelector('.proj-body h3');
+    if (h3 && d.meta) {
+      const metaEl = document.createElement('div');
+      metaEl.className = 'proj-meta-row';
+      metaEl.textContent = d.meta;
+      h3.after(metaEl);
+    }
+    if (d.plainEng) {
+      const plainEl = document.createElement('div');
+      plainEl.className = 'proj-plain-eng';
+      plainEl.textContent = d.plainEng;
+      const metaRow = card.querySelector('.proj-meta-row');
+      if (metaRow) metaRow.after(plainEl);
+      else h3 && h3.after(plainEl);
+    }
+  }
+  // Code peek
+  if (d.codePeek) {
+    const projBody = card.querySelector('.proj-body');
+    if (projBody) {
+      const btn = document.createElement('button');
+      btn.className = 'code-peek-btn';
+      btn.innerHTML = '<svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg> code peek';
+      const block = document.createElement('div');
+      block.className = 'code-peek-block';
+      block.innerHTML = `<pre class="code-block">${d.codePeek}</pre>`;
+      btn.addEventListener('click', e => { e.stopPropagation(); block.classList.toggle('open'); });
+      projBody.appendChild(btn);
+      projBody.appendChild(block);
+    }
+  }
 
   // Populate list-view inline content (CSS hides these in grid)
   const ul = card.querySelector('.proj-highlights');
@@ -530,6 +583,30 @@ fetch('https://api.github.com/users/pranavpankhawala')
   .then(d => {
     const el = document.getElementById('ghCount');
     if (el && d.public_repos != null) el.textContent = d.public_repos;
+  })
+  .catch(() => {});
+
+/* ----- GitHub activity heatmap ----- */
+fetch('https://api.github.com/users/pranavpankhawala/events/public')
+  .then(r => r.json())
+  .then(events => {
+    const wrap = document.getElementById('contribWrap');
+    if (!wrap || !Array.isArray(events)) return;
+    const today = new Date();
+    const dayCounts = {};
+    events.forEach(ev => {
+      const d = ev.created_at?.slice(0, 10);
+      if (d) dayCounts[d] = (dayCounts[d] || 0) + 1;
+    });
+    const cells = [];
+    for (let i = 83; i >= 0; i--) {
+      const d = new Date(today); d.setDate(d.getDate() - i);
+      const key = d.toISOString().slice(0, 10);
+      const n = dayCounts[key] || 0;
+      const lvl = n === 0 ? '' : n === 1 ? 'l1' : n <= 3 ? 'l2' : n <= 6 ? 'l3' : 'l4';
+      cells.push(`<span class="contrib-day ${lvl.trim()}" title="${key}: ${n} events"></span>`);
+    }
+    wrap.innerHTML = '<div class="contrib-title">12-week activity</div><div class="contrib-grid">' + cells.join('') + '</div>';
   })
   .catch(() => {});
 
