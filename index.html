@@ -16,10 +16,12 @@
 <meta name="twitter:image" content="https://pranavpankhawala.github.io/og-image.svg" />
 
 <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+<link rel="manifest" href="manifest.json" />
+<meta name="theme-color" content="#4a8a5e" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Geist:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="index.css?v=21" />
+<link rel="stylesheet" href="index.css?v=22" />
 
 <script type="application/ld+json">
 {
@@ -55,6 +57,13 @@
 
 <a href="#top" class="skip-link">Skip to main content</a>
 
+<!-- OPEN TO WORK BANNER -->
+<div class="otw-banner" id="otwBanner">
+  <span class="otw-text">🟢 Open to AI / Vision / Security roles — Let's connect!</span>
+  <a href="#contact" class="otw-link">Get in touch ↗</a>
+  <button class="otw-close" id="otwClose" aria-label="Dismiss banner">×</button>
+</div>
+
 <div id="scroll-progress"></div>
 
 <!-- NAV -->
@@ -84,6 +93,7 @@
       <a href="#capabilities">Capabilities</a>
       <a href="#projects">Projects</a>
       <a href="#publications">Publications</a>
+      <a href="#blog">Blog</a>
       <a href="#skills">Skills</a>
       <a href="#certifications">Certifications</a>
       <a href="#interests">Interests</a>
@@ -170,6 +180,20 @@
           </a>
         </div>
 
+        <div class="code-widget reveal">
+          <div class="code-widget-bar">
+            <span class="code-widget-dots"><span></span><span></span><span></span></span>
+            <span class="code-widget-title">detection.py</span>
+          </div>
+          <pre class="code-widget-body"><span class="cw-comment"># Real-time object detection</span>
+<span class="cw-var">model</span> = <span class="cw-fn">YOLO</span>(<span class="cw-str">"yolov8n.pt"</span>)
+<span class="cw-var">results</span> = model.<span class="cw-fn">track</span>(
+    <span class="cw-kw">source</span>=<span class="cw-num">0</span>,  <span class="cw-comment"># webcam</span>
+    <span class="cw-kw">conf</span>=<span class="cw-num">0.5</span>,
+    <span class="cw-kw">device</span>=<span class="cw-str">"cuda"</span>
+)</pre>
+        </div>
+
         <div class="hero-ticker">
           <div class="ticker-cell"><div class="k">Focus</div><div class="v">Vision · AI · Security</div></div>
           <div class="ticker-cell"><div class="k">Stack</div><div class="v">PyTorch · YOLO</div></div>
@@ -192,6 +216,7 @@
           <div class="about-avatar">PP</div>
           <div>// bio</div>
           <div class="contrib-wrap" id="contribWrap"></div>
+          <div class="gh-stats-wrap" id="ghStatsWrap"></div>
         </aside>
         <div class="about-body">
           <p>AI &amp; cybersecurity engineer designing, developing and deploying intelligent, secure, scalable ML systems for real industrial environments.</p>
@@ -468,6 +493,7 @@
           <button data-filter="all" class="active">All <span class="mono" style="opacity:.5">03</span></button>
           <button data-filter="ai">AI / Vision</button>
           <button data-filter="security">Security</button>
+          <button data-filter="edge">Edge</button>
         </div>
         <div class="viewtoggle" aria-label="View toggle">
           <button id="viewGrid" class="active" aria-label="Grid view">
@@ -481,7 +507,7 @@
 
       <div class="projects" id="projectsGrid">
 
-        <article class="proj" data-cat="ai" data-project-id="surveillance">
+        <article class="proj" data-cat="ai edge" data-project-id="surveillance">
           <div class="proj-flipper">
             <div class="proj-front">
               <div class="proj-art">
@@ -501,6 +527,7 @@
                 <div class="proj-meta">
                   <span>Self · Ongoing</span>
                   <div class="links">
+                    <button class="demo-trigger" data-title="AI-based Surveillance System" aria-label="Demo">▶ Demo</button>
                     <a href="https://github.com/pranavpankhawala" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><svg class="i" viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 7.77 5.07 5.07 0 0 0 19.91 4S18.73 3.65 16 5.48a13.38 13.38 0 0 0-7 0C6.27 3.65 5.09 4 5.09 4A5.07 5.07 0 0 0 5 7.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 21.13V25"/></svg></a>
                   </div>
                 </div>
@@ -531,6 +558,7 @@
                 <div class="proj-meta">
                   <span>M.Tech · 2022</span>
                   <div class="links">
+                    <button class="demo-trigger" data-title="AI / ML Network Security Model" aria-label="Demo">▶ Demo</button>
                     <a href="https://doi.org/10.14704/nq.2022.20.9.NQ440121" target="_blank" rel="noopener noreferrer" aria-label="Paper"><svg class="i" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></a>
                   </div>
                 </div>
@@ -540,7 +568,7 @@
           </div>
         </article>
 
-        <article class="proj" data-cat="ai" data-project-id="night-vision">
+        <article class="proj" data-cat="edge security" data-project-id="night-vision">
           <div class="proj-flipper">
             <div class="proj-front">
               <div class="proj-art">
@@ -559,6 +587,7 @@
                 <div class="proj-meta">
                   <span>B.E. · 2020</span>
                   <div class="links">
+                    <button class="demo-trigger" data-title="Night Vision &amp; Perimeter Security" aria-label="Demo">▶ Demo</button>
                     <a href="https://github.com/pranavpankhawala" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><svg class="i" viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 7.77 5.07 5.07 0 0 0 19.91 4S18.73 3.65 16 5.48a13.38 13.38 0 0 0-7 0C6.27 3.65 5.09 4 5.09 4A5.07 5.07 0 0 0 5 7.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 21.13V25"/></svg></a>
                   </div>
                 </div>
@@ -611,6 +640,58 @@
             </div>
           </div>
           <div class="where">Neuro Quantology<br/>2022 · DOI</div>
+        </article>
+      </div>
+    </section>
+
+    <!-- BLOG -->
+    <section class="block" id="blog">
+      <div class="section-head">
+        <div class="eyebrow"><span class="mono">05·b</span> Blog</div>
+        <h2>Technical writing on <em>AI, edge systems</em> &amp; security.</h2>
+      </div>
+      <div class="blog-grid" data-stagger>
+        <article class="blog-card">
+          <div class="blog-card-meta">
+            <span class="blog-card-date">May 2026</span>
+            <span class="blog-card-read">5 min read</span>
+          </div>
+          <h3 class="blog-card-title">Real-time Object Detection on Edge Devices</h3>
+          <p class="blog-card-excerpt">How to deploy YOLO models on NVIDIA Jetson for sub-50ms inference without cloud dependency — practical tips from production deployments.</p>
+          <div class="tagrow">
+            <span class="tag">YOLO</span>
+            <span class="tag">Edge AI</span>
+            <span class="tag">Jetson</span>
+          </div>
+          <a href="#" class="blog-card-link">Read more →</a>
+        </article>
+        <article class="blog-card">
+          <div class="blog-card-meta">
+            <span class="blog-card-date">Apr 2026</span>
+            <span class="blog-card-read">8 min read</span>
+          </div>
+          <h3 class="blog-card-title">VAPT Methodology: A Practical Guide</h3>
+          <p class="blog-card-excerpt">A structured walkthrough of Vulnerability Assessment and Penetration Testing — from reconnaissance through exploitation to remediation reporting.</p>
+          <div class="tagrow">
+            <span class="tag accent">VAPT</span>
+            <span class="tag">Security</span>
+            <span class="tag">OWASP</span>
+          </div>
+          <a href="#" class="blog-card-link">Read more →</a>
+        </article>
+        <article class="blog-card">
+          <div class="blog-card-meta">
+            <span class="blog-card-date">Mar 2026</span>
+            <span class="blog-card-read">6 min read</span>
+          </div>
+          <h3 class="blog-card-title">Deploying ML Models on Jetson Nano</h3>
+          <p class="blog-card-excerpt">Step-by-step guide to model quantization, TensorRT optimization, and edge deployment for computer vision models on NVIDIA Jetson Nano.</p>
+          <div class="tagrow">
+            <span class="tag">PyTorch</span>
+            <span class="tag">TensorRT</span>
+            <span class="tag">Jetson Nano</span>
+          </div>
+          <a href="#" class="blog-card-link">Read more →</a>
         </article>
       </div>
     </section>
@@ -831,6 +912,42 @@
           <h3>Bug Bounty &amp; Ethical Hacking</h3>
         </div>
       </div>
+
+      <div style="margin-top: 72px;">
+        <div class="section-head" style="margin-bottom: 32px;">
+          <div class="eyebrow"><span class="mono">08·b</span> Security Wins</div>
+          <h2>Hands-on <em>security</em> practice &amp; achievements.</h2>
+        </div>
+        <div class="security-wins" data-stagger>
+          <div class="sw-card">
+            <div class="sw-icon">⬡</div>
+            <div class="sw-content">
+              <div class="sw-platform">HackTheBox</div>
+              <div class="sw-title">Active User</div>
+              <p class="sw-desc">Regularly solving machines across network exploitation, web vulnerabilities, and privilege escalation challenges.</p>
+            </div>
+            <span class="sw-badge sw-badge--green">Active</span>
+          </div>
+          <div class="sw-card">
+            <div class="sw-icon">🎯</div>
+            <div class="sw-content">
+              <div class="sw-platform">TryHackMe</div>
+              <div class="sw-title">Top 10%</div>
+              <p class="sw-desc">Used extensively during Cybersecurity Engineering internship for VAPT training and offensive security practice.</p>
+            </div>
+            <span class="sw-badge sw-badge--blue">Top 10%</span>
+          </div>
+          <div class="sw-card">
+            <div class="sw-icon">🔍</div>
+            <div class="sw-content">
+              <div class="sw-platform">Bug Bounty</div>
+              <div class="sw-title">Responsible Disclosure</div>
+              <p class="sw-desc">Participated in responsible disclosure programs — identifying and reporting vulnerabilities through proper channels.</p>
+            </div>
+            <span class="sw-badge sw-badge--amber">Reported</span>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- RECOMMENDATIONS -->
@@ -991,6 +1108,7 @@
   <a href="#capabilities" class="section-dot-item" data-section="capabilities"><span class="section-dot-label">Capabilities</span><span class="section-dot-pip"></span></a>
   <a href="#projects" class="section-dot-item" data-section="projects"><span class="section-dot-label">Projects</span><span class="section-dot-pip"></span></a>
   <a href="#publications" class="section-dot-item" data-section="publications"><span class="section-dot-label">Publications</span><span class="section-dot-pip"></span></a>
+  <a href="#blog" class="section-dot-item" data-section="blog"><span class="section-dot-label">Blog</span><span class="section-dot-pip"></span></a>
   <a href="#skills" class="section-dot-item" data-section="skills"><span class="section-dot-label">Skills</span><span class="section-dot-pip"></span></a>
   <a href="#certifications" class="section-dot-item" data-section="certifications"><span class="section-dot-label">Certifications</span><span class="section-dot-pip"></span></a>
   <a href="#interests" class="section-dot-item" data-section="interests"><span class="section-dot-label">Interests</span><span class="section-dot-pip"></span></a>
@@ -1042,6 +1160,25 @@
     <div class="terminal-prompt-row">
       <span class="terminal-prompt-ps">pranav@portfolio ~ %</span>
       <input class="terminal-input" id="terminalInput" type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="type a command…">
+    </div>
+  </div>
+</div>
+
+<!-- Video Demo Modal -->
+<div class="demo-backdrop" id="demoBackdrop">
+  <div class="demo-modal" role="dialog" aria-label="Project Demo">
+    <div class="demo-modal-bar">
+      <span class="demo-modal-title" id="demoModalTitle">Project Demo</span>
+      <button class="icon-btn demo-modal-close" id="demoModalClose" aria-label="Close demo">
+        <svg class="i" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="demo-modal-body">
+      <div class="demo-coming-soon">
+        <div class="demo-play-icon">▶</div>
+        <p class="demo-coming-text">Demo video coming soon</p>
+        <p class="demo-coming-sub">Check the project on GitHub for the latest updates.</p>
+      </div>
     </div>
   </div>
 </div>

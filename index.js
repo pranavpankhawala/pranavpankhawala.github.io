@@ -129,6 +129,7 @@ const cmdkItems = [
   { ic: '#', label: 'Go to Capabilities', target: '#capabilities', hint: '⏎' },
   { ic: '#', label: 'Go to Projects', target: '#projects', hint: '⏎' },
   { ic: '#', label: 'Go to Publications', target: '#publications', hint: '⏎' },
+  { ic: '#', label: 'Go to Blog', target: '#blog', hint: '⏎' },
   { ic: '#', label: 'Go to Skills', target: '#skills', hint: '⏎' },
   { ic: '#', label: 'Go to Certifications', target: '#certifications', hint: '⏎' },
   { ic: '#', label: 'Go to Interests', target: '#interests', hint: '⏎' },
@@ -586,6 +587,29 @@ fetch('https://api.github.com/users/pranavpankhawala')
   })
   .catch(() => {});
 
+/* ----- GitHub top languages ----- */
+const LANG_COLORS = {
+  Python: '#3572A5', JavaScript: '#f1e05a', HTML: '#e34c26',
+  CSS: '#563d7c', 'C++': '#f34b7d', C: '#555555', 'C#': '#178600',
+  Shell: '#89e051', TypeScript: '#3178c6', 'Jupyter Notebook': '#DA5B0B',
+};
+fetch('https://api.github.com/users/pranavpankhawala/repos?per_page=100')
+  .then(r => r.json())
+  .then(repos => {
+    if (!Array.isArray(repos)) return;
+    const counts = {};
+    repos.forEach(repo => { if (repo.language) counts[repo.language] = (counts[repo.language] || 0) + 1; });
+    const top = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 6);
+    const wrap = document.getElementById('ghStatsWrap');
+    if (!wrap || !top.length) return;
+    const pills = top.map(([lang]) => {
+      const color = LANG_COLORS[lang] || 'var(--ink-3)';
+      return `<span class="gh-lang-pill"><span class="gh-lang-dot" style="background:${color}"></span>${lang}</span>`;
+    }).join('');
+    wrap.innerHTML = `<div class="gh-stats-title">Top languages</div><div class="gh-lang-pills">${pills}</div><a href="https://github.com/pranavpankhawala" target="_blank" rel="noopener noreferrer" class="gh-view-btn">View GitHub ↗</a>`;
+  })
+  .catch(() => {});
+
 /* ----- GitHub activity heatmap ----- */
 fetch('https://api.github.com/users/pranavpankhawala/events/public')
   .then(r => r.json())
@@ -610,6 +634,38 @@ fetch('https://api.github.com/users/pranavpankhawala/events/public')
   })
   .catch(() => {});
 
+/* ----- Open to Work Banner dismiss ----- */
+(function() {
+  const banner = document.getElementById('otwBanner');
+  const closeBtn = document.getElementById('otwClose');
+  if (!banner || !closeBtn) return;
+  if (localStorage.getItem('pp-otw-dismissed') === '1') {
+    banner.classList.add('dismissed');
+  }
+  closeBtn.addEventListener('click', () => {
+    banner.classList.add('dismissed');
+    localStorage.setItem('pp-otw-dismissed', '1');
+  });
+})();
+
+/* ----- Video Demo Modal ----- */
+(function() {
+  const backdrop = document.getElementById('demoBackdrop');
+  const closeBtn = document.getElementById('demoModalClose');
+  const titleEl = document.getElementById('demoModalTitle');
+  if (!backdrop) return;
+  document.querySelectorAll('.demo-trigger').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      if (titleEl) titleEl.textContent = btn.dataset.title || 'Project Demo';
+      backdrop.classList.add('open');
+    });
+  });
+  if (closeBtn) closeBtn.addEventListener('click', () => backdrop.classList.remove('open'));
+  backdrop.addEventListener('click', e => { if (e.target === backdrop) backdrop.classList.remove('open'); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') backdrop.classList.remove('open'); });
+})();
+
 /* ----- Skill tag tooltips ----- */
 const skillTip = document.createElement('div');
 skillTip.className = 'skill-tip';
@@ -632,3 +688,10 @@ document.querySelectorAll('.tag[data-tooltip]').forEach(tag => {
     skillTip.classList.remove('visible');
   });
 });
+
+/* ----- Service Worker registration ----- */
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').catch(() => {});
+  });
+}
