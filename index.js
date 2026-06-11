@@ -88,14 +88,18 @@ document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 /* ----- Project filter ----- */
 const filterBtns = document.querySelectorAll('.filters button');
 const projs = document.querySelectorAll('.proj');
+const projEmpty = document.getElementById('projEmpty');
 filterBtns.forEach(b => b.addEventListener('click', () => {
-  filterBtns.forEach(x => x.classList.remove('active'));
-  b.classList.add('active');
+  filterBtns.forEach(x => { x.classList.remove('active'); x.setAttribute('aria-selected', 'false'); });
+  b.classList.add('active'); b.setAttribute('aria-selected', 'true');
   const f = b.dataset.filter;
+  let visible = 0;
   projs.forEach(p => {
     const show = f === 'all' || p.dataset.cat.split(' ').includes(f);
     p.classList.toggle('hidden', !show);
+    if (show) visible++;
   });
+  if (projEmpty) projEmpty.hidden = visible > 0;
 }));
 
 /* ----- View toggle ----- */
@@ -529,7 +533,7 @@ const terminalInput = document.getElementById('terminalInput');
 const terminalCommands = {
   help: () => [
     { cls: 't-dim', text: 'Available commands:' },
-    { cls: 't-cmd', text: 'whoami    skills    contact    clear    help' },
+    { cls: 't-cmd', text: 'whoami    skills    projects    blog    contact    clear    help' },
   ],
   whoami: () => [
     { cls: '', text: 'Pranav Pankhawala' },
@@ -545,6 +549,16 @@ const terminalCommands = {
     { cls: '', text: 'Email    pranav.pankhawala@gmail.com' },
     { cls: '', text: 'GitHub   github.com/pranavpankhawala' },
     { cls: '', text: 'LinkedIn linkedin.com/in/pranavpankhawala' },
+  ],
+  projects: () => [
+    { cls: 't-dim', text: 'Featured projects:' },
+    { cls: 't-cmd', text: 'AI Surveillance · ML Network Security · Night Vision' },
+    { cls: 't-dim', text: 'Type "help" or scroll to #projects for details.' },
+  ],
+  blog: () => [
+    { cls: 't-dim', text: 'Blog posts (coming soon):' },
+    { cls: 't-cmd', text: 'YOLO on Edge · VAPT Guide · Jetson Nano ML' },
+    { cls: 't-dim', text: 'Follow on LinkedIn for updates.' },
   ],
   clear: () => { terminalBody.innerHTML = ''; return []; },
 };
@@ -593,22 +607,27 @@ const LANG_COLORS = {
   CSS: '#563d7c', 'C++': '#f34b7d', C: '#555555', 'C#': '#178600',
   Shell: '#89e051', TypeScript: '#3178c6', 'Jupyter Notebook': '#DA5B0B',
 };
+const GH_LINK = `<a href="https://github.com/pranavpankhawala" target="_blank" rel="noopener noreferrer" class="gh-view-btn">View GitHub ↗</a>`;
 fetch('https://api.github.com/users/pranavpankhawala/repos?per_page=100')
   .then(r => r.json())
   .then(repos => {
-    if (!Array.isArray(repos)) return;
+    const wrap = document.getElementById('ghStatsWrap');
+    if (!wrap) return;
+    if (!Array.isArray(repos)) { wrap.innerHTML = `<div class="gh-stats-title">Languages unavailable</div>${GH_LINK}`; return; }
     const counts = {};
     repos.forEach(repo => { if (repo.language) counts[repo.language] = (counts[repo.language] || 0) + 1; });
     const top = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 6);
-    const wrap = document.getElementById('ghStatsWrap');
-    if (!wrap || !top.length) return;
+    if (!top.length) { wrap.innerHTML = `<div class="gh-stats-title">Languages unavailable</div>${GH_LINK}`; return; }
     const pills = top.map(([lang]) => {
       const color = LANG_COLORS[lang] || 'var(--ink-3)';
       return `<span class="gh-lang-pill"><span class="gh-lang-dot" style="background:${color}"></span>${lang}</span>`;
     }).join('');
-    wrap.innerHTML = `<div class="gh-stats-title">Top languages</div><div class="gh-lang-pills">${pills}</div><a href="https://github.com/pranavpankhawala" target="_blank" rel="noopener noreferrer" class="gh-view-btn">View GitHub ↗</a>`;
+    wrap.innerHTML = `<div class="gh-stats-title">Top languages</div><div class="gh-lang-pills">${pills}</div>${GH_LINK}`;
   })
-  .catch(() => {});
+  .catch(() => {
+    const wrap = document.getElementById('ghStatsWrap');
+    if (wrap) wrap.innerHTML = `<div class="gh-stats-title">Languages unavailable</div>${GH_LINK}`;
+  });
 
 /* ----- GitHub activity heatmap ----- */
 fetch('https://api.github.com/users/pranavpankhawala/events/public')
@@ -632,7 +651,10 @@ fetch('https://api.github.com/users/pranavpankhawala/events/public')
     }
     wrap.innerHTML = '<div class="contrib-title">12-week activity</div><div class="contrib-grid">' + cells.join('') + '</div>';
   })
-  .catch(() => {});
+  .catch(() => {
+    const wrap = document.getElementById('contribWrap');
+    if (wrap) wrap.innerHTML = '<div class="contrib-title">Activity unavailable</div>';
+  });
 
 /* ----- Open to Work Banner dismiss ----- */
 (function() {
@@ -648,22 +670,49 @@ fetch('https://api.github.com/users/pranavpankhawala/events/public')
   });
 })();
 
-/* ----- Video Demo Modal ----- */
+/* ----- Blog coming-soon toast ----- */
+document.querySelectorAll('[data-coming-soon]').forEach(btn => {
+  btn.addEventListener('click', e => {
+    e.preventDefault();
+    showToast('Blog posts coming soon — follow on LinkedIn for updates.');
+  });
+});
+
+/* ----- Video Demo Modal with focus trap ----- */
 (function() {
   const backdrop = document.getElementById('demoBackdrop');
   const closeBtn = document.getElementById('demoModalClose');
   const titleEl = document.getElementById('demoModalTitle');
   if (!backdrop) return;
+  let lastFocus = null;
+  const FOCUSABLE = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+
+  function openDemo(title) {
+    lastFocus = document.activeElement;
+    if (titleEl) titleEl.textContent = title || 'Project Demo';
+    backdrop.classList.add('open');
+    const first = backdrop.querySelector(FOCUSABLE);
+    if (first) first.focus();
+  }
+  function closeDemo() {
+    backdrop.classList.remove('open');
+    if (lastFocus) lastFocus.focus();
+  }
+
   document.querySelectorAll('.demo-trigger').forEach(btn => {
-    btn.addEventListener('click', e => {
-      e.stopPropagation();
-      if (titleEl) titleEl.textContent = btn.dataset.title || 'Project Demo';
-      backdrop.classList.add('open');
-    });
+    btn.addEventListener('click', e => { e.stopPropagation(); openDemo(btn.dataset.title); });
   });
-  if (closeBtn) closeBtn.addEventListener('click', () => backdrop.classList.remove('open'));
-  backdrop.addEventListener('click', e => { if (e.target === backdrop) backdrop.classList.remove('open'); });
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') backdrop.classList.remove('open'); });
+  if (closeBtn) closeBtn.addEventListener('click', closeDemo);
+  backdrop.addEventListener('click', e => { if (e.target === backdrop) closeDemo(); });
+  backdrop.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { closeDemo(); return; }
+    if (e.key !== 'Tab') return;
+    const focusable = [...backdrop.querySelectorAll(FOCUSABLE)];
+    if (!focusable.length) { e.preventDefault(); return; }
+    const first = focusable[0], last = focusable[focusable.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  });
 })();
 
 /* ----- Skill tag tooltips ----- */

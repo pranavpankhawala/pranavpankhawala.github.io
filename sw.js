@@ -1,5 +1,8 @@
 const CACHE = 'pp-v1';
-const ASSETS = ['/', '/index.html', '/index.css', '/index.js', '/favicon.svg', '/resume.pdf'];
+const ASSETS = [
+  '/', '/index.html', '/index.css', '/index.css?v=22',
+  '/index.js', '/favicon.svg', '/og-image.svg', '/resume.pdf', '/manifest.json',
+];
 
 self.addEventListener('install', e => {
   e.waitUntil(
@@ -18,6 +21,8 @@ self.addEventListener('activate', e => {
 self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET') return;
   e.respondWith(
-    caches.match(e.request).then(cached => cached || fetch(e.request))
+    caches.match(e.request)
+      .then(cached => cached || fetch(e.request))
+      .catch(() => caches.match('/index.html'))
   );
 });

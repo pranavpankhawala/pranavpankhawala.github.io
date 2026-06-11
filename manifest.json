@@ -3,10 +3,14 @@
   "short_name": "PP",
   "description": "AI Automation & Cybersecurity Engineer — portfolio",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
+  "orientation": "any",
   "background_color": "#f7faf7",
   "theme_color": "#4a8a5e",
+  "categories": ["portfolio", "productivity"],
   "icons": [
-    { "src": "favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+    { "src": "favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "maskable" }
   ]
 }

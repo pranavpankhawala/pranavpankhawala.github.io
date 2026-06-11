@@ -17,7 +17,10 @@
 
 <link rel="icon" href="favicon.svg" type="image/svg+xml" />
 <link rel="manifest" href="manifest.json" />
+<link rel="canonical" href="https://pranavpankhawala.github.io/" />
 <meta name="theme-color" content="#4a8a5e" />
+<meta name="author" content="Pranav Pankhawala" />
+<meta name="keywords" content="AI engineer, computer vision, cybersecurity, YOLO, PyTorch, edge AI, Jetson, VAPT, penetration testing, Pune" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Geist:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
@@ -58,7 +61,7 @@
 <a href="#top" class="skip-link">Skip to main content</a>
 
 <!-- OPEN TO WORK BANNER -->
-<div class="otw-banner" id="otwBanner">
+<div class="otw-banner" id="otwBanner" role="status" aria-live="polite">
   <span class="otw-text">🟢 Open to AI / Vision / Security roles — Let's connect!</span>
   <a href="#contact" class="otw-link">Get in touch ↗</a>
   <button class="otw-close" id="otwClose" aria-label="Dismiss banner">×</button>
@@ -180,7 +183,7 @@
           </a>
         </div>
 
-        <div class="code-widget reveal">
+        <div class="code-widget reveal" aria-label="Code snippet: detection.py" role="img">
           <div class="code-widget-bar">
             <span class="code-widget-dots"><span></span><span></span><span></span></span>
             <span class="code-widget-title">detection.py</span>
@@ -490,10 +493,10 @@
 
       <div class="proj-toolbar reveal">
         <div class="filters" role="tablist" aria-label="Filter projects">
-          <button data-filter="all" class="active">All <span class="mono" style="opacity:.5">03</span></button>
-          <button data-filter="ai">AI / Vision</button>
-          <button data-filter="security">Security</button>
-          <button data-filter="edge">Edge</button>
+          <button role="tab" aria-selected="true" data-filter="all" class="active">All <span class="mono" style="opacity:.5">03</span></button>
+          <button role="tab" aria-selected="false" data-filter="ai">AI / Vision</button>
+          <button role="tab" aria-selected="false" data-filter="security">Security</button>
+          <button role="tab" aria-selected="false" data-filter="edge">Edge</button>
         </div>
         <div class="viewtoggle" aria-label="View toggle">
           <button id="viewGrid" class="active" aria-label="Grid view">
@@ -598,6 +601,9 @@
         </article>
 
       </div>
+      <div class="proj-empty" id="projEmpty" hidden>
+        <span>No projects match this filter.</span>
+      </div>
     </section>
 
     <!-- PUBLICATIONS -->
@@ -663,7 +669,7 @@
             <span class="tag">Edge AI</span>
             <span class="tag">Jetson</span>
           </div>
-          <a href="#" class="blog-card-link">Read more →</a>
+          <button class="blog-card-link" data-coming-soon aria-label="Coming soon">Read more →</button>
         </article>
         <article class="blog-card">
           <div class="blog-card-meta">
@@ -677,7 +683,7 @@
             <span class="tag">Security</span>
             <span class="tag">OWASP</span>
           </div>
-          <a href="#" class="blog-card-link">Read more →</a>
+          <button class="blog-card-link" data-coming-soon aria-label="Coming soon">Read more →</button>
         </article>
         <article class="blog-card">
           <div class="blog-card-meta">
@@ -691,7 +697,7 @@
             <span class="tag">TensorRT</span>
             <span class="tag">Jetson Nano</span>
           </div>
-          <a href="#" class="blog-card-link">Read more →</a>
+          <button class="blog-card-link" data-coming-soon aria-label="Coming soon">Read more →</button>
         </article>
       </div>
     </section>
