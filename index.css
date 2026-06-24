@@ -887,7 +887,9 @@ a.cert-card:hover .cert-card-ext { color: var(--accent); transform: translate(2p
   padding: 28px 24px;
   background: var(--bg-elev);
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
   position: relative;
   transition: transform 240ms cubic-bezier(.2,.7,.2,1), box-shadow 240ms ease, border-color 240ms ease;
 }
@@ -898,7 +900,7 @@ a.cert-card:hover .cert-card-ext { color: var(--accent); transform: translate(2p
   font-size: 22px;
   letter-spacing: -0.005em;
   color: var(--ink);
-  margin: 0 0 10px;
+  margin: 0;
 }
 .hobby-desc {
   font-size: 13px; color: var(--ink-3); margin: 0; line-height: 1.6;
