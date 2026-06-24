@@ -4,7 +4,11 @@ const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matc
 /* ----- Theme ----- */
 const themeBtn = document.getElementById('themeBtn');
 const themeIcon = document.getElementById('themeIcon');
-function autoTheme() { const h = new Date().getHours(); return h >= 19 || h < 7 ? 'dark' : 'light'; }
+function autoTheme() {
+  if (window.matchMedia('(prefers-color-scheme: dark)').matches) return 'dark';
+  if (window.matchMedia('(prefers-color-scheme: light)').matches) return 'light';
+  const h = new Date().getHours(); return h >= 19 || h < 7 ? 'dark' : 'light';
+}
 function setTheme(t) {
   document.documentElement.classList.add('theme-transitioning');
   document.documentElement.setAttribute('data-theme', t);
@@ -461,10 +465,16 @@ document.querySelectorAll('[data-stagger]').forEach(container => {
 });
 
 /* ----- Ambient cursor spotlight ----- */
-if (window.matchMedia('(hover: hover)').matches && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+if (window.matchMedia('(hover: hover)').matches && !reducedMotion) {
+  let rafPending = false;
   document.addEventListener('mousemove', e => {
-    document.body.style.setProperty('--cursor-x', e.clientX + 'px');
-    document.body.style.setProperty('--cursor-y', e.clientY + 'px');
+    if (rafPending) return;
+    rafPending = true;
+    requestAnimationFrame(() => {
+      document.body.style.setProperty('--cursor-x', e.clientX + 'px');
+      document.body.style.setProperty('--cursor-y', e.clientY + 'px');
+      rafPending = false;
+    });
   }, { passive: true });
 }
 
@@ -601,6 +611,9 @@ fetch('https://api.github.com/users/pranavpankhawala')
   })
   .catch(() => {});
 
+/* ----- GitHub star count (summed from repos) ----- */
+// Stars are fetched alongside languages below; stored here for deferred use
+
 /* ----- GitHub top languages ----- */
 const LANG_COLORS = {
   Python: '#3572A5', JavaScript: '#f1e05a', HTML: '#e34c26',
@@ -614,6 +627,8 @@ fetch('https://api.github.com/users/pranavpankhawala/repos?per_page=100')
     const wrap = document.getElementById('ghStatsWrap');
     if (!wrap) return;
     if (!Array.isArray(repos)) { wrap.innerHTML = `<div class="gh-stats-title">Languages unavailable</div>${GH_LINK}`; return; }
+    const starsEl = document.getElementById('ghStars');
+    if (starsEl) starsEl.textContent = repos.reduce((s, r) => s + (r.stargazers_count || 0), 0);
     const counts = {};
     repos.forEach(repo => { if (repo.language) counts[repo.language] = (counts[repo.language] || 0) + 1; });
     const top = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 6);
@@ -737,6 +752,52 @@ document.querySelectorAll('.tag[data-tooltip]').forEach(tag => {
     skillTip.classList.remove('visible');
   });
 });
+
+/* ----- Footer shortcut hint ----- */
+const footHint = document.getElementById('footShortcutHint');
+if (footHint) footHint.addEventListener('click', () => { if (typeof openHelp === 'function') openHelp(); });
+
+/* ----- Konami code easter egg ----- */
+(function() {
+  const SEQ = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
+  let idx = 0;
+  document.addEventListener('keydown', e => {
+    if (e.key === SEQ[idx]) {
+      idx++;
+      if (idx === SEQ.length) {
+        idx = 0;
+        showToast('↑↑↓↓←→←→BA — cheat code activated 🎮');
+        document.body.classList.add('konami');
+        setTimeout(() => document.body.classList.remove('konami'), 3000);
+      }
+    } else { idx = 0; }
+  });
+})();
+
+/* ----- Terminal ASCII art on first open ----- */
+const _origOpenTerminal = openTerminal;
+(function() {
+  let shown = false;
+  openTerminal = function() {
+    _origOpenTerminal();
+    if (!shown) {
+      shown = true;
+      const art = [
+        '  ____  ____',
+        ' |  _ \\|  _ \\',
+        ' | |_) | |_) |',
+        ' |  __/|  __/',
+        ' |_|   |_|    pranavpankhawala.github.io',
+      ];
+      const div = document.createElement('div');
+      div.className = 't-line t-dim';
+      div.style.fontFamily = '"JetBrains Mono", monospace';
+      div.style.whiteSpace = 'pre';
+      div.textContent = art.join('\n');
+      terminalBody.insertBefore(div, terminalBody.firstChild);
+    }
+  };
+})();
 
 /* ----- Service Worker registration ----- */
 if ('serviceWorker' in navigator) {

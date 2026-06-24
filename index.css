@@ -1,3 +1,10 @@
+/* ---------- Konami easter egg ---------- */
+@keyframes konami-pulse {
+  0%, 100% { filter: hue-rotate(0deg); }
+  50% { filter: hue-rotate(180deg); }
+}
+body.konami { animation: konami-pulse 0.8s ease infinite; }
+
 /* ---------- Skip link ---------- */
 .skip-link {
   position: absolute;
@@ -471,6 +478,7 @@ section.block:first-of-type { border-top: 0; }
 }
 @media (max-width: 480px) {
   .hero-ticker { grid-template-columns: repeat(2, 1fr); }
+  .hero-cta .btn:nth-child(3) { display: none; }
 }
 
 /* ---------- About ---------- */
@@ -649,6 +657,17 @@ section.block:first-of-type { border-top: 0; }
 .proj:not(.flipped):hover .proj-front {
   box-shadow: var(--shadow-lift); border-color: var(--ink-3); transform: translateY(-2px);
 }
+/* Tap-to-flip hint — visible on touch/mobile */
+.proj-tap-hint {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px; letter-spacing: 0.08em; color: var(--ink-3);
+  opacity: 0; transition: opacity 200ms ease;
+  text-align: right; padding-top: 6px;
+  pointer-events: none;
+}
+@media (hover: none) { .proj-tap-hint { opacity: 1; } }
+.proj:not(.flipped):hover .proj-tap-hint { opacity: 1; }
+
 /* Hide detail content from front face in grid view only */
 .projects:not(.list) .proj-highlights,
 .projects:not(.list) .proj-links { display: none; }
@@ -875,7 +894,10 @@ a.cert-card:hover .cert-card-ext { color: var(--accent); transform: translate(2p
   font-size: 22px;
   letter-spacing: -0.005em;
   color: var(--ink);
-  margin: 0;
+  margin: 0 0 10px;
+}
+.hobby-desc {
+  font-size: 13px; color: var(--ink-3); margin: 0; line-height: 1.6;
 }
 @media (max-width: 1080px) { .hobbies-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 600px) { .hobbies-grid { grid-template-columns: 1fr; } }
@@ -1017,7 +1039,7 @@ a.cert-card:hover .cert-card-ext { color: var(--accent); transform: translate(2p
 .section-dot-item:hover .section-dot-pip { background: var(--ink-3); transform: scale(1.3); }
 .section-dot-item.active .section-dot-label { opacity: 1; transform: translateX(0); color: var(--accent); }
 .section-dot-item.active .section-dot-pip { background: var(--accent); transform: scale(1.6); }
-@media (max-width: 1280px) { .section-dots { display: none; } }
+@media (max-width: 1080px) { .section-dots { display: none; } }
 
 /* ---------- Footer ---------- */
 footer {
@@ -1038,6 +1060,17 @@ footer {
 .foot-social a:hover { color: var(--ink); border-color: var(--ink-3); transform: translateY(-1px); }
 .foot-top { color: var(--ink-2); text-decoration: none; }
 .foot-top:hover { color: var(--ink); }
+.foot-shortcut-hint {
+  background: none; border: none; cursor: pointer; color: var(--ink-3);
+  font-family: inherit; font-size: inherit; padding: 0;
+  transition: color 160ms ease;
+}
+.foot-shortcut-hint:hover { color: var(--ink); }
+.foot-shortcut-hint kbd {
+  font-family: "JetBrains Mono", monospace;
+  background: var(--bg-elev); border: 1px solid var(--rule);
+  border-radius: 4px; padding: 1px 5px; font-size: 11px;
+}
 @media (max-width: 600px) { .foot { justify-content: center; flex-direction: column; gap: 20px; } }
 
 /* ---------- Back-to-top floating button + progress ring ---------- */
@@ -1346,6 +1379,8 @@ footer {
 }
 .section-head:hover .section-link-btn { opacity: 1; }
 .section-link-btn:hover { color: var(--ink); border-color: var(--ink-3); }
+
+.tag[data-tooltip] { cursor: help; }
 
 /* ---------- Skill tag tooltip ---------- */
 .skill-tip {
