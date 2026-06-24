@@ -730,28 +730,29 @@ document.querySelectorAll('[data-coming-soon]').forEach(btn => {
   });
 })();
 
-/* ----- Skill tag tooltips ----- */
+/* ----- Skill tag + cert card tooltips ----- */
 const skillTip = document.createElement('div');
 skillTip.className = 'skill-tip';
 document.body.appendChild(skillTip);
 let tipTimer;
-document.querySelectorAll('.tag[data-tooltip]').forEach(tag => {
-  tag.addEventListener('mouseenter', () => {
+function attachTooltip(el) {
+  el.addEventListener('mouseenter', () => {
     clearTimeout(tipTimer);
     tipTimer = setTimeout(() => {
-      skillTip.textContent = tag.dataset.tooltip;
+      skillTip.textContent = el.dataset.tooltip;
       skillTip.classList.add('visible');
     }, 120);
   });
-  tag.addEventListener('mousemove', e => {
+  el.addEventListener('mousemove', e => {
     skillTip.style.left = e.clientX + 14 + 'px';
     skillTip.style.top = e.clientY - 42 + 'px';
   });
-  tag.addEventListener('mouseleave', () => {
+  el.addEventListener('mouseleave', () => {
     clearTimeout(tipTimer);
     skillTip.classList.remove('visible');
   });
-});
+}
+document.querySelectorAll('.tag[data-tooltip], .cert-card[data-tooltip]').forEach(attachTooltip);
 
 /* ----- Footer shortcut hint ----- */
 const footHint = document.getElementById('footShortcutHint');

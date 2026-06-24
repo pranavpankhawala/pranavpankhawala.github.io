@@ -7,7 +7,7 @@
 <link rel="icon" href="favicon.svg" type="image/svg+xml" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Geist:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Geist:wght@400;500;600&display=swap" rel="stylesheet" />
 <link rel="manifest" href="manifest.json" />
 <link rel="stylesheet" href="index.css?v=22" />
 <style>
@@ -83,7 +83,11 @@
 (function () {
   const themeBtn = document.getElementById('themeBtn');
   const themeIcon = document.getElementById('themeIcon');
-  function autoTheme() { const h = new Date().getHours(); return h >= 19 || h < 7 ? 'dark' : 'light'; }
+  function autoTheme() {
+    if (window.matchMedia('(prefers-color-scheme: dark)').matches) return 'dark';
+    if (window.matchMedia('(prefers-color-scheme: light)').matches) return 'light';
+    const h = new Date().getHours(); return h >= 19 || h < 7 ? 'dark' : 'light';
+  }
   function setTheme(t) {
     document.documentElement.setAttribute('data-theme', t);
     localStorage.setItem('pp-theme', t);
@@ -98,10 +102,16 @@
   themeBtn.addEventListener('click', () => {
     setTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
   });
-  if (window.matchMedia('(hover: hover)').matches) {
+  if (window.matchMedia('(hover: hover)').matches && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    let rafPending = false;
     document.addEventListener('mousemove', e => {
-      document.body.style.setProperty('--cursor-x', e.clientX + 'px');
-      document.body.style.setProperty('--cursor-y', e.clientY + 'px');
+      if (rafPending) return;
+      rafPending = true;
+      requestAnimationFrame(() => {
+        document.body.style.setProperty('--cursor-x', e.clientX + 'px');
+        document.body.style.setProperty('--cursor-y', e.clientY + 'px');
+        rafPending = false;
+      });
     }, { passive: true });
   }
 })();

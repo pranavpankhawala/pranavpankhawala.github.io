@@ -668,8 +668,12 @@ section.block:first-of-type { border-top: 0; }
 @media (hover: none) { .proj-tap-hint { opacity: 1; } }
 .proj:not(.flipped):hover .proj-tap-hint { opacity: 1; }
 
-/* Hide detail content from front face in grid view only */
-.projects:not(.list) .proj-highlights,
+/* In grid view: show first 2 highlights only; hide extra list items and links */
+.projects:not(.list) .proj-highlights { display: block; margin: 8px 0 0; padding-left: 16px; }
+.projects:not(.list) .proj-highlights li {
+  font-size: 11.5px; color: var(--ink-3); line-height: 1.5; margin-bottom: 2px;
+}
+.projects:not(.list) .proj-highlights li:nth-child(n+3) { display: none; }
 .projects:not(.list) .proj-links { display: none; }
 
 /* Back face */
@@ -1380,7 +1384,7 @@ footer {
 .section-head:hover .section-link-btn { opacity: 1; }
 .section-link-btn:hover { color: var(--ink); border-color: var(--ink-3); }
 
-.tag[data-tooltip] { cursor: help; }
+.tag[data-tooltip], .cert-card[data-tooltip] { cursor: help; }
 
 /* ---------- Skill tag tooltip ---------- */
 .skill-tip {
@@ -1794,8 +1798,8 @@ footer {
   font-size: 12.5px; line-height: 1.75;
   color: oklch(0.88 0.01 165); white-space: pre; overflow-x: auto;
 }
-/* Syntax colours adapt to accent for fn/keywords; neutrals stay fixed */
-.cw-comment { color: oklch(0.54 0.01 165); }
+/* Syntax colours: fn/comment adapt to accent palette; neutrals stay fixed terminal colors */
+.cw-comment { color: color-mix(in oklab, var(--accent) 45%, oklch(0.5 0 0)); }
 .cw-var     { color: oklch(0.80 0.06 200); }
 .cw-fn      { color: color-mix(in oklab, var(--accent) 80%, oklch(0.9 0 0)); }
 .cw-str     { color: oklch(0.78 0.12 85); }
@@ -1851,6 +1855,22 @@ footer {
   font-family: "JetBrains Mono", monospace; font-size: 12px;
   color: var(--ink-3);
 }
+
+/* ---------- Loading skeleton ---------- */
+@keyframes skeleton-shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+.skeleton {
+  border-radius: 6px;
+  background: linear-gradient(90deg, var(--rule) 25%, var(--bg-elev) 50%, var(--rule) 75%);
+  background-size: 200% auto;
+  animation: skeleton-shimmer 1.4s linear infinite;
+}
+.gh-skeleton { display: flex; flex-direction: column; gap: 8px; margin-top: 16px; }
+.gh-skeleton-title { height: 10px; width: 80px; }
+.gh-skeleton-pills { display: flex; gap: 5px; }
+.gh-skeleton-pill { height: 22px; border-radius: 20px; }
 
 /* ---------- Enhanced GitHub Stats ---------- */
 .gh-stats-wrap { margin-top: 16px; }
