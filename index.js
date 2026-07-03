@@ -4,7 +4,11 @@ const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matc
 /* ----- Theme ----- */
 const themeBtn = document.getElementById('themeBtn');
 const themeIcon = document.getElementById('themeIcon');
-function autoTheme() { const h = new Date().getHours(); return h >= 19 || h < 7 ? 'dark' : 'light'; }
+function autoTheme() {
+  if (window.matchMedia('(prefers-color-scheme: dark)').matches) return 'dark';
+  if (window.matchMedia('(prefers-color-scheme: light)').matches) return 'light';
+  const h = new Date().getHours(); return h >= 19 || h < 7 ? 'dark' : 'light';
+}
 function setTheme(t) {
   document.documentElement.classList.add('theme-transitioning');
   document.documentElement.setAttribute('data-theme', t);
@@ -88,14 +92,18 @@ document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 /* ----- Project filter ----- */
 const filterBtns = document.querySelectorAll('.filters button');
 const projs = document.querySelectorAll('.proj');
+const projEmpty = document.getElementById('projEmpty');
 filterBtns.forEach(b => b.addEventListener('click', () => {
-  filterBtns.forEach(x => x.classList.remove('active'));
-  b.classList.add('active');
+  filterBtns.forEach(x => { x.classList.remove('active'); x.setAttribute('aria-selected', 'false'); });
+  b.classList.add('active'); b.setAttribute('aria-selected', 'true');
   const f = b.dataset.filter;
+  let visible = 0;
   projs.forEach(p => {
     const show = f === 'all' || p.dataset.cat.split(' ').includes(f);
     p.classList.toggle('hidden', !show);
+    if (show) visible++;
   });
+  if (projEmpty) projEmpty.hidden = visible > 0;
 }));
 
 /* ----- View toggle ----- */
@@ -129,6 +137,7 @@ const cmdkItems = [
   { ic: '#', label: 'Go to Capabilities', target: '#capabilities', hint: '⏎' },
   { ic: '#', label: 'Go to Projects', target: '#projects', hint: '⏎' },
   { ic: '#', label: 'Go to Publications', target: '#publications', hint: '⏎' },
+  { ic: '#', label: 'Go to Blog', target: '#blog', hint: '⏎' },
   { ic: '#', label: 'Go to Skills', target: '#skills', hint: '⏎' },
   { ic: '#', label: 'Go to Certifications', target: '#certifications', hint: '⏎' },
   { ic: '#', label: 'Go to Interests', target: '#interests', hint: '⏎' },
@@ -456,10 +465,16 @@ document.querySelectorAll('[data-stagger]').forEach(container => {
 });
 
 /* ----- Ambient cursor spotlight ----- */
-if (window.matchMedia('(hover: hover)').matches && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+if (window.matchMedia('(hover: hover)').matches && !reducedMotion) {
+  let rafPending = false;
   document.addEventListener('mousemove', e => {
-    document.body.style.setProperty('--cursor-x', e.clientX + 'px');
-    document.body.style.setProperty('--cursor-y', e.clientY + 'px');
+    if (rafPending) return;
+    rafPending = true;
+    requestAnimationFrame(() => {
+      document.body.style.setProperty('--cursor-x', e.clientX + 'px');
+      document.body.style.setProperty('--cursor-y', e.clientY + 'px');
+      rafPending = false;
+    });
   }, { passive: true });
 }
 
@@ -528,7 +543,7 @@ const terminalInput = document.getElementById('terminalInput');
 const terminalCommands = {
   help: () => [
     { cls: 't-dim', text: 'Available commands:' },
-    { cls: 't-cmd', text: 'whoami    skills    contact    clear    help' },
+    { cls: 't-cmd', text: 'whoami    skills    projects    blog    contact    clear    help' },
   ],
   whoami: () => [
     { cls: '', text: 'Pranav Pankhawala' },
@@ -544,6 +559,16 @@ const terminalCommands = {
     { cls: '', text: 'Email    pranav.pankhawala@gmail.com' },
     { cls: '', text: 'GitHub   github.com/pranavpankhawala' },
     { cls: '', text: 'LinkedIn linkedin.com/in/pranavpankhawala' },
+  ],
+  projects: () => [
+    { cls: 't-dim', text: 'Featured projects:' },
+    { cls: 't-cmd', text: 'AI Surveillance · ML Network Security · Night Vision' },
+    { cls: 't-dim', text: 'Type "help" or scroll to #projects for details.' },
+  ],
+  blog: () => [
+    { cls: 't-dim', text: 'Blog posts (coming soon):' },
+    { cls: 't-cmd', text: 'YOLO on Edge · VAPT Guide · Jetson Nano ML' },
+    { cls: 't-dim', text: 'Follow on LinkedIn for updates.' },
   ],
   clear: () => { terminalBody.innerHTML = ''; return []; },
 };
@@ -586,6 +611,39 @@ fetch('https://api.github.com/users/pranavpankhawala')
   })
   .catch(() => {});
 
+/* ----- GitHub star count (summed from repos) ----- */
+// Stars are fetched alongside languages below; stored here for deferred use
+
+/* ----- GitHub top languages ----- */
+const LANG_COLORS = {
+  Python: '#3572A5', JavaScript: '#f1e05a', HTML: '#e34c26',
+  CSS: '#563d7c', 'C++': '#f34b7d', C: '#555555', 'C#': '#178600',
+  Shell: '#89e051', TypeScript: '#3178c6', 'Jupyter Notebook': '#DA5B0B',
+};
+const GH_LINK = `<a href="https://github.com/pranavpankhawala" target="_blank" rel="noopener noreferrer" class="gh-view-btn">View GitHub ↗</a>`;
+fetch('https://api.github.com/users/pranavpankhawala/repos?per_page=100')
+  .then(r => r.json())
+  .then(repos => {
+    const wrap = document.getElementById('ghStatsWrap');
+    if (!wrap) return;
+    if (!Array.isArray(repos)) { wrap.innerHTML = `<div class="gh-stats-title">Languages unavailable</div>${GH_LINK}`; return; }
+    const starsEl = document.getElementById('ghStars');
+    if (starsEl) starsEl.textContent = repos.reduce((s, r) => s + (r.stargazers_count || 0), 0);
+    const counts = {};
+    repos.forEach(repo => { if (repo.language) counts[repo.language] = (counts[repo.language] || 0) + 1; });
+    const top = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 6);
+    if (!top.length) { wrap.innerHTML = `<div class="gh-stats-title">Languages unavailable</div>${GH_LINK}`; return; }
+    const pills = top.map(([lang]) => {
+      const color = LANG_COLORS[lang] || 'var(--ink-3)';
+      return `<span class="gh-lang-pill"><span class="gh-lang-dot" style="background:${color}"></span>${lang}</span>`;
+    }).join('');
+    wrap.innerHTML = `<div class="gh-stats-title">Top languages</div><div class="gh-lang-pills">${pills}</div>${GH_LINK}`;
+  })
+  .catch(() => {
+    const wrap = document.getElementById('ghStatsWrap');
+    if (wrap) wrap.innerHTML = `<div class="gh-stats-title">Languages unavailable</div>${GH_LINK}`;
+  });
+
 /* ----- GitHub activity heatmap ----- */
 fetch('https://api.github.com/users/pranavpankhawala/events/public')
   .then(r => r.json())
@@ -608,27 +666,143 @@ fetch('https://api.github.com/users/pranavpankhawala/events/public')
     }
     wrap.innerHTML = '<div class="contrib-title">12-week activity</div><div class="contrib-grid">' + cells.join('') + '</div>';
   })
-  .catch(() => {});
+  .catch(() => {
+    const wrap = document.getElementById('contribWrap');
+    if (wrap) wrap.innerHTML = '<div class="contrib-title">Activity unavailable</div>';
+  });
 
-/* ----- Skill tag tooltips ----- */
+/* ----- Open to Work Banner dismiss ----- */
+(function() {
+  const banner = document.getElementById('otwBanner');
+  const closeBtn = document.getElementById('otwClose');
+  if (!banner || !closeBtn) return;
+  if (localStorage.getItem('pp-otw-dismissed') === '1') {
+    banner.classList.add('dismissed');
+  }
+  closeBtn.addEventListener('click', () => {
+    banner.classList.add('dismissed');
+    localStorage.setItem('pp-otw-dismissed', '1');
+  });
+})();
+
+/* ----- Blog coming-soon toast ----- */
+document.querySelectorAll('[data-coming-soon]').forEach(btn => {
+  btn.addEventListener('click', e => {
+    e.preventDefault();
+    showToast('Blog posts coming soon — follow on LinkedIn for updates.');
+  });
+});
+
+/* ----- Video Demo Modal with focus trap ----- */
+(function() {
+  const backdrop = document.getElementById('demoBackdrop');
+  const closeBtn = document.getElementById('demoModalClose');
+  const titleEl = document.getElementById('demoModalTitle');
+  if (!backdrop) return;
+  let lastFocus = null;
+  const FOCUSABLE = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+
+  function openDemo(title) {
+    lastFocus = document.activeElement;
+    if (titleEl) titleEl.textContent = title || 'Project Demo';
+    backdrop.classList.add('open');
+    const first = backdrop.querySelector(FOCUSABLE);
+    if (first) first.focus();
+  }
+  function closeDemo() {
+    backdrop.classList.remove('open');
+    if (lastFocus) lastFocus.focus();
+  }
+
+  document.querySelectorAll('.demo-trigger').forEach(btn => {
+    btn.addEventListener('click', e => { e.stopPropagation(); openDemo(btn.dataset.title); });
+  });
+  if (closeBtn) closeBtn.addEventListener('click', closeDemo);
+  backdrop.addEventListener('click', e => { if (e.target === backdrop) closeDemo(); });
+  backdrop.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { closeDemo(); return; }
+    if (e.key !== 'Tab') return;
+    const focusable = [...backdrop.querySelectorAll(FOCUSABLE)];
+    if (!focusable.length) { e.preventDefault(); return; }
+    const first = focusable[0], last = focusable[focusable.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  });
+})();
+
+/* ----- Skill tag + cert card tooltips ----- */
 const skillTip = document.createElement('div');
 skillTip.className = 'skill-tip';
 document.body.appendChild(skillTip);
 let tipTimer;
-document.querySelectorAll('.tag[data-tooltip]').forEach(tag => {
-  tag.addEventListener('mouseenter', () => {
+function attachTooltip(el) {
+  el.addEventListener('mouseenter', () => {
     clearTimeout(tipTimer);
     tipTimer = setTimeout(() => {
-      skillTip.textContent = tag.dataset.tooltip;
+      skillTip.textContent = el.dataset.tooltip;
       skillTip.classList.add('visible');
     }, 120);
   });
-  tag.addEventListener('mousemove', e => {
+  el.addEventListener('mousemove', e => {
     skillTip.style.left = e.clientX + 14 + 'px';
     skillTip.style.top = e.clientY - 42 + 'px';
   });
-  tag.addEventListener('mouseleave', () => {
+  el.addEventListener('mouseleave', () => {
     clearTimeout(tipTimer);
     skillTip.classList.remove('visible');
   });
-});
+}
+document.querySelectorAll('.tag[data-tooltip], .cert-card[data-tooltip]').forEach(attachTooltip);
+
+/* ----- Footer shortcut hint ----- */
+const footHint = document.getElementById('footShortcutHint');
+if (footHint) footHint.addEventListener('click', () => { if (typeof openHelp === 'function') openHelp(); });
+
+/* ----- Konami code easter egg ----- */
+(function() {
+  const SEQ = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
+  let idx = 0;
+  document.addEventListener('keydown', e => {
+    if (e.key === SEQ[idx]) {
+      idx++;
+      if (idx === SEQ.length) {
+        idx = 0;
+        showToast('↑↑↓↓←→←→BA — cheat code activated 🎮');
+        document.body.classList.add('konami');
+        setTimeout(() => document.body.classList.remove('konami'), 3000);
+      }
+    } else { idx = 0; }
+  });
+})();
+
+/* ----- Terminal ASCII art on first open ----- */
+const _origOpenTerminal = openTerminal;
+(function() {
+  let shown = false;
+  openTerminal = function() {
+    _origOpenTerminal();
+    if (!shown) {
+      shown = true;
+      const art = [
+        '  ____  ____',
+        ' |  _ \\|  _ \\',
+        ' | |_) | |_) |',
+        ' |  __/|  __/',
+        ' |_|   |_|    pranavpankhawala.github.io',
+      ];
+      const div = document.createElement('div');
+      div.className = 't-line t-dim';
+      div.style.fontFamily = '"JetBrains Mono", monospace';
+      div.style.whiteSpace = 'pre';
+      div.textContent = art.join('\n');
+      terminalBody.insertBefore(div, terminalBody.firstChild);
+    }
+  };
+})();
+
+/* ----- Service Worker registration ----- */
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').catch(() => {});
+  });
+}
