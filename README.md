@@ -8,10 +8,23 @@ Built with vanilla HTML, CSS, and JavaScript — no frameworks, no build step.
 
 ```
 pranavpankhawala.github.io/
-├── index.html      # Markup and page structure
-├── index.css       # All styles and design tokens (8 color palettes, dark mode)
-├── index.js        # Interactive behaviour (theme, palette, nav, filters, command palette)
-└── resume.pdf      # Downloadable resume
+├── index.html            # Markup and page structure
+├── index.css             # All styles and design tokens (8 color palettes, dark mode)
+├── index.js              # Interactive behaviour (nav, filters, command palette, terminal, etc.)
+├── theme.js              # Shared theme/palette + cursor-spotlight logic (index.html & 404.html)
+├── projects.json         # Project copy — single source, rendered into both card faces
+├── gh-stats.json         # Cached GitHub stats snapshot, refreshed by a scheduled Action
+├── 404.html              # Custom error page
+├── sw.js                 # Service worker (offline shell)
+├── manifest.json         # PWA manifest
+├── favicon.svg           # Site icon
+├── apple-touch-icon.png  # iOS home-screen icon
+├── og-image.svg          # Open Graph / social preview image
+├── robots.txt            # Crawler directives
+├── sitemap.xml           # Sitemap
+├── resume.pdf            # Downloadable resume
+├── LICENSE               # MIT license (source code)
+└── .github/workflows/    # CI: HTML/link validation, scheduled GitHub-stats refresh
 ```
 
 ## Features
@@ -34,7 +47,12 @@ pranavpankhawala.github.io/
 4. Capabilities
 5. Projects
 6. Publications
-7. Contact
+7. Blog
+8. Skills
+9. Certifications
+10. Interests
+11. Recommendations
+12. Contact
 
 ## Deployment
 
