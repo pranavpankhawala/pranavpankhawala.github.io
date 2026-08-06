@@ -1,7 +1,8 @@
-const CACHE = 'pp-v1';
+const CACHE = 'pp-v2';
 const ASSETS = [
   '/', '/index.html', '/index.css', '/index.css?v=22',
-  '/index.js', '/favicon.svg', '/og-image.svg', '/resume.pdf', '/manifest.json',
+  '/index.js', '/theme.js', '/projects.json',
+  '/favicon.svg', '/apple-touch-icon.png', '/og-image.svg', '/resume.pdf', '/manifest.json',
 ];
 
 self.addEventListener('install', e => {

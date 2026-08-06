@@ -1,0 +1,35 @@
+{
+  "surveillance": {
+    "plainEng": "Teaches cameras to catch problems on factory floors instantly — no human needed",
+    "meta": "Solo · Ongoing · YOLO + classical CV pipeline",
+    "codePeek": "# Core detection loop\nresults = model(frame)\nfor box in results[0].boxes:\n    conf = float(box.conf)\n    if conf > THRESHOLD:\n        cls = int(box.cls)\n        alert(cls, conf, frame)",
+    "highlights": [
+      "Real-time YOLO inference at the edge — no cloud dependency",
+      "Classical CV preprocessing significantly cuts false-positive rate",
+      "Modular design: swap detection heads per deployment context",
+      "Targeting Jetson AGX Xavier for production-grade throughput"
+    ]
+  },
+  "network-security": {
+    "plainEng": "Spots network attacks using AI trained on real IoT traffic — published research",
+    "meta": "Solo · M.Tech thesis · 2022 · Published",
+    "codePeek": "# Feature extraction\nfeatures = extract_packet_features(pcap)\nX = scaler.transform(features)\npred = model.predict(X)\nflag_malicious(pred, threshold=0.85)",
+    "highlights": [
+      "Feature engineering on raw packet metadata — no deep payload inspection needed",
+      "Cross-validated to reduce false positives on unseen traffic patterns",
+      "Peer-reviewed and published in Neuro Quantology",
+      "Supervised by Dr. Sirsikar Sumedha, MIT World Peace University"
+    ]
+  },
+  "night-vision": {
+    "plainEng": "Lets robots see in pitch darkness and autonomously patrol perimeters on battery power",
+    "meta": "Team · B.E. capstone · Embedded · Raspberry Pi",
+    "codePeek": "# Night-vision preprocessing\ngray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)\neq = cv2.equalizeHist(gray)\nedges = cv2.Canny(eq, 50, 150)\nmotion = detect_motion(prev, eq)",
+    "highlights": [
+      "IR camera integration with OpenCV night-vision preprocessing pipeline",
+      "Motion-triggered alerts with configurable detection zone polygons",
+      "Edge-deployed on Raspberry Pi — battery-powered, zero cloud dependency",
+      "Mounted on unmanned ground vehicle for fully autonomous perimeter patrol"
+    ]
+  }
+}

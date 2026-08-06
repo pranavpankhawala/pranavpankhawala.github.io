@@ -1,0 +1,23 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: HTML validation
+        run: npx --yes html-validate index.html 404.html
+
+      - name: Check internal links
+        run: >
+          npx --yes linkinator index.html 404.html
+          --skip "github\.com|linkedin\.com|doi\.org|udemy\.com|opencv\.org|onwingspan\.com|googleapis\.com|gstatic\.com|pranavpankhawala\.github\.io"

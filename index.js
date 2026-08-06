@@ -1,27 +1,18 @@
 /* ----- Global flags ----- */
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-/* ----- Theme ----- */
+/* ----- Contact info (single source for JS-side references; static mailto:/tel: links in the HTML stay as-is) ----- */
+const CONTACT = {
+  email: 'pranav.pankhawala@gmail.com',
+  phone: '+918408069188',
+  github: 'https://github.com/pranavpankhawala',
+  githubHandle: 'github.com/pranavpankhawala',
+  linkedin: 'https://www.linkedin.com/in/pranavpankhawala',
+  linkedinHandle: 'linkedin.com/in/pranavpankhawala',
+};
+
+/* ----- Theme (bootstrap + toggle live in theme.js, shared with 404.html) ----- */
 const themeBtn = document.getElementById('themeBtn');
-const themeIcon = document.getElementById('themeIcon');
-function autoTheme() {
-  if (window.matchMedia('(prefers-color-scheme: dark)').matches) return 'dark';
-  if (window.matchMedia('(prefers-color-scheme: light)').matches) return 'light';
-  const h = new Date().getHours(); return h >= 19 || h < 7 ? 'dark' : 'light';
-}
-function setTheme(t) {
-  document.documentElement.classList.add('theme-transitioning');
-  document.documentElement.setAttribute('data-theme', t);
-  localStorage.setItem('pp-theme', t);
-  themeIcon.innerHTML = t === 'dark'
-    ? '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>'
-    : '<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>';
-  setTimeout(() => document.documentElement.classList.remove('theme-transitioning'), 300);
-}
-setTheme(localStorage.getItem('pp-theme') || autoTheme());
-themeBtn.addEventListener('click', () => {
-  setTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
-});
 
 /* ----- Palette switcher ----- */
 const palBtn = document.getElementById('palBtn');
@@ -124,7 +115,7 @@ function showToast(text) {
   t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 1800);
 }
 document.getElementById('copyEmail').addEventListener('click', async () => {
-  try { await navigator.clipboard.writeText('pranav.pankhawala@gmail.com'); showToast('Email copied'); } catch {}
+  try { await navigator.clipboard.writeText(CONTACT.email); showToast('Email copied'); } catch {}
 });
 
 /* ----- Command palette ----- */
@@ -142,10 +133,10 @@ const cmdkItems = [
   { ic: '#', label: 'Go to Certifications', target: '#certifications', hint: '⏎' },
   { ic: '#', label: 'Go to Interests', target: '#interests', hint: '⏎' },
   { ic: '#', label: 'Go to Contact', target: '#contact', hint: '⏎' },
-  { ic: '@', label: 'Email Pranav', action: () => location.href = 'mailto:pranav.pankhawala@gmail.com', hint: 'mail' },
-  { ic: '☎', label: 'Call Pranav', action: () => location.href = 'tel:+918408069188', hint: 'tel' },
-  { ic: '↗', label: 'Open GitHub', action: () => window.open('https://github.com/pranavpankhawala','_blank'), hint: 'ext' },
-  { ic: '↗', label: 'Open LinkedIn', action: () => window.open('https://www.linkedin.com/in/pranavpankhawala','_blank'), hint: 'ext' },
+  { ic: '@', label: 'Email Pranav', action: () => location.href = 'mailto:' + CONTACT.email, hint: 'mail' },
+  { ic: '☎', label: 'Call Pranav', action: () => location.href = 'tel:' + CONTACT.phone, hint: 'tel' },
+  { ic: '↗', label: 'Open GitHub', action: () => window.open(CONTACT.github,'_blank'), hint: 'ext' },
+  { ic: '↗', label: 'Open LinkedIn', action: () => window.open(CONTACT.linkedin,'_blank'), hint: 'ext' },
   { ic: '↓', label: 'Download Resume', action: () => { const a = document.createElement('a'); a.href = 'resume.pdf'; a.download = ''; a.click(); }, hint: 'pdf' },
   { ic: '◐', label: 'Toggle theme', action: () => themeBtn.click(), hint: '⇧T' },
   { ic: '?', label: 'Keyboard shortcuts', action: () => openHelp(), hint: '?' },
@@ -282,141 +273,101 @@ if (iCountEls.length) {
   if (impactEl) impactIO.observe(impactEl);
 }
 
-/* ----- Project modals ----- */
-const projectDetails = {
-  'surveillance': {
-    label: 'SELF · ONGOING', badge: 'In Progress', glyph: 'α',
-    plainEng: "Teaches cameras to catch problems on factory floors instantly — no human needed",
-    meta: "Solo · Ongoing · YOLO + classical CV pipeline",
-    codePeek: `# Core detection loop\nresults = model(frame)\nfor box in results[0].boxes:\n    conf = float(box.conf)\n    if conf > THRESHOLD:\n        cls = int(box.cls)\n        alert(cls, conf, frame)`,
-    title: 'AI-based Surveillance System',
-    tags: ['YOLO', 'PyTorch', 'OpenCV', 'Jetson'],
-    problem: 'Industrial and urban environments need automated, real-time monitoring without continuous human oversight. Traditional CCTV relies entirely on post-incident review and misses violations as they happen.',
-    approach: 'Multi-module computer-vision pipeline combining YOLO-based object detection with classical CV techniques — color filtering, contour analysis, motion tracking. Deployed on NVIDIA Jetson Nano for sub-50ms edge inference with no cloud dependency.',
-    outcome: 'Ongoing platform with configurable detection modules for traffic-violation detection, industrial site surveillance, and human-security applications. Supports alert pipelines with adjustable confidence thresholds.',
-    highlights: [
-      'Real-time YOLO inference at the edge — no cloud dependency',
-      'Classical CV preprocessing significantly cuts false-positive rate',
-      'Modular design: swap detection heads per deployment context',
-      'Targeting Jetson AGX Xavier for production-grade throughput',
-    ],
-    links: [{ label: 'GitHub', href: 'https://github.com/pranavpankhawala' }],
-  },
-  'network-security': {
-    label: 'M.TECH · THESIS', badge: 'Published', glyph: 'λ',
-    plainEng: "Spots network attacks using AI trained on real IoT traffic — published research",
-    meta: "Solo · M.Tech thesis · 2022 · Published",
-    codePeek: `# Feature extraction\nfeatures = extract_packet_features(pcap)\nX = scaler.transform(features)\npred = model.predict(X)\nflag_malicious(pred, threshold=0.85)`,
-    title: 'AI / ML Network Security Model',
-    tags: ['Network Security', 'Machine Learning', 'Python'],
-    problem: 'IoT networks generate heterogeneous traffic that rule-based intrusion detection systems struggle to classify — especially under novel attack patterns that don\'t match known signatures, producing high false-positive rates.',
-    approach: 'Engineered a set of packet-level markers from raw network traffic features and trained an ML classification model to distinguish benign from malicious packets. Applied feature selection and cross-validation to minimize false positives and improve generalization across traffic types.',
-    outcome: 'Published in Neuro Quantology, Volume 20, Issue 9, 2022 (DOI: 10.14704/nq.2022.20.9.NQ440121). Demonstrated improved detection accuracy over baseline rule-based approaches on the validation dataset.',
-    highlights: [
-      'Feature engineering on raw packet metadata — no deep payload inspection needed',
-      'Cross-validated to reduce false positives on unseen traffic patterns',
-      'Peer-reviewed and published in Neuro Quantology',
-      'Supervised by Dr. Sirsikar Sumedha, MIT World Peace University',
-    ],
-    links: [{ label: 'View Paper (DOI)', href: 'https://doi.org/10.14704/nq.2022.20.9' }],
-  },
-  'night-vision': {
-    label: 'B.E. · CAPSTONE', badge: null, glyph: 'ν',
-    plainEng: "Lets robots see in pitch darkness and autonomously patrol perimeters on battery power",
-    meta: "Team · B.E. capstone · Embedded · Raspberry Pi",
-    codePeek: `# Night-vision preprocessing\ngray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)\neq = cv2.equalizeHist(gray)\nedges = cv2.Canny(eq, 50, 150)\nmotion = detect_motion(prev, eq)`,
-    title: 'Night Vision & Perimeter Security',
-    tags: ['OpenCV', 'Python', 'Raspberry Pi', 'Embedded'],
-    problem: 'Perimeter security in zero-light conditions requires expensive thermal cameras or constant human attention. Unmanned patrol vehicles need autonomous, battery-powered vision that works in full darkness.',
-    approach: 'Built a night-vision system using IR-enhanced cameras with OpenCV-based processing: histogram equalization, edge detection, and motion-triggered alerting. Mounted on an unmanned ground vehicle and edge-deployed on Raspberry Pi for fully offline operation.',
-    outcome: 'Functional B.E. capstone prototype demonstrating autonomous perimeter patrol with configurable detection zones and motion-triggered alert logging. Battery-powered with full-dark operation validated in field tests.',
-    highlights: [
-      'IR camera integration with OpenCV night-vision preprocessing pipeline',
-      'Motion-triggered alerts with configurable detection zone polygons',
-      'Edge-deployed on Raspberry Pi — battery-powered, zero cloud dependency',
-      'Mounted on unmanned ground vehicle for fully autonomous perimeter patrol',
-    ],
-    links: [{ label: 'GitHub', href: 'https://github.com/pranavpankhawala' }],
-  },
-};
+/* ----- Project cards: highlights (list view) + flip (grid view) -----
+   Core identity (title, tags, label, badge, link) lives once in index.html —
+   the source of truth for SEO/no-JS. projects.json supplies only the extra
+   copy (plain-English blurb, meta line, code peek, highlights) that isn't
+   in the markup, so nothing is duplicated between the two. */
+fetch('projects.json')
+  .then(r => r.json())
+  .catch(() => ({}))
+  .then(projectDetails => {
+    document.querySelectorAll('.proj[data-project-id]').forEach(card => {
+      const d = projectDetails[card.dataset.projectId] || {};
 
-/* ----- Project cards: highlights (list view) + flip (grid view) ----- */
-document.querySelectorAll('.proj[data-project-id]').forEach(card => {
-  const d = projectDetails[card.dataset.projectId];
-  if (!d) return;
+      const projArt = card.querySelector('.proj-art');
+      const label = projArt?.querySelector('.label')?.textContent || '';
+      const badge = projArt?.querySelector('.badge')?.textContent || '';
+      const projBody = card.querySelector('.proj-body');
+      const h3 = projBody?.querySelector('h3');
+      const title = h3?.textContent || '';
+      const tags = [...(projBody?.querySelectorAll('.tagrow .tag') || [])].map(t => t.textContent);
+      const primaryLink = card.querySelector('.proj-meta .links a');
+      const links = primaryLink
+        ? [{ label: primaryLink.getAttribute('aria-label') || 'Link', href: primaryLink.getAttribute('href') }]
+        : [];
 
-  // Inject plain-English description and meta row into front face
-  if (d.meta || d.plainEng) {
-    const h3 = card.querySelector('.proj-body h3');
-    if (h3 && d.meta) {
-      const metaEl = document.createElement('div');
-      metaEl.className = 'proj-meta-row';
-      metaEl.textContent = d.meta;
-      h3.after(metaEl);
-    }
-    if (d.plainEng) {
-      const plainEl = document.createElement('div');
-      plainEl.className = 'proj-plain-eng';
-      plainEl.textContent = d.plainEng;
-      const metaRow = card.querySelector('.proj-meta-row');
-      if (metaRow) metaRow.after(plainEl);
-      else h3 && h3.after(plainEl);
-    }
-  }
-  // Code peek
-  if (d.codePeek) {
-    const projBody = card.querySelector('.proj-body');
-    if (projBody) {
-      const btn = document.createElement('button');
-      btn.className = 'code-peek-btn';
-      btn.innerHTML = '<svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg> code peek';
-      const block = document.createElement('div');
-      block.className = 'code-peek-block';
-      block.innerHTML = `<pre class="code-block">${d.codePeek}</pre>`;
-      btn.addEventListener('click', e => { e.stopPropagation(); block.classList.toggle('open'); });
-      projBody.appendChild(btn);
-      projBody.appendChild(block);
-    }
-  }
+      // Inject plain-English description and meta row into front face
+      if (h3 && (d.meta || d.plainEng)) {
+        if (d.meta) {
+          const metaEl = document.createElement('div');
+          metaEl.className = 'proj-meta-row';
+          metaEl.textContent = d.meta;
+          h3.after(metaEl);
+        }
+        if (d.plainEng) {
+          const plainEl = document.createElement('div');
+          plainEl.className = 'proj-plain-eng';
+          plainEl.textContent = d.plainEng;
+          const metaRow = card.querySelector('.proj-meta-row');
+          if (metaRow) metaRow.after(plainEl);
+          else h3.after(plainEl);
+        }
+      }
+      // Code peek
+      if (d.codePeek && projBody) {
+        const btn = document.createElement('button');
+        btn.className = 'code-peek-btn';
+        btn.innerHTML = '<svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg> code peek';
+        const block = document.createElement('div');
+        block.className = 'code-peek-block';
+        block.innerHTML = `<pre class="code-block">${d.codePeek}</pre>`;
+        btn.addEventListener('click', e => { e.stopPropagation(); block.classList.toggle('open'); });
+        projBody.appendChild(btn);
+        projBody.appendChild(block);
+      }
 
-  // Populate list-view inline content (CSS hides these in grid)
-  const ul = card.querySelector('.proj-highlights');
-  if (ul) ul.innerHTML = d.highlights.map(h => `<li>${h}</li>`).join('');
-  const linksEl = card.querySelector('.proj-links');
-  if (linksEl) linksEl.innerHTML = d.links.map(l =>
-    `<a href="${l.href}" target="_blank" rel="noopener noreferrer" class="btn btn-ghost" style="font-size:12px;height:30px">${l.label}<svg class="i arrow" viewBox="0 0 24 24" width="12" height="12"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg></a>`
-  ).join('');
+      const highlights = d.highlights || [];
 
-  // Build back face for grid flip
-  const back = card.querySelector('.proj-back');
-  if (back) {
-    back.innerHTML = `
-      <button class="icon-btn proj-flip-close" aria-label="Flip back">
-        <svg class="i" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
-      </button>
-      <div class="proj-back-label">${d.label}${d.badge ? ' · ' + d.badge : ''}</div>
-      <h3 class="proj-back-title">${d.title}</h3>
-      <div>
-        <div class="proj-back-section-label">Highlights</div>
-        <ul class="proj-back-highlights">${d.highlights.map(h => `<li>${h}</li>`).join('')}</ul>
-      </div>
-      <div class="tagrow">${d.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
-      <div class="proj-back-links">${d.links.map(l =>
-        `<a href="${l.href}" target="_blank" rel="noopener noreferrer" class="btn btn-ghost" style="font-size:12px">${l.label}<svg class="i arrow" viewBox="0 0 24 24" width="12" height="12"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg></a>`
-      ).join('')}</div>`;
-    back.querySelector('.proj-flip-close').addEventListener('click', e => {
-      e.stopPropagation();
-      card.classList.remove('flipped');
+      // Populate list-view inline content (CSS hides these in grid)
+      const ul = card.querySelector('.proj-highlights');
+      if (ul) ul.innerHTML = highlights.map(h => `<li>${h}</li>`).join('');
+      const linksEl = card.querySelector('.proj-links');
+      if (linksEl) linksEl.innerHTML = links.map(l =>
+        `<a href="${l.href}" target="_blank" rel="noopener noreferrer" class="btn btn-ghost" style="font-size:12px;height:30px">${l.label}<svg class="i arrow" viewBox="0 0 24 24" width="12" height="12"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg></a>`
+      ).join('');
+
+      // Build back face for grid flip
+      const back = card.querySelector('.proj-back');
+      if (back) {
+        back.innerHTML = `
+          <button class="icon-btn proj-flip-close" aria-label="Flip back">
+            <svg class="i" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
+          </button>
+          <div class="proj-back-label">${label}${badge ? ' · ' + badge : ''}</div>
+          <h3 class="proj-back-title">${title}</h3>
+          <div>
+            <div class="proj-back-section-label">Highlights</div>
+            <ul class="proj-back-highlights">${highlights.map(h => `<li>${h}</li>`).join('')}</ul>
+          </div>
+          <div class="tagrow">${tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
+          <div class="proj-back-links">${links.map(l =>
+            `<a href="${l.href}" target="_blank" rel="noopener noreferrer" class="btn btn-ghost" style="font-size:12px">${l.label}<svg class="i arrow" viewBox="0 0 24 24" width="12" height="12"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg></a>`
+          ).join('')}</div>`;
+        back.querySelector('.proj-flip-close').addEventListener('click', e => {
+          e.stopPropagation();
+          card.classList.remove('flipped');
+        });
+      }
+
+      // Flip on click — grid view only
+      card.addEventListener('click', e => {
+        if (e.target.closest('a') || e.target.closest('.proj-flip-close')) return;
+        if (card.closest('.projects.list')) return;
+        card.classList.toggle('flipped');
+      });
     });
-  }
-
-  // Flip on click — grid view only
-  card.addEventListener('click', e => {
-    if (e.target.closest('a') || e.target.closest('.proj-flip-close')) return;
-    if (card.closest('.projects.list')) return;
-    card.classList.toggle('flipped');
   });
-});
 
 /* ----- Section dots TOC ----- */
 const sectionDotsEl = document.getElementById('sectionDots');
@@ -464,19 +415,7 @@ document.querySelectorAll('[data-stagger]').forEach(container => {
   staggerIO.observe(container);
 });
 
-/* ----- Ambient cursor spotlight ----- */
-if (window.matchMedia('(hover: hover)').matches && !reducedMotion) {
-  let rafPending = false;
-  document.addEventListener('mousemove', e => {
-    if (rafPending) return;
-    rafPending = true;
-    requestAnimationFrame(() => {
-      document.body.style.setProperty('--cursor-x', e.clientX + 'px');
-      document.body.style.setProperty('--cursor-y', e.clientY + 'px');
-      rafPending = false;
-    });
-  }, { passive: true });
-}
+/* ----- Ambient cursor spotlight lives in theme.js (shared with 404.html) ----- */
 
 /* ----- Skills proficiency dots ----- */
 document.querySelectorAll('.skills-grid .tag[data-level]').forEach(tag => {
@@ -556,9 +495,9 @@ const terminalCommands = {
     { cls: 't-dim', text: 'Edge: Jetson Nano · Jetson AGX Xavier · Raspberry Pi' },
   ],
   contact: () => [
-    { cls: '', text: 'Email    pranav.pankhawala@gmail.com' },
-    { cls: '', text: 'GitHub   github.com/pranavpankhawala' },
-    { cls: '', text: 'LinkedIn linkedin.com/in/pranavpankhawala' },
+    { cls: '', text: `Email    ${CONTACT.email}` },
+    { cls: '', text: `GitHub   ${CONTACT.githubHandle}` },
+    { cls: '', text: `LinkedIn ${CONTACT.linkedinHandle}` },
   ],
   projects: () => [
     { cls: 't-dim', text: 'Featured projects:' },
@@ -602,73 +541,56 @@ terminalInput.addEventListener('keydown', e => {
   else termPrint([{ cls: 't-err', text: `command not found: ${cmd}` }]);
 });
 
-/* ----- GitHub live repo count ----- */
-fetch('https://api.github.com/users/pranavpankhawala')
-  .then(r => r.json())
-  .then(d => {
-    const el = document.getElementById('ghCount');
-    if (el && d.public_repos != null) el.textContent = d.public_repos;
-  })
-  .catch(() => {});
-
-/* ----- GitHub star count (summed from repos) ----- */
-// Stars are fetched alongside languages below; stored here for deferred use
-
-/* ----- GitHub top languages ----- */
+/* ----- GitHub stats (repo count, stars, top languages, activity heatmap) -----
+   Reads a snapshot refreshed daily by .github/workflows/gh-stats.yml instead of
+   calling the GitHub API live from the browser — unauthenticated client-side calls
+   are capped at 60 req/hr per visitor IP and would go blank under shared-IP traffic. */
 const LANG_COLORS = {
   Python: '#3572A5', JavaScript: '#f1e05a', HTML: '#e34c26',
   CSS: '#563d7c', 'C++': '#f34b7d', C: '#555555', 'C#': '#178600',
   Shell: '#89e051', TypeScript: '#3178c6', 'Jupyter Notebook': '#DA5B0B',
 };
-const GH_LINK = `<a href="https://github.com/pranavpankhawala" target="_blank" rel="noopener noreferrer" class="gh-view-btn">View GitHub ↗</a>`;
-fetch('https://api.github.com/users/pranavpankhawala/repos?per_page=100')
-  .then(r => r.json())
-  .then(repos => {
-    const wrap = document.getElementById('ghStatsWrap');
-    if (!wrap) return;
-    if (!Array.isArray(repos)) { wrap.innerHTML = `<div class="gh-stats-title">Languages unavailable</div>${GH_LINK}`; return; }
-    const starsEl = document.getElementById('ghStars');
-    if (starsEl) starsEl.textContent = repos.reduce((s, r) => s + (r.stargazers_count || 0), 0);
-    const counts = {};
-    repos.forEach(repo => { if (repo.language) counts[repo.language] = (counts[repo.language] || 0) + 1; });
-    const top = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 6);
-    if (!top.length) { wrap.innerHTML = `<div class="gh-stats-title">Languages unavailable</div>${GH_LINK}`; return; }
-    const pills = top.map(([lang]) => {
-      const color = LANG_COLORS[lang] || 'var(--ink-3)';
-      return `<span class="gh-lang-pill"><span class="gh-lang-dot" style="background:${color}"></span>${lang}</span>`;
-    }).join('');
-    wrap.innerHTML = `<div class="gh-stats-title">Top languages</div><div class="gh-lang-pills">${pills}</div>${GH_LINK}`;
-  })
-  .catch(() => {
-    const wrap = document.getElementById('ghStatsWrap');
-    if (wrap) wrap.innerHTML = `<div class="gh-stats-title">Languages unavailable</div>${GH_LINK}`;
-  });
+const GH_LINK = `<a href="${CONTACT.github}" target="_blank" rel="noopener noreferrer" class="gh-view-btn">View GitHub ↗</a>`;
 
-/* ----- GitHub activity heatmap ----- */
-fetch('https://api.github.com/users/pranavpankhawala/events/public')
+fetch('gh-stats.json')
   .then(r => r.json())
-  .then(events => {
-    const wrap = document.getElementById('contribWrap');
-    if (!wrap || !Array.isArray(events)) return;
-    const today = new Date();
-    const dayCounts = {};
-    events.forEach(ev => {
-      const d = ev.created_at?.slice(0, 10);
-      if (d) dayCounts[d] = (dayCounts[d] || 0) + 1;
-    });
-    const cells = [];
-    for (let i = 83; i >= 0; i--) {
-      const d = new Date(today); d.setDate(d.getDate() - i);
-      const key = d.toISOString().slice(0, 10);
-      const n = dayCounts[key] || 0;
-      const lvl = n === 0 ? '' : n === 1 ? 'l1' : n <= 3 ? 'l2' : n <= 6 ? 'l3' : 'l4';
-      cells.push(`<span class="contrib-day ${lvl.trim()}" title="${key}: ${n} events"></span>`);
+  .then(stats => {
+    const countEl = document.getElementById('ghCount');
+    if (countEl && stats.repos != null) countEl.textContent = stats.repos;
+    const starsEl = document.getElementById('ghStars');
+    if (starsEl && stats.stars != null) starsEl.textContent = stats.stars;
+
+    const statsWrap = document.getElementById('ghStatsWrap');
+    if (statsWrap) {
+      if (stats.languages?.length) {
+        const pills = stats.languages.map(({ name }) => {
+          const color = LANG_COLORS[name] || 'var(--ink-3)';
+          return `<span class="gh-lang-pill"><span class="gh-lang-dot" style="background:${color}"></span>${name}</span>`;
+        }).join('');
+        statsWrap.innerHTML = `<div class="gh-stats-title">Top languages</div><div class="gh-lang-pills">${pills}</div>${GH_LINK}`;
+      } else {
+        statsWrap.innerHTML = `<div class="gh-stats-title">Languages unavailable</div>${GH_LINK}`;
+      }
     }
-    wrap.innerHTML = '<div class="contrib-title">12-week activity</div><div class="contrib-grid">' + cells.join('') + '</div>';
+
+    const contribWrap = document.getElementById('contribWrap');
+    if (contribWrap) {
+      if (stats.activity?.length) {
+        const cells = stats.activity.map(({ date, count: n }) => {
+          const lvl = n === 0 ? '' : n === 1 ? 'l1' : n <= 3 ? 'l2' : n <= 6 ? 'l3' : 'l4';
+          return `<span class="contrib-day ${lvl}" title="${date}: ${n} events"></span>`;
+        }).join('');
+        contribWrap.innerHTML = '<div class="contrib-title">12-week activity</div><div class="contrib-grid">' + cells + '</div>';
+      } else {
+        contribWrap.innerHTML = '<div class="contrib-title">Activity unavailable</div>';
+      }
+    }
   })
   .catch(() => {
-    const wrap = document.getElementById('contribWrap');
-    if (wrap) wrap.innerHTML = '<div class="contrib-title">Activity unavailable</div>';
+    const statsWrap = document.getElementById('ghStatsWrap');
+    if (statsWrap) statsWrap.innerHTML = `<div class="gh-stats-title">Languages unavailable</div>${GH_LINK}`;
+    const contribWrap = document.getElementById('contribWrap');
+    if (contribWrap) contribWrap.innerHTML = '<div class="contrib-title">Activity unavailable</div>';
   });
 
 /* ----- Open to Work Banner dismiss ----- */
