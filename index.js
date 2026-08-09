@@ -1,3 +1,6 @@
+(function () {
+'use strict';
+
 /* ----- Global flags ----- */
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -10,6 +13,42 @@ const CONTACT = {
   linkedin: 'https://www.linkedin.com/in/pranavpankhawala',
   linkedinHandle: 'linkedin.com/in/pranavpankhawala',
 };
+
+/* ----- HTML escaping for any dynamic string interpolated into innerHTML ----- */
+function escapeHTML(str) {
+  return String(str).replace(/[&<>"']/g, c => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
+  }[c]));
+}
+
+/* ----- Shared modal focus trap (Tab stays inside, focus restores on close) ----- */
+function makeFocusTrap(container) {
+  const FOCUSABLE = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+  let lastFocus = null;
+  container.addEventListener('keydown', e => {
+    if (e.key !== 'Tab') return;
+    const focusable = [...container.querySelectorAll(FOCUSABLE)];
+    if (!focusable.length) { e.preventDefault(); return; }
+    const first = focusable[0], last = focusable[focusable.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  });
+  return {
+    activate(focusTarget) {
+      lastFocus = document.activeElement;
+      (focusTarget || container.querySelector(FOCUSABLE))?.focus();
+    },
+    deactivate() {
+      lastFocus?.focus();
+      // lastFocus may be unfocusable (e.g. <body> when nothing had focus
+      // before opening) — focus() on it is a silent no-op, which would
+      // otherwise leave focus stuck inside the now-hidden dialog.
+      if (container.contains(document.activeElement)) {
+        document.activeElement.blur();
+      }
+    },
+  };
+}
 
 /* ----- Theme (bootstrap + toggle live in theme.js, shared with 404.html) ----- */
 const themeBtn = document.getElementById('themeBtn');
@@ -40,27 +79,46 @@ document.addEventListener('click', e => {
   if (!palPop.contains(e.target) && !palBtn.contains(e.target)) palPop.classList.remove('open');
 });
 
-/* ----- Nav scroll state + scroll progress ----- */
+/* ----- Nav scroll state, scroll progress, back-to-top, parallax, section-dots visibility -----
+   Single rAF-throttled scroll listener — avoids stacking several synchronous
+   style-writing scroll handlers on top of each other. */
 const nav = document.getElementById('nav');
 const scrollProg = document.getElementById('scroll-progress');
 const ringFill = document.getElementById('ringFill');
 const heroH1 = document.querySelector('.hero-main h1');
-window.addEventListener('scroll', () => {
-  nav.classList.toggle('scrolled', window.scrollY > 4);
-  const pct = window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100;
+const backToTop = document.getElementById('backToTop');
+const sectionDotsEl = document.getElementById('sectionDots');
+let scrollTicking = false;
+function onScroll() {
+  const y = window.scrollY;
+  nav.classList.toggle('scrolled', y > 4);
+  const pct = y / (document.body.scrollHeight - window.innerHeight) * 100;
   scrollProg.style.width = pct + '%';
-  backToTop.classList.toggle('visible', window.scrollY > 400);
+  backToTop.classList.toggle('visible', y > 400);
   if (ringFill) ringFill.style.strokeDashoffset = String(106.8 * (1 - pct / 100));
-  if (heroH1 && !reducedMotion) heroH1.style.transform = `translateY(${window.scrollY * 0.28}px)`;
+  if (heroH1 && !reducedMotion) heroH1.style.transform = `translateY(${y * 0.28}px)`;
+  sectionDotsEl.classList.toggle('visible', y > 120);
+  scrollTicking = false;
+}
+window.addEventListener('scroll', () => {
+  if (scrollTicking) return;
+  scrollTicking = true;
+  requestAnimationFrame(onScroll);
 }, { passive: true });
 backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
 /* ----- Mobile menu ----- */
 const menuBtn = document.getElementById('menuBtn');
 const navLinks = document.getElementById('navLinks');
-menuBtn.addEventListener('click', () => navLinks.classList.toggle('open'));
+menuBtn.addEventListener('click', () => {
+  const open = navLinks.classList.toggle('open');
+  menuBtn.setAttribute('aria-expanded', String(open));
+});
 navLinks.addEventListener('click', e => {
-  if (e.target.tagName === 'A') navLinks.classList.remove('open');
+  if (e.target.tagName === 'A') {
+    navLinks.classList.remove('open');
+    menuBtn.setAttribute('aria-expanded', 'false');
+  }
 });
 
 /* ----- Active nav highlight ----- */
@@ -122,6 +180,7 @@ document.getElementById('copyEmail').addEventListener('click', async () => {
 const cmdk = document.getElementById('cmdk');
 const cmdkInput = document.getElementById('cmdkInput');
 const cmdkList = document.getElementById('cmdkList');
+const cmdkTrap = makeFocusTrap(cmdk);
 const cmdkItems = [
   { ic: '#', label: 'Go to Work', target: '#work', hint: '⏎' },
   { ic: '#', label: 'Go to About', target: '#about', hint: '⏎' },
@@ -162,8 +221,8 @@ function renderCmdk(q = '') {
       <span class="hint">${i.hint}</span>
     </div>`).join('') || '<div class="cmdk-item" style="opacity:.5">No results</div>';
 }
-function openCmdk() { cmdk.classList.add('open'); renderCmdk(); cmdkInput.value=''; cmdkInput.focus(); }
-function closeCmdk() { cmdk.classList.remove('open'); }
+function openCmdk() { cmdk.classList.add('open'); renderCmdk(); cmdkInput.value=''; cmdkTrap.activate(cmdkInput); }
+function closeCmdk() { cmdk.classList.remove('open'); cmdkTrap.deactivate(); }
 document.getElementById('cmdkBtn').addEventListener('click', openCmdk);
 cmdkInput.addEventListener('input', e => renderCmdk(e.target.value));
 cmdkList.addEventListener('click', e => {
@@ -181,7 +240,12 @@ window.addEventListener('keydown', e => {
   if (e.key === 's' && !editable && !e.metaKey && !e.ctrlKey && !e.altKey) { e.preventDefault(); openCmdk(); }
   else if (e.key === '`' && !editable) { e.preventDefault(); openTerminal(); }
   else if (e.key === '?' && !editable) { e.preventDefault(); openHelp(); }
-  else if (e.key === 'Escape') { closeCmdk(); closeHelp(); closeTerminal(); navLinks.classList.remove('open'); document.querySelectorAll('.proj.flipped').forEach(c => c.classList.remove('flipped')); }
+  else if (e.key === 'Escape') {
+    closeCmdk(); closeHelp(); closeTerminal();
+    navLinks.classList.remove('open');
+    menuBtn.setAttribute('aria-expanded', 'false');
+    document.querySelectorAll('.proj.flipped').forEach(c => c.classList.remove('flipped'));
+  }
   else if (e.key === 'Enter' && cmdk.classList.contains('open')) {
     const active = cmdkList.querySelector('.cmdk-item.active') || cmdkList.querySelector('.cmdk-item');
     if (active) active.click();
@@ -277,7 +341,8 @@ if (iCountEls.length) {
    Core identity (title, tags, label, badge, link) lives once in index.html —
    the source of truth for SEO/no-JS. projects.json supplies only the extra
    copy (plain-English blurb, meta line, code peek, highlights) that isn't
-   in the markup, so nothing is duplicated between the two. */
+   in the markup, so nothing is duplicated between the two. All dynamic
+   strings go through escapeHTML before hitting innerHTML. */
 fetch('projects.json')
   .then(r => r.json())
   .catch(() => ({}))
@@ -321,7 +386,7 @@ fetch('projects.json')
         btn.innerHTML = '<svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg> code peek';
         const block = document.createElement('div');
         block.className = 'code-peek-block';
-        block.innerHTML = `<pre class="code-block">${d.codePeek}</pre>`;
+        block.innerHTML = `<pre class="code-block">${escapeHTML(d.codePeek)}</pre>`;
         btn.addEventListener('click', e => { e.stopPropagation(); block.classList.toggle('open'); });
         projBody.appendChild(btn);
         projBody.appendChild(block);
@@ -331,10 +396,10 @@ fetch('projects.json')
 
       // Populate list-view inline content (CSS hides these in grid)
       const ul = card.querySelector('.proj-highlights');
-      if (ul) ul.innerHTML = highlights.map(h => `<li>${h}</li>`).join('');
+      if (ul) ul.innerHTML = highlights.map(h => `<li>${escapeHTML(h)}</li>`).join('');
       const linksEl = card.querySelector('.proj-links');
       if (linksEl) linksEl.innerHTML = links.map(l =>
-        `<a href="${l.href}" target="_blank" rel="noopener noreferrer" class="btn btn-ghost" style="font-size:12px;height:30px">${l.label}<svg class="i arrow" viewBox="0 0 24 24" width="12" height="12"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg></a>`
+        `<a href="${escapeHTML(l.href)}" target="_blank" rel="noopener noreferrer" class="btn btn-ghost" style="font-size:12px;height:30px">${escapeHTML(l.label)}<svg class="i arrow" viewBox="0 0 24 24" width="12" height="12"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg></a>`
       ).join('');
 
       // Build back face for grid flip
@@ -344,15 +409,15 @@ fetch('projects.json')
           <button class="icon-btn proj-flip-close" aria-label="Flip back">
             <svg class="i" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
           </button>
-          <div class="proj-back-label">${label}${badge ? ' · ' + badge : ''}</div>
-          <h3 class="proj-back-title">${title}</h3>
+          <div class="proj-back-label">${escapeHTML(label)}${badge ? ' · ' + escapeHTML(badge) : ''}</div>
+          <h3 class="proj-back-title">${escapeHTML(title)}</h3>
           <div>
             <div class="proj-back-section-label">Highlights</div>
-            <ul class="proj-back-highlights">${highlights.map(h => `<li>${h}</li>`).join('')}</ul>
+            <ul class="proj-back-highlights">${highlights.map(h => `<li>${escapeHTML(h)}</li>`).join('')}</ul>
           </div>
-          <div class="tagrow">${tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
+          <div class="tagrow">${tags.map(t => `<span class="tag">${escapeHTML(t)}</span>`).join('')}</div>
           <div class="proj-back-links">${links.map(l =>
-            `<a href="${l.href}" target="_blank" rel="noopener noreferrer" class="btn btn-ghost" style="font-size:12px">${l.label}<svg class="i arrow" viewBox="0 0 24 24" width="12" height="12"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg></a>`
+            `<a href="${escapeHTML(l.href)}" target="_blank" rel="noopener noreferrer" class="btn btn-ghost" style="font-size:12px">${escapeHTML(l.label)}<svg class="i arrow" viewBox="0 0 24 24" width="12" height="12"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg></a>`
           ).join('')}</div>`;
         back.querySelector('.proj-flip-close').addEventListener('click', e => {
           e.stopPropagation();
@@ -369,11 +434,7 @@ fetch('projects.json')
     });
   });
 
-/* ----- Section dots TOC ----- */
-const sectionDotsEl = document.getElementById('sectionDots');
-window.addEventListener('scroll', () => {
-  sectionDotsEl.classList.toggle('visible', window.scrollY > 120);
-}, { passive: true });
+/* ----- Section dots TOC (visibility toggle lives in the consolidated scroll handler above) ----- */
 const dotIO = new IntersectionObserver(entries => {
   entries.forEach(e => {
     const dot = sectionDotsEl.querySelector(`.section-dot-item[data-section="${e.target.id}"]`);
@@ -404,7 +465,7 @@ const staggerIO = new IntersectionObserver(entries => {
   });
 }, { threshold: 0.05, rootMargin: '0px 0px -40px 0px' });
 document.querySelectorAll('[data-stagger]').forEach(container => {
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  if (reducedMotion) {
     container.classList.add('revealed');
     return;
   }
@@ -430,8 +491,9 @@ document.querySelectorAll('.skills-grid .tag[data-level]').forEach(tag => {
 
 /* ----- Keyboard shortcuts help modal ----- */
 const helpModal = document.getElementById('helpModal');
-function openHelp() { helpModal.classList.add('open'); }
-function closeHelp() { helpModal.classList.remove('open'); }
+const helpTrap = makeFocusTrap(helpModal);
+function openHelp() { helpModal.classList.add('open'); helpTrap.activate(); }
+function closeHelp() { helpModal.classList.remove('open'); helpTrap.deactivate(); }
 helpModal.addEventListener('click', e => { if (e.target === helpModal) closeHelp(); });
 
 /* ----- Magnetic buttons ----- */
@@ -479,6 +541,7 @@ document.querySelectorAll('section[id] .section-head .eyebrow').forEach(eyebrow 
 const terminalBackdrop = document.getElementById('terminalBackdrop');
 const terminalBody = document.getElementById('terminalBody');
 const terminalInput = document.getElementById('terminalInput');
+const terminalTrap = makeFocusTrap(terminalBackdrop);
 const terminalCommands = {
   help: () => [
     { cls: 't-dim', text: 'Available commands:' },
@@ -520,14 +583,31 @@ function termPrint(lines) {
   });
   terminalBody.scrollTop = terminalBody.scrollHeight;
 }
+let terminalArtShown = false;
 function openTerminal() {
   terminalBackdrop.classList.add('open');
   if (!terminalBody.children.length) {
     termPrint([{ cls: 't-dim', text: 'Type help for available commands. Press Esc to close.' }]);
   }
-  terminalInput.focus();
+  if (!terminalArtShown) {
+    terminalArtShown = true;
+    const art = [
+      '  ____  ____',
+      ' |  _ \\|  _ \\',
+      ' | |_) | |_) |',
+      ' |  __/|  __/',
+      ' |_|   |_|    pranavpankhawala.github.io',
+    ];
+    const div = document.createElement('div');
+    div.className = 't-line t-dim';
+    div.style.fontFamily = '"JetBrains Mono", monospace';
+    div.style.whiteSpace = 'pre';
+    div.textContent = art.join('\n');
+    terminalBody.insertBefore(div, terminalBody.firstChild);
+  }
+  terminalTrap.activate(terminalInput);
 }
-function closeTerminal() { terminalBackdrop.classList.remove('open'); }
+function closeTerminal() { terminalBackdrop.classList.remove('open'); terminalTrap.deactivate(); }
 document.getElementById('terminalClose').addEventListener('click', closeTerminal);
 terminalBackdrop.addEventListener('click', e => { if (e.target === terminalBackdrop) closeTerminal(); });
 terminalInput.addEventListener('keydown', e => {
@@ -565,7 +645,7 @@ fetch('gh-stats.json')
       if (stats.languages?.length) {
         const pills = stats.languages.map(({ name }) => {
           const color = LANG_COLORS[name] || 'var(--ink-3)';
-          return `<span class="gh-lang-pill"><span class="gh-lang-dot" style="background:${color}"></span>${name}</span>`;
+          return `<span class="gh-lang-pill"><span class="gh-lang-dot" style="background:${color}"></span>${escapeHTML(name)}</span>`;
         }).join('');
         statsWrap.innerHTML = `<div class="gh-stats-title">Top languages</div><div class="gh-lang-pills">${pills}</div>${GH_LINK}`;
       } else {
@@ -578,7 +658,7 @@ fetch('gh-stats.json')
       if (stats.activity?.length) {
         const cells = stats.activity.map(({ date, count: n }) => {
           const lvl = n === 0 ? '' : n === 1 ? 'l1' : n <= 3 ? 'l2' : n <= 6 ? 'l3' : 'l4';
-          return `<span class="contrib-day ${lvl}" title="${date}: ${n} events"></span>`;
+          return `<span class="contrib-day ${lvl}" title="${escapeHTML(date)}: ${n} events"></span>`;
         }).join('');
         contribWrap.innerHTML = '<div class="contrib-title">12-week activity</div><div class="contrib-grid">' + cells + '</div>';
       } else {
@@ -621,19 +701,16 @@ document.querySelectorAll('[data-coming-soon]').forEach(btn => {
   const closeBtn = document.getElementById('demoModalClose');
   const titleEl = document.getElementById('demoModalTitle');
   if (!backdrop) return;
-  let lastFocus = null;
-  const FOCUSABLE = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+  const trap = makeFocusTrap(backdrop);
 
   function openDemo(title) {
-    lastFocus = document.activeElement;
     if (titleEl) titleEl.textContent = title || 'Project Demo';
     backdrop.classList.add('open');
-    const first = backdrop.querySelector(FOCUSABLE);
-    if (first) first.focus();
+    trap.activate();
   }
   function closeDemo() {
     backdrop.classList.remove('open');
-    if (lastFocus) lastFocus.focus();
+    trap.deactivate();
   }
 
   document.querySelectorAll('.demo-trigger').forEach(btn => {
@@ -641,15 +718,7 @@ document.querySelectorAll('[data-coming-soon]').forEach(btn => {
   });
   if (closeBtn) closeBtn.addEventListener('click', closeDemo);
   backdrop.addEventListener('click', e => { if (e.target === backdrop) closeDemo(); });
-  backdrop.addEventListener('keydown', e => {
-    if (e.key === 'Escape') { closeDemo(); return; }
-    if (e.key !== 'Tab') return;
-    const focusable = [...backdrop.querySelectorAll(FOCUSABLE)];
-    if (!focusable.length) { e.preventDefault(); return; }
-    const first = focusable[0], last = focusable[focusable.length - 1];
-    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
-    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
-  });
+  backdrop.addEventListener('keydown', e => { if (e.key === 'Escape') closeDemo(); });
 })();
 
 /* ----- Skill tag + cert card tooltips ----- */
@@ -697,34 +766,11 @@ if (footHint) footHint.addEventListener('click', () => { if (typeof openHelp ===
   });
 })();
 
-/* ----- Terminal ASCII art on first open ----- */
-const _origOpenTerminal = openTerminal;
-(function() {
-  let shown = false;
-  openTerminal = function() {
-    _origOpenTerminal();
-    if (!shown) {
-      shown = true;
-      const art = [
-        '  ____  ____',
-        ' |  _ \\|  _ \\',
-        ' | |_) | |_) |',
-        ' |  __/|  __/',
-        ' |_|   |_|    pranavpankhawala.github.io',
-      ];
-      const div = document.createElement('div');
-      div.className = 't-line t-dim';
-      div.style.fontFamily = '"JetBrains Mono", monospace';
-      div.style.whiteSpace = 'pre';
-      div.textContent = art.join('\n');
-      terminalBody.insertBefore(div, terminalBody.firstChild);
-    }
-  };
-})();
-
 /* ----- Service Worker registration ----- */
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('sw.js').catch(() => {});
   });
 }
+
+})();

@@ -141,7 +141,7 @@
         Get in touch
         <svg class="i arrow" viewBox="0 0 24 24" width="14" height="14"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg>
       </a>
-      <button class="icon-btn menu-btn" id="menuBtn" aria-label="Menu">
+      <button class="icon-btn menu-btn" id="menuBtn" aria-label="Menu" aria-expanded="false" aria-controls="navLinks">
         <svg class="i" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
       </button>
     </div>
@@ -1118,7 +1118,7 @@
 
 <!-- Command palette -->
 <div class="cmdk-backdrop" id="cmdk">
-  <div class="cmdk" role="dialog" aria-label="Command palette">
+  <div class="cmdk" role="dialog" aria-modal="true" aria-label="Command palette">
     <div class="cmdk-input">
       <svg class="i" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
       <input type="text" id="cmdkInput" placeholder="Jump to a section, project, or contact…" autocomplete="off"/>
@@ -1161,7 +1161,7 @@
 
 <!-- Keyboard shortcuts help modal -->
 <div class="help-backdrop" id="helpModal">
-  <div class="help-modal" role="dialog" aria-label="Keyboard shortcuts">
+  <div class="help-modal" role="dialog" aria-modal="true" aria-label="Keyboard shortcuts">
     <div class="help-header">
       <span class="help-title">Keyboard Shortcuts</span>
       <kbd class="help-close-hint">esc</kbd>
@@ -1181,7 +1181,7 @@
 
 <!-- Terminal easter egg -->
 <div class="terminal-backdrop" id="terminalBackdrop">
-  <div class="terminal-win" role="dialog" aria-label="Terminal">
+  <div class="terminal-win" role="dialog" aria-modal="true" aria-label="Terminal">
     <div class="terminal-bar">
       <div class="terminal-dots"><span></span><span></span><span></span></div>
       <span class="terminal-title">pranav@portfolio ~ </span>
@@ -1197,7 +1197,7 @@
 
 <!-- Video Demo Modal -->
 <div class="demo-backdrop" id="demoBackdrop">
-  <div class="demo-modal" role="dialog" aria-label="Project Demo">
+  <div class="demo-modal" role="dialog" aria-modal="true" aria-label="Project Demo">
     <div class="demo-modal-bar">
       <span class="demo-modal-title" id="demoModalTitle">Project Demo</span>
       <button class="icon-btn demo-modal-close" id="demoModalClose" aria-label="Close demo">
@@ -1214,7 +1214,7 @@
   </div>
 </div>
 
-<script src="theme.js"></script>
-<script src="index.js"></script>
+<script src="theme.js?v=1"></script>
+<script src="index.js?v=1"></script>
 </body>
 </html>
