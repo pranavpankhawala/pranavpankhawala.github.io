@@ -121,6 +121,23 @@ navLinks.addEventListener('click', e => {
   }
 });
 
+/* ----- Nav "More" overflow menu ----- */
+const navMoreBtn = document.getElementById('navMoreBtn');
+const navMorePanel = document.getElementById('navMorePanel');
+function closeNavMore() {
+  navMorePanel.classList.remove('open');
+  navMoreBtn.setAttribute('aria-expanded', 'false');
+}
+navMoreBtn.addEventListener('click', e => {
+  e.stopPropagation();
+  const open = navMorePanel.classList.toggle('open');
+  navMoreBtn.setAttribute('aria-expanded', String(open));
+});
+navMorePanel.addEventListener('click', e => { if (e.target.tagName === 'A') closeNavMore(); });
+document.addEventListener('click', e => {
+  if (!navMorePanel.contains(e.target) && !navMoreBtn.contains(e.target)) closeNavMore();
+});
+
 /* ----- Active nav highlight ----- */
 const navSections = document.querySelectorAll('section[id]');
 const navLinkEls = document.querySelectorAll('.nav-links a[href^="#"]');
@@ -241,7 +258,7 @@ window.addEventListener('keydown', e => {
   else if (e.key === '`' && !editable) { e.preventDefault(); openTerminal(); }
   else if (e.key === '?' && !editable) { e.preventDefault(); openHelp(); }
   else if (e.key === 'Escape') {
-    closeCmdk(); closeHelp(); closeTerminal();
+    closeCmdk(); closeHelp(); closeTerminal(); closeNavMore();
     navLinks.classList.remove('open');
     menuBtn.setAttribute('aria-expanded', 'false');
     document.querySelectorAll('.proj.flipped').forEach(c => c.classList.remove('flipped'));

@@ -92,17 +92,27 @@
       </span>
     </a>
     <div class="nav-links" id="navLinks">
-      <a href="#about">About</a>
-      <a href="#work">Work</a>
-      <a href="#capabilities">Capabilities</a>
-      <a href="#projects">Projects</a>
-      <a href="#publications">Publications</a>
-      <a href="#blog">Blog</a>
-      <a href="#skills">Skills</a>
-      <a href="#certifications">Certifications</a>
-      <a href="#interests">Interests</a>
-      <a href="#recommendations">Recommendations</a>
-      <a href="#contact">Contact</a>
+      <div class="nav-links-primary">
+        <a href="#about">About</a>
+        <a href="#work">Work</a>
+        <a href="#projects">Projects</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <div class="nav-more">
+        <button class="nav-more-btn" id="navMoreBtn" aria-haspopup="true" aria-expanded="false" aria-controls="navMorePanel">
+          More
+          <svg class="i" viewBox="0 0 24 24" width="12" height="12"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="nav-more-panel" id="navMorePanel" role="menu">
+          <a href="#capabilities" role="menuitem">Capabilities</a>
+          <a href="#publications" role="menuitem">Publications</a>
+          <a href="#blog" role="menuitem">Blog</a>
+          <a href="#skills" role="menuitem">Skills</a>
+          <a href="#certifications" role="menuitem">Certifications</a>
+          <a href="#interests" role="menuitem">Interests</a>
+          <a href="#recommendations" role="menuitem">Recommendations</a>
+        </div>
+      </div>
     </div>
     <div class="nav-actions">
       <button class="icon-btn cmdk-trigger" id="cmdkBtn" aria-label="Open command palette" title="Search (⌘K)">

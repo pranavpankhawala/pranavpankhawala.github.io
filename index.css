@@ -347,11 +347,16 @@ h1, h2, h3, h4 { margin: 0; font-weight: 500; color: var(--ink); }
   background: oklch(0.7 0.16 145); flex-shrink: 0;
 }
 @media (max-width: 880px) { .brand-meta { display: none; } }
-.nav-links {
-  display: flex; align-items: center; gap: 4px; align-self: center;
+.nav-links { display: flex; align-items: center; gap: 4px; align-self: center; min-width: 0; }
+/* Scrolling lives on this inner wrapper, not .nav-links itself — overflow-x:auto
+   forces overflow-y to auto too (per spec, when only one axis is non-visible),
+   which would otherwise clip the absolutely-positioned .nav-more-panel below
+   to this row's own height. */
+.nav-links-primary {
+  display: flex; align-items: center; gap: 4px;
   min-width: 0; overflow-x: auto; scrollbar-width: none; -ms-overflow-style: none;
 }
-.nav-links::-webkit-scrollbar { display: none; }
+.nav-links-primary::-webkit-scrollbar { display: none; }
 .nav-links a {
   color: var(--ink-2); text-decoration: none; position: relative;
   font-size: 14px; padding: 8px 12px; border-radius: 8px;
@@ -361,6 +366,28 @@ h1, h2, h3, h4 { margin: 0; font-weight: 500; color: var(--ink); }
 .nav-links a:hover { color: var(--ink); background: var(--chip-bg); }
 .nav-links a.active { color: var(--ink); font-weight: 500; }
 .nav-actions { display: flex; gap: 8px; align-items: center; align-self: center; flex-shrink: 0; }
+
+/* "More" overflow menu — the shell is capped at 1280px sitewide, which isn't
+   wide enough to fit every top-level link inline, so the least-essential
+   links live here instead of being silently clipped/scrolled off. */
+.nav-more { position: relative; flex-shrink: 0; }
+.nav-more-btn {
+  display: flex; align-items: center; gap: 4px;
+  color: var(--ink-2); background: none; border: 0; cursor: pointer;
+  font: inherit; font-size: 14px; padding: 8px 12px; border-radius: 8px;
+  transition: color 160ms ease, background 160ms ease;
+}
+.nav-more-btn:hover, .nav-more-btn[aria-expanded="true"] { color: var(--ink); background: var(--chip-bg); }
+.nav-more-btn svg { transition: transform 160ms ease; }
+.nav-more-btn[aria-expanded="true"] svg { transform: rotate(180deg); }
+.nav-more-panel {
+  display: none; flex-direction: column; gap: 2px;
+  position: absolute; top: calc(100% + 8px); right: 0; z-index: 60;
+  min-width: 180px; padding: 6px; border-radius: 12px;
+  background: var(--bg-elev); border: 1px solid var(--rule); box-shadow: var(--shadow-lift);
+}
+.nav-more-panel.open { display: flex; }
+.nav-more-panel a { padding: 10px 12px; font-size: 14px; border-radius: 8px; }
 .icon-btn {
   width: 36px; height: 36px; border-radius: 10px;
   border: 1px solid var(--rule); background: transparent; color: var(--ink-2);
@@ -384,7 +411,10 @@ h1, h2, h3, h4 { margin: 0; font-weight: 500; color: var(--ink); }
 
 .nav-cta { white-space: nowrap; }
 .menu-btn { display: none; }
-@media (max-width: 880px) {
+/* Below 1200px there isn't room for every primary link + the "More" trigger
+   inline (the shell's 1280px cap plus brand/action widths don't leave enough
+   space), so fall back to the hamburger menu, which lists every link flatly. */
+@media (max-width: 1200px) {
   .nav-links { display: none; }
   .menu-btn { display: grid; }
   .nav-links.open {
@@ -395,6 +425,16 @@ h1, h2, h3, h4 { margin: 0; font-weight: 500; color: var(--ink); }
     gap: 2px;
   }
   .nav-links.open a { padding: 12px 14px; font-size: 15px; }
+  /* Un-nest the primary row and the More panel so every link — primary and
+     overflow alike — falls into one flat vertical list, same as before the
+     "More" menu existed. */
+  .nav-links.open .nav-links-primary { display: contents; }
+  .nav-links.open .nav-more { display: contents; }
+  .nav-links.open .nav-more-btn { display: none; }
+  .nav-links.open .nav-more-panel {
+    display: flex; position: static; flex-direction: column;
+    padding: 0; border: 0; box-shadow: none; background: none; min-width: 0;
+  }
 }
 
 /* ---------- Section scaffolding ---------- */
