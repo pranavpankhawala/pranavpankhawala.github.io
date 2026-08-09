@@ -347,15 +347,20 @@ h1, h2, h3, h4 { margin: 0; font-weight: 500; color: var(--ink); }
   background: oklch(0.7 0.16 145); flex-shrink: 0;
 }
 @media (max-width: 880px) { .brand-meta { display: none; } }
-.nav-links { display: flex; align-items: center; gap: 4px; align-self: center; }
+.nav-links {
+  display: flex; align-items: center; gap: 4px; align-self: center;
+  min-width: 0; overflow-x: auto; scrollbar-width: none; -ms-overflow-style: none;
+}
+.nav-links::-webkit-scrollbar { display: none; }
 .nav-links a {
   color: var(--ink-2); text-decoration: none; position: relative;
   font-size: 14px; padding: 8px 12px; border-radius: 8px;
+  white-space: nowrap; flex-shrink: 0;
   transition: color 160ms ease, background 160ms ease;
 }
 .nav-links a:hover { color: var(--ink); background: var(--chip-bg); }
 .nav-links a.active { color: var(--ink); font-weight: 500; }
-.nav-actions { display: flex; gap: 8px; align-items: center; align-self: center; }
+.nav-actions { display: flex; gap: 8px; align-items: center; align-self: center; flex-shrink: 0; }
 .icon-btn {
   width: 36px; height: 36px; border-radius: 10px;
   border: 1px solid var(--rule); background: transparent; color: var(--ink-2);
