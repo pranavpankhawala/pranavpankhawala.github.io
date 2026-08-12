@@ -213,7 +213,7 @@ const cmdkItems = [
   { ic: '☎', label: 'Call Pranav', action: () => location.href = 'tel:' + CONTACT.phone, hint: 'tel' },
   { ic: '↗', label: 'Open GitHub', action: () => window.open(CONTACT.github,'_blank'), hint: 'ext' },
   { ic: '↗', label: 'Open LinkedIn', action: () => window.open(CONTACT.linkedin,'_blank'), hint: 'ext' },
-  { ic: '↓', label: 'Download Resume', action: () => { const a = document.createElement('a'); a.href = 'resume.pdf'; a.download = ''; a.click(); }, hint: 'pdf' },
+  { ic: '↓', label: 'Download Resume', action: () => { const a = document.createElement('a'); a.href = 'PranavPankhawala-Resume.pdf'; a.download = ''; a.click(); }, hint: 'pdf' },
   { ic: '◐', label: 'Toggle theme', action: () => themeBtn.click(), hint: '⇧T' },
   { ic: '?', label: 'Keyboard shortcuts', action: () => openHelp(), hint: '?' },
   { ic: '>', label: 'Open terminal', action: () => openTerminal(), hint: '`' },
