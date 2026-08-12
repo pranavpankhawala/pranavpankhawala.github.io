@@ -22,7 +22,7 @@ pranavpankhawala.github.io/
 ├── og-image.svg          # Open Graph / social preview image
 ├── robots.txt            # Crawler directives
 ├── sitemap.xml           # Sitemap
-├── resume.pdf            # Downloadable resume
+├── PranavPankhawala-Resume.pdf  # Downloadable resume
 ├── LICENSE               # MIT license (source code)
 └── .github/workflows/    # CI: HTML/link validation, scheduled GitHub-stats refresh
 ```

@@ -1,11 +1,11 @@
 // Bump CACHE whenever any ASSETS entry's content or ?v= query changes —
 // this is a cache-first strategy, so a stale CACHE name means returning
 // visitors keep the old file forever until this constant changes.
-const CACHE = 'pp-v3';
+const CACHE = 'pp-v4';
 const ASSETS = [
   '/', '/index.html', '/index.css?v=22',
   '/index.js?v=1', '/theme.js?v=1', '/projects.json',
-  '/favicon.svg', '/apple-touch-icon.png', '/og-image.svg', '/resume.pdf', '/manifest.json',
+  '/favicon.svg', '/apple-touch-icon.png', '/og-image.svg', '/PranavPankhawala-Resume.pdf', '/manifest.json',
 ];
 
 self.addEventListener('install', e => {
