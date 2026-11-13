@@ -577,7 +577,7 @@ section.block:first-of-type { border-top: 0; }
   margin-left: -16px; margin-right: -16px; border-radius: 12px;
 }
 .role:hover::before { opacity: 0.6; }
-.role .when { font-family: "JetBrains Mono", monospace; font-size: 12px; color: var(--ink-3); padding-top: 4px; }
+.role .when { font-family: "JetBrains Mono", monospace; font-size: 12px; color: var(--ink-3); padding: 4px 0 0 16px; }
 .role .when .now { display: inline-flex; align-items: center; gap: 6px; color: oklch(0.6 0.14 145); }
 [data-theme="dark"] .role .when .now { color: oklch(0.78 0.16 145); }
 .role .now-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
@@ -614,7 +614,7 @@ section.block:first-of-type { border-top: 0; }
 @media (max-width: 880px) {
   .role { grid-template-columns: 1fr; gap: 8px; padding: 24px 0; }
   .role .where { text-align: left; padding-top: 0; }
-  .role .when { padding-top: 0; }
+  .role .when { padding: 0; }
   .role .what h3 { font-size: 22px; }
 }
 
