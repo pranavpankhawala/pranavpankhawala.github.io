@@ -190,7 +190,7 @@ function showToast(text) {
   t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 1800);
 }
 document.getElementById('copyEmail').addEventListener('click', async () => {
-  try { await navigator.clipboard.writeText(CONTACT.email); showToast('Email copied'); } catch {}
+  try { await navigator.clipboard.writeText(CONTACT.email); showToast('Email copied'); } catch { showToast(CONTACT.email); }
 });
 
 /* ----- Command palette ----- */
@@ -200,11 +200,11 @@ const cmdkList = document.getElementById('cmdkList');
 const cmdkTrap = makeFocusTrap(cmdk);
 const cmdkItems = [
   { ic: '#', label: 'Go to Work', target: '#work', hint: '⏎' },
+  { ic: '#', label: 'Go to Recommendations', target: '#recommendations', hint: '⏎' },
   { ic: '#', label: 'Go to About', target: '#about', hint: '⏎' },
   { ic: '#', label: 'Go to Capabilities', target: '#capabilities', hint: '⏎' },
   { ic: '#', label: 'Go to Projects', target: '#projects', hint: '⏎' },
   { ic: '#', label: 'Go to Publications', target: '#publications', hint: '⏎' },
-  { ic: '#', label: 'Go to Blog', target: '#blog', hint: '⏎' },
   { ic: '#', label: 'Go to Skills', target: '#skills', hint: '⏎' },
   { ic: '#', label: 'Go to Certifications', target: '#certifications', hint: '⏎' },
   { ic: '#', label: 'Go to Interests', target: '#interests', hint: '⏎' },
@@ -214,7 +214,7 @@ const cmdkItems = [
   { ic: '↗', label: 'Open GitHub', action: () => window.open(CONTACT.github,'_blank'), hint: 'ext' },
   { ic: '↗', label: 'Open LinkedIn', action: () => window.open(CONTACT.linkedin,'_blank'), hint: 'ext' },
   { ic: '↓', label: 'Download Resume', action: () => { const a = document.createElement('a'); a.href = 'PranavPankhawala-Resume.pdf'; a.download = ''; a.click(); }, hint: 'pdf' },
-  { ic: '◐', label: 'Toggle theme', action: () => themeBtn.click(), hint: '⇧T' },
+  { ic: '◐', label: 'Toggle theme', action: () => themeBtn.click(), hint: '' },
   { ic: '?', label: 'Keyboard shortcuts', action: () => openHelp(), hint: '?' },
   { ic: '>', label: 'Open terminal', action: () => openTerminal(), hint: '`' },
 ];
@@ -232,7 +232,7 @@ function fuzzyMatch(q, s) {
 function renderCmdk(q = '') {
   const filtered = cmdkItems.filter(i => fuzzyMatch(q, i.label));
   cmdkList.innerHTML = filtered.map((i, idx) => `
-    <div class="cmdk-item ${idx === 0 ? 'active' : ''}" data-idx="${cmdkItems.indexOf(i)}">
+    <div class="cmdk-item ${idx === 0 ? 'active' : ''}" role="option" aria-selected="${idx === 0}" data-idx="${cmdkItems.indexOf(i)}">
       <span class="ic mono">${i.ic}</span>
       <span>${i.label}</span>
       <span class="hint">${i.hint}</span>
@@ -242,6 +242,16 @@ function openCmdk() { cmdk.classList.add('open'); renderCmdk(); cmdkInput.value=
 function closeCmdk() { cmdk.classList.remove('open'); cmdkTrap.deactivate(); }
 document.getElementById('cmdkBtn').addEventListener('click', openCmdk);
 cmdkInput.addEventListener('input', e => renderCmdk(e.target.value));
+function setCmdkActive(next) {
+  cmdkList.querySelectorAll('.cmdk-item').forEach(el => {
+    el.classList.toggle('active', el === next);
+    el.setAttribute('aria-selected', String(el === next));
+  });
+}
+cmdkList.addEventListener('mouseover', e => {
+  const item = e.target.closest('.cmdk-item[data-idx]');
+  if (item) setCmdkActive(item);
+});
 cmdkList.addEventListener('click', e => {
   const item = e.target.closest('.cmdk-item');
   if (!item) return;
@@ -254,7 +264,8 @@ cmdk.addEventListener('click', e => { if (e.target === cmdk) closeCmdk(); });
 window.addEventListener('keydown', e => {
   const tag = document.activeElement.tagName;
   const editable = tag === 'INPUT' || tag === 'TEXTAREA' || document.activeElement.isContentEditable;
-  if (e.key === 's' && !editable && !e.metaKey && !e.ctrlKey && !e.altKey) { e.preventDefault(); openCmdk(); }
+  if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); openCmdk(); }
+  else if (e.key === 's' && !editable && !e.metaKey && !e.ctrlKey && !e.altKey) { e.preventDefault(); openCmdk(); }
   else if (e.key === '`' && !editable) { e.preventDefault(); openTerminal(); }
   else if (e.key === '?' && !editable) { e.preventDefault(); openHelp(); }
   else if (e.key === 'Escape') {
@@ -273,8 +284,7 @@ window.addEventListener('keydown', e => {
     const nextIdx = e.key === 'ArrowDown'
       ? (activeIdx + 1) % items.length
       : (activeIdx - 1 + items.length) % items.length;
-    items[activeIdx]?.classList.remove('active');
-    items[nextIdx]?.classList.add('active');
+    setCmdkActive(items[nextIdx]);
     items[nextIdx]?.scrollIntoView({ block: 'nearest' });
   }
 });
@@ -282,6 +292,7 @@ window.addEventListener('keydown', e => {
 /* ----- Role cycler (typewriter) ----- */
 const heroRole = document.getElementById('heroRole');
 const roles = [
+  'Machine Learning Engineer',
   'AI Automation Engineer',
   'Computer Vision Engineer',
   'Cybersecurity Engineer',
@@ -292,13 +303,14 @@ if (heroRole) {
     heroRole.textContent = roles[0];
   } else {
     heroRole.textContent = '';
-    let rIdx = 0, cIdx = 0, deleting = false;
+    let rIdx = 0, cIdx = 0, deleting = false, looped = false;
     function typewrite() {
       const full = roles[rIdx];
       if (!deleting) {
         cIdx++;
         heroRole.textContent = full.slice(0, cIdx);
         if (cIdx === full.length) {
+          if (looped) return; // one full cycle, then rest on the current title
           setTimeout(() => { deleting = true; typewrite(); }, 2000);
           return;
         }
@@ -309,6 +321,7 @@ if (heroRole) {
         if (cIdx === 0) {
           deleting = false;
           rIdx = (rIdx + 1) % roles.length;
+          if (rIdx === 0) looped = true;
           setTimeout(typewrite, 320);
           return;
         }
@@ -442,10 +455,17 @@ fetch('projects.json')
         });
       }
 
-      // Flip on click — grid view only
+      // Flip on click (or Enter/Space when the card itself has focus) — grid view only
       card.addEventListener('click', e => {
-        if (e.target.closest('a') || e.target.closest('.proj-flip-close')) return;
+        if (e.target.closest('a, button')) return;
         if (card.closest('.projects.list')) return;
+        card.classList.toggle('flipped');
+      });
+      card.tabIndex = 0;
+      card.addEventListener('keydown', e => {
+        if (e.target !== card || (e.key !== 'Enter' && e.key !== ' ')) return;
+        if (card.closest('.projects.list')) return;
+        e.preventDefault();
         card.classList.toggle('flipped');
       });
     });
@@ -562,12 +582,12 @@ const terminalTrap = makeFocusTrap(terminalBackdrop);
 const terminalCommands = {
   help: () => [
     { cls: 't-dim', text: 'Available commands:' },
-    { cls: 't-cmd', text: 'whoami    skills    projects    blog    contact    clear    help' },
+    { cls: 't-cmd', text: 'whoami    skills    projects    contact    clear    help' },
   ],
   whoami: () => [
     { cls: '', text: 'Pranav Pankhawala' },
-    { cls: 't-dim', text: 'AI Automation & Cybersecurity Engineer' },
-    { cls: 't-dim', text: 'Pune, India · C4i4 Lab' },
+    { cls: 't-dim', text: 'Machine Learning Engineer' },
+    { cls: 't-dim', text: 'Pune, India · Optimum Data Analytics' },
   ],
   skills: () => [
     { cls: 't-dim', text: 'Top skills:' },
@@ -583,11 +603,6 @@ const terminalCommands = {
     { cls: 't-dim', text: 'Featured projects:' },
     { cls: 't-cmd', text: 'AI Surveillance · ML Network Security · Night Vision' },
     { cls: 't-dim', text: 'Type "help" or scroll to #projects for details.' },
-  ],
-  blog: () => [
-    { cls: 't-dim', text: 'Blog posts (coming soon):' },
-    { cls: 't-cmd', text: 'YOLO on Edge · VAPT Guide · Jetson Nano ML' },
-    { cls: 't-dim', text: 'Follow on LinkedIn for updates.' },
   ],
   clear: () => { terminalBody.innerHTML = ''; return []; },
 };
@@ -704,40 +719,6 @@ fetch('gh-stats.json')
   });
 })();
 
-/* ----- Blog coming-soon toast ----- */
-document.querySelectorAll('[data-coming-soon]').forEach(btn => {
-  btn.addEventListener('click', e => {
-    e.preventDefault();
-    showToast('Blog posts coming soon — follow on LinkedIn for updates.');
-  });
-});
-
-/* ----- Video Demo Modal with focus trap ----- */
-(function() {
-  const backdrop = document.getElementById('demoBackdrop');
-  const closeBtn = document.getElementById('demoModalClose');
-  const titleEl = document.getElementById('demoModalTitle');
-  if (!backdrop) return;
-  const trap = makeFocusTrap(backdrop);
-
-  function openDemo(title) {
-    if (titleEl) titleEl.textContent = title || 'Project Demo';
-    backdrop.classList.add('open');
-    trap.activate();
-  }
-  function closeDemo() {
-    backdrop.classList.remove('open');
-    trap.deactivate();
-  }
-
-  document.querySelectorAll('.demo-trigger').forEach(btn => {
-    btn.addEventListener('click', e => { e.stopPropagation(); openDemo(btn.dataset.title); });
-  });
-  if (closeBtn) closeBtn.addEventListener('click', closeDemo);
-  backdrop.addEventListener('click', e => { if (e.target === backdrop) closeDemo(); });
-  backdrop.addEventListener('keydown', e => { if (e.key === 'Escape') closeDemo(); });
-})();
-
 /* ----- Skill tag + cert card tooltips ----- */
 const skillTip = document.createElement('div');
 skillTip.className = 'skill-tip';
@@ -759,6 +740,15 @@ function attachTooltip(el) {
     clearTimeout(tipTimer);
     skillTip.classList.remove('visible');
   });
+  if (el.tabIndex < 0) el.tabIndex = 0;
+  el.addEventListener('focus', () => {
+    const r = el.getBoundingClientRect();
+    skillTip.textContent = el.dataset.tooltip;
+    skillTip.style.left = r.left + 'px';
+    skillTip.style.top = r.top - 42 + 'px';
+    skillTip.classList.add('visible');
+  });
+  el.addEventListener('blur', () => skillTip.classList.remove('visible'));
 }
 document.querySelectorAll('.tag[data-tooltip], .cert-card[data-tooltip]').forEach(attachTooltip);
 

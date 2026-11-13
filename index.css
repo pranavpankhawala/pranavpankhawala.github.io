@@ -491,7 +491,7 @@ section.block:first-of-type { border-top: 0; }
 .hero-role {
   font-family: "JetBrains Mono", monospace; font-size: 12px;
   letter-spacing: 0.12em; text-transform: uppercase;
-  color: var(--accent); margin: 0 0 20px;
+  color: var(--accent); margin: 0 0 20px; min-height: 1.5em;
   opacity: 1; transition: opacity 280ms ease;
 }
 .hero-role.fade { opacity: 0; }
@@ -1223,11 +1223,11 @@ footer {
   background: var(--bg-elev); border: 1px solid var(--rule);
   border-radius: 14px; box-shadow: var(--shadow-lift);
   padding: 12px;
-  opacity: 0; pointer-events: none; transform: translateY(-4px);
-  transition: opacity 160ms ease, transform 160ms ease;
+  opacity: 0; visibility: hidden; pointer-events: none; transform: translateY(-4px);
+  transition: opacity 160ms ease, transform 160ms ease, visibility 160ms;
   z-index: 60;
 }
-.pal-pop.open { opacity: 1; pointer-events: auto; transform: none; }
+.pal-pop.open { opacity: 1; visibility: visible; pointer-events: auto; transform: none; }
 .pal-head {
   display: flex; justify-content: space-between; align-items: baseline;
   padding: 4px 6px 10px; border-bottom: 1px solid var(--rule);
@@ -1521,8 +1521,8 @@ footer {
   #cursor-glow { display: none; }
   .hero-role::after { animation: none !important; }
   .terminal-backdrop { backdrop-filter: none; }
-  .blog-card, .sw-card { transition: none !important; }
-  .blog-card:hover, .sw-card:hover { transform: none !important; will-change: auto; }
+  .sw-card { transition: none !important; }
+  .sw-card:hover { transform: none !important; will-change: auto; }
   .otw-banner { transition: none !important; }
 }
 
@@ -1729,8 +1729,7 @@ footer {
   section { break-before: auto; break-inside: avoid; }
   .proj, .role, .cert-card, .hobby-card { break-inside: avoid; }
   #work, #projects, #skills { break-before: page; }
-  .otw-banner, .demo-backdrop, .blog-card-link { display: none !important; }
-  .demo-trigger { display: none !important; }
+  .otw-banner { display: none !important; }
 }
 
 /* ---------- Open to Work Banner ---------- */
@@ -1832,46 +1831,6 @@ footer {
 @media (max-width: 880px) { .code-widget { max-width: 100%; } }
 @media (max-width: 720px) { .code-widget { font-size: 12px; } }
 @media (max-width: 600px) { .code-widget { font-size: 11.5px; } }
-
-/* ---------- Blog Section ---------- */
-.blog-grid {
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
-}
-@media (max-width: 1080px) { .blog-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 880px)  { .blog-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; } }
-@media (max-width: 640px)  { .blog-grid { grid-template-columns: 1fr; } }
-.blog-card {
-  background: var(--bg-elev); border: 1px solid var(--rule);
-  border-radius: 16px; padding: 28px 24px;
-  display: flex; flex-direction: column; gap: 12px;
-  position: relative; overflow: hidden;
-  transition: transform 240ms cubic-bezier(.2,.7,.2,1), box-shadow 240ms ease, border-color 240ms ease;
-}
-.blog-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-lift); border-color: var(--ink-3); will-change: transform; }
-.blog-card-meta {
-  display: flex; align-items: center; gap: 10px;
-  font-family: "JetBrains Mono", monospace; font-size: 11px; color: var(--ink-3);
-}
-.blog-card-meta::before { content: '//'; color: var(--accent); margin-right: 2px; }
-.blog-card-read::before { content: '·'; margin-right: 10px; }
-.blog-card-title {
-  font-family: "Instrument Serif", serif; font-weight: 400;
-  font-size: 22px; line-height: 1.15; letter-spacing: -0.005em; color: var(--ink); margin: 0;
-}
-.blog-card-excerpt {
-  font-size: 14px; color: var(--ink-2); line-height: 1.6; margin: 0; flex: 1;
-}
-/* .blog-card-link is a <button> — styles defined in the blog-card-link button block above */
-
-/* blog-card-link as button */
-.blog-card-link {
-  background: none; border: none; cursor: pointer; text-align: left; padding: 0;
-  font-family: "JetBrains Mono", monospace; font-size: 11px;
-  color: var(--accent); margin-top: 4px;
-  display: inline-flex; align-items: center; gap: 4px;
-  transition: gap 160ms ease;
-}
-.blog-card-link:hover { gap: 8px; }
 
 /* Project filter empty state */
 .proj-empty {
@@ -1976,58 +1935,4 @@ footer {
   background: oklch(0.30 0.10 70); color: oklch(0.80 0.14 75);
 }
 
-/* ---------- Video Demo Trigger Button ---------- */
-.demo-trigger {
-  display: inline-flex; align-items: center; gap: 4px;
-  font-family: "JetBrains Mono", monospace; font-size: 10.5px;
-  color: var(--accent); background: color-mix(in oklab, var(--accent) 10%, transparent);
-  border: 1px solid color-mix(in oklab, var(--accent) 28%, transparent);
-  padding: 4px 8px; border-radius: 6px; cursor: pointer;
-  height: 28px;
-  transition: background 160ms ease, border-color 160ms ease;
-}
-.demo-trigger:hover {
-  background: color-mix(in oklab, var(--accent) 20%, transparent);
-  border-color: var(--accent);
-}
-
-/* ---------- Video Demo Modal ---------- */
-.demo-backdrop {
-  position: fixed; inset: 0; z-index: 200;
-  background: oklch(0 0 0 / 0.65);
-  backdrop-filter: blur(10px) saturate(120%);
-  display: none; align-items: center; justify-content: center;
-  padding: 20px;
-}
-.demo-backdrop.open { display: flex; }
-.demo-modal {
-  width: min(640px, 100%);
-  background: var(--bg-elev); border: 1px solid var(--rule);
-  border-radius: 20px; overflow: hidden;
-  box-shadow: 0 32px 80px -20px oklch(0 0 0 / 0.5);
-}
-.demo-modal-bar {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 14px 20px; border-bottom: 1px solid var(--rule);
-  background: var(--bg-elev);
-}
-.demo-modal-title {
-  font-family: "Instrument Serif", serif; font-size: 18px; color: var(--ink);
-}
-.demo-modal-body { padding: 40px 32px; }
-.demo-coming-soon {
-  display: flex; flex-direction: column; align-items: center;
-  gap: 12px; text-align: center; padding: 20px 0;
-}
-.demo-play-icon {
-  width: 64px; height: 64px; border-radius: 50%;
-  background: color-mix(in oklab, var(--accent) 15%, transparent);
-  border: 2px solid color-mix(in oklab, var(--accent) 35%, transparent);
-  display: grid; place-items: center;
-  font-size: 22px; color: var(--accent); padding-left: 4px;
-}
-.demo-coming-text {
-  font-family: "Instrument Serif", serif; font-size: 22px; color: var(--ink); margin: 0;
-}
-.demo-coming-sub { font-size: 13px; color: var(--ink-3); margin: 0; }
 

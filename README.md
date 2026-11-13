@@ -44,15 +44,14 @@ pranavpankhawala.github.io/
 1. Hero
 2. About
 3. Work experience & education
-4. Capabilities
-5. Projects
-6. Publications
-7. Blog
-8. Skills
+4. Recommendations
+5. Capabilities
+6. Projects
+7. Publications
+8. Skills & security wins
 9. Certifications
 10. Interests
-11. Recommendations
-12. Contact
+11. Contact
 
 ## Deployment
 

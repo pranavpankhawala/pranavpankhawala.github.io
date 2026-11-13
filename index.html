@@ -25,7 +25,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Geist:wght@400;500;600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="index.css?v=22" />
+<link rel="stylesheet" href="index.css?v=23" />
 
 <script type="application/ld+json">
 {
@@ -63,7 +63,7 @@
 <a href="#top" class="skip-link">Skip to main content</a>
 
 <!-- OPEN TO WORK BANNER -->
-<div class="otw-banner" id="otwBanner" role="status" aria-live="polite">
+<div class="otw-banner" id="otwBanner">
   <span class="otw-text">🟢 Open to AI / Vision / Security roles — Let's connect!</span>
   <a href="#contact" class="otw-link">Get in touch ↗</a>
   <button class="otw-close" id="otwClose" aria-label="Dismiss banner">×</button>
@@ -81,7 +81,7 @@
         <small>AI &amp; Cybersecurity Engineer</small>
         <span class="brand-meta">
           <span class="brand-meta-row">
-            <span class="brand-dot"></span>Available for select work
+            <span class="brand-dot"></span>Open to roles
           </span>
           <span class="brand-meta-row">
             <span class="brand-meta-key">Role</span>AI / Cyber Security
@@ -105,13 +105,12 @@
           <svg class="i" viewBox="0 0 24 24" width="12" height="12"><path d="m6 9 6 6 6-6"/></svg>
         </button>
         <div class="nav-more-panel" id="navMorePanel" role="menu">
+          <a href="#recommendations" role="menuitem">Recommendations</a>
           <a href="#capabilities" role="menuitem">Capabilities</a>
           <a href="#publications" role="menuitem">Publications</a>
-          <a href="#blog" role="menuitem">Blog</a>
           <a href="#skills" role="menuitem">Skills</a>
           <a href="#certifications" role="menuitem">Certifications</a>
           <a href="#interests" role="menuitem">Interests</a>
-          <a href="#recommendations" role="menuitem">Recommendations</a>
         </div>
       </div>
     </div>
@@ -170,24 +169,17 @@
           <em>real-time</em> intelligent<br/>
           systems.
         </h1>
-        <div class="hero-role" id="heroRole">AI Automation &amp; Cybersecurity Engineer</div>
+        <div class="hero-role" id="heroRole">Machine Learning Engineer</div>
         <p class="lede">
-          AI&nbsp;Automation &amp; Cybersecurity Engineer building computer-vision systems
+          Building computer-vision systems
           for industrial automation, smart manufacturing, and autonomous driving —
           CNNs and YOLO on the edge, secure-by-design from network up.
         </p>
-        <div class="hero-now">
-          <span class="dot" style="flex-shrink:0;width:6px;height:6px"></span>
-          <span>Now building: edge CV pipeline for Jetson AGX Xavier</span>
-        </div>
 
         <div class="hero-cta">
           <a href="#projects" class="btn btn-primary">
             See selected work
             <svg class="i arrow" viewBox="0 0 24 24" width="14" height="14"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg>
-          </a>
-          <a href="#contact" class="btn btn-ghost">
-            Start a project
           </a>
           <a href="PranavPankhawala-Resume.pdf" download type="application/pdf" class="btn btn-ghost">
             <svg class="i" viewBox="0 0 24 24" width="14" height="14"><path d="M12 2v13"/><path d="m7 12 5 5 5-5"/><path d="M5 20h14"/></svg>
@@ -270,13 +262,6 @@
           <div class="what">
             <h3>Machine Learning Engineer</h3>
             <div class="at">Optimum Data Analytics</div>
-            <!-- <ul>
-              <li></li>
-              <li></li>
-              <li></li>
-              <li></li>
-              <li></li>
-            </ul> -->
             <div class="tagrow">
               <span class="tag accent">Computer Vision</span>
               <span class="tag">PyTorch</span>
@@ -434,6 +419,33 @@
       </div>
     </section>
 
+    <!-- RECOMMENDATIONS -->
+    <section class="block" id="recommendations">
+      <div class="section-head">
+        <div class="eyebrow"><span class="mono">02·c</span> Recommendations</div>
+        <h2>What <em>colleagues</em> say about working together.</h2>
+      </div>
+      <div class="reco-list reveal">
+        <div class="reco-card">
+          <div class="reco-card-header">
+            <div class="reco-avatar">DM</div>
+            <div class="reco-meta">
+              <div class="reco-name">Dhananjay Magdum</div>
+              <div class="reco-title">Solution Architect | AI &amp; Computer Vision Specialist | Industry 4.0 | Ph.D. Scholar</div>
+              <div class="reco-date">September 19, 2025 · Dhananjay managed Pranav directly</div>
+            </div>
+          </div>
+          <blockquote class="reco-body">
+            I had the privilege of working with Pranav Pankhawala at C4i4 Lab for two years. During this time, Pranav consistently demonstrated outstanding technical expertise as a Software Developer with a focus on computer vision applications. His strong proficiency in backend development (Python) and his ability to deliver reliable, scalable solutions made him a vital contributor to our team's success.
+            <br/><br/>
+            Beyond his technical strengths, Pranav is a highly collaborative professional who fosters a positive team environment. A particularly notable example was; a Computer Vision project we developed for a client, where Pranav's backend work was central to the project's successful delivery. His dedication, adaptability, and problem-solving skills set him apart.
+            <br/><br/>
+            I strongly recommend Pranav for any future opportunities. He is a talented and driven professional who will continue to excel and bring significant value to any team or organization.
+          </blockquote>
+        </div>
+      </div>
+    </section>
+
     <!-- IMPACT NUMBERS -->
     <div class="impact-strip reveal">
       <div class="impact-grid">
@@ -571,7 +583,6 @@
                 <div class="proj-meta">
                   <span>Self · Ongoing</span>
                   <div class="links">
-                    <button class="demo-trigger" data-title="AI-based Surveillance System" aria-label="Demo">▶ Demo</button>
                     <a href="https://github.com/pranavpankhawala" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><svg class="i" viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 7.77 5.07 5.07 0 0 0 19.91 4S18.73 3.65 16 5.48a13.38 13.38 0 0 0-7 0C6.27 3.65 5.09 4 5.09 4A5.07 5.07 0 0 0 5 7.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 21.13V25"/></svg></a>
                   </div>
                 </div>
@@ -606,7 +617,6 @@
                 <div class="proj-meta">
                   <span>M.Tech · 2022</span>
                   <div class="links">
-                    <button class="demo-trigger" data-title="AI / ML Network Security Model" aria-label="Demo">▶ Demo</button>
                     <a href="https://doi.org/10.14704/nq.2022.20.9.NQ440121" target="_blank" rel="noopener noreferrer" aria-label="Paper"><svg class="i" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></a>
                   </div>
                 </div>
@@ -639,7 +649,6 @@
                 <div class="proj-meta">
                   <span>B.E. · 2020</span>
                   <div class="links">
-                    <button class="demo-trigger" data-title="Night Vision &amp; Perimeter Security" aria-label="Demo">▶ Demo</button>
                     <a href="https://github.com/pranavpankhawala" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><svg class="i" viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 7.77 5.07 5.07 0 0 0 19.91 4S18.73 3.65 16 5.48a13.38 13.38 0 0 0-7 0C6.27 3.65 5.09 4 5.09 4A5.07 5.07 0 0 0 5 7.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 21.13V25"/></svg></a>
                   </div>
                 </div>
@@ -700,58 +709,6 @@
       </div>
     </section>
 
-    <!-- BLOG -->
-    <section class="block" id="blog">
-      <div class="section-head">
-        <div class="eyebrow"><span class="mono">05·b</span> Blog</div>
-        <h2>Technical writing on <em>AI, edge systems</em> &amp; security.</h2>
-      </div>
-      <div class="blog-grid" data-stagger>
-        <article class="blog-card">
-          <div class="blog-card-meta">
-            <span class="blog-card-date">May 2026</span>
-            <span class="blog-card-read">5 min read</span>
-          </div>
-          <h3 class="blog-card-title">Real-time Object Detection on Edge Devices</h3>
-          <p class="blog-card-excerpt">How to deploy YOLO models on NVIDIA Jetson for sub-50ms inference without cloud dependency — practical tips from production deployments.</p>
-          <div class="tagrow">
-            <span class="tag">YOLO</span>
-            <span class="tag">Edge AI</span>
-            <span class="tag">Jetson</span>
-          </div>
-          <button class="blog-card-link" data-coming-soon aria-label="Coming soon">Read more →</button>
-        </article>
-        <article class="blog-card">
-          <div class="blog-card-meta">
-            <span class="blog-card-date">Apr 2026</span>
-            <span class="blog-card-read">8 min read</span>
-          </div>
-          <h3 class="blog-card-title">VAPT Methodology: A Practical Guide</h3>
-          <p class="blog-card-excerpt">A structured walkthrough of Vulnerability Assessment and Penetration Testing — from reconnaissance through exploitation to remediation reporting.</p>
-          <div class="tagrow">
-            <span class="tag accent">VAPT</span>
-            <span class="tag">Security</span>
-            <span class="tag">OWASP</span>
-          </div>
-          <button class="blog-card-link" data-coming-soon aria-label="Coming soon">Read more →</button>
-        </article>
-        <article class="blog-card">
-          <div class="blog-card-meta">
-            <span class="blog-card-date">Mar 2026</span>
-            <span class="blog-card-read">6 min read</span>
-          </div>
-          <h3 class="blog-card-title">Deploying ML Models on Jetson Nano</h3>
-          <p class="blog-card-excerpt">Step-by-step guide to model quantization, TensorRT optimization, and edge deployment for computer vision models on NVIDIA Jetson Nano.</p>
-          <div class="tagrow">
-            <span class="tag">PyTorch</span>
-            <span class="tag">TensorRT</span>
-            <span class="tag">Jetson Nano</span>
-          </div>
-          <button class="blog-card-link" data-coming-soon aria-label="Coming soon">Read more →</button>
-        </article>
-      </div>
-    </section>
-
     <!-- SKILLS -->
     <section class="block" id="skills">
       <div class="section-head">
@@ -761,7 +718,7 @@
       <div class="radar-strip reveal">
         <div class="radar-info">
           <div class="radar-info-title">Skill Radar</div>
-          <div class="radar-info-sub">Self-assessed proficiency across six engineering dimensions. Hover for detail.</div>
+          <div class="radar-info-sub">Self-assessed proficiency across six engineering dimensions. Dots on skill tags show level, 1–5.</div>
           <div class="radar-legend">
             <div class="radar-legend-item">
               <span class="rl-dot" style="background:var(--accent)"></span>
@@ -868,6 +825,41 @@
             <span class="tag" data-level="3">JavaScript</span>
             <span class="tag" data-level="2">SQL</span>
             <span class="tag" data-level="2">Java</span>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top: 72px;">
+        <div class="section-head" style="margin-bottom: 32px;">
+          <div class="eyebrow"><span class="mono">06·b</span> Security Wins</div>
+          <h2>Hands-on <em>security</em> practice &amp; achievements.</h2>
+        </div>
+        <div class="security-wins" data-stagger>
+          <div class="sw-card">
+            <div class="sw-icon">⬡</div>
+            <div class="sw-content">
+              <div class="sw-platform">HackTheBox</div>
+              <div class="sw-title">Active User</div>
+              <p class="sw-desc">Regularly solving machines across network exploitation, web vulnerabilities, and privilege escalation challenges.</p>
+            </div>
+            <span class="sw-badge sw-badge--green">Active</span>
+          </div>
+          <div class="sw-card">
+            <div class="sw-icon">🎯</div>
+            <div class="sw-content">
+              <div class="sw-platform">TryHackMe</div>
+              <div class="sw-title">Top 10%</div>
+              <p class="sw-desc">Used extensively during Cybersecurity Engineering internship for VAPT training and offensive security practice.</p>
+            </div>
+            <span class="sw-badge sw-badge--blue">Top 10%</span>
+          </div>
+          <div class="sw-card">
+            <div class="sw-icon">🔍</div>
+            <div class="sw-content">
+              <div class="sw-platform">Bug Bounty</div>
+              <div class="sw-title">Responsible Disclosure</div>
+              <p class="sw-desc">Participated in responsible disclosure programs — identifying and reporting vulnerabilities through proper channels.</p>
+            </div>
+            <span class="sw-badge sw-badge--amber">Reported</span>
           </div>
         </div>
       </div>
@@ -979,75 +971,12 @@
           <p class="hobby-desc">Responsible disclosure — finding cracks in systems so others don't have to be the victim.</p>
         </div>
       </div>
-
-      <div style="margin-top: 72px;">
-        <div class="section-head" style="margin-bottom: 32px;">
-          <div class="eyebrow"><span class="mono">08·b</span> Security Wins</div>
-          <h2>Hands-on <em>security</em> practice &amp; achievements.</h2>
-        </div>
-        <div class="security-wins" data-stagger>
-          <div class="sw-card">
-            <div class="sw-icon">⬡</div>
-            <div class="sw-content">
-              <div class="sw-platform">HackTheBox</div>
-              <div class="sw-title">Active User</div>
-              <p class="sw-desc">Regularly solving machines across network exploitation, web vulnerabilities, and privilege escalation challenges.</p>
-            </div>
-            <span class="sw-badge sw-badge--green">Active</span>
-          </div>
-          <div class="sw-card">
-            <div class="sw-icon">🎯</div>
-            <div class="sw-content">
-              <div class="sw-platform">TryHackMe</div>
-              <div class="sw-title">Top 10%</div>
-              <p class="sw-desc">Used extensively during Cybersecurity Engineering internship for VAPT training and offensive security practice.</p>
-            </div>
-            <span class="sw-badge sw-badge--blue">Top 10%</span>
-          </div>
-          <div class="sw-card">
-            <div class="sw-icon">🔍</div>
-            <div class="sw-content">
-              <div class="sw-platform">Bug Bounty</div>
-              <div class="sw-title">Responsible Disclosure</div>
-              <p class="sw-desc">Participated in responsible disclosure programs — identifying and reporting vulnerabilities through proper channels.</p>
-            </div>
-            <span class="sw-badge sw-badge--amber">Reported</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- RECOMMENDATIONS -->
-    <section class="block" id="recommendations">
-      <div class="section-head">
-        <div class="eyebrow"><span class="mono">09</span> Recommendations</div>
-        <h2>What <em>colleagues</em> say about working together.</h2>
-      </div>
-      <div class="reco-list reveal">
-        <div class="reco-card">
-          <div class="reco-card-header">
-            <div class="reco-avatar">DM</div>
-            <div class="reco-meta">
-              <div class="reco-name">Dhananjay Magdum</div>
-              <div class="reco-title">Solution Architect | AI &amp; Computer Vision Specialist | Industry 4.0 | Ph.D. Scholar</div>
-              <div class="reco-date">September 19, 2025 · Dhananjay managed Pranav directly</div>
-            </div>
-          </div>
-          <blockquote class="reco-body">
-            I had the privilege of working with Pranav Pankhawala at C4i4 Lab for two years. During this time, Pranav consistently demonstrated outstanding technical expertise as a Software Developer with a focus on computer vision applications. His strong proficiency in backend development (Python) and his ability to deliver reliable, scalable solutions made him a vital contributor to our team's success.
-            <br/><br/>
-            Beyond his technical strengths, Pranav is a highly collaborative professional who fosters a positive team environment. A particularly notable example was; a Computer Vision project we developed for a client, where Pranav's backend work was central to the project's successful delivery. His dedication, adaptability, and problem-solving skills set him apart.
-            <br/><br/>
-            I strongly recommend Pranav for any future opportunities. He is a talented and driven professional who will continue to excel and bring significant value to any team or organization.
-          </blockquote>
-        </div>
-      </div>
     </section>
 
     <!-- CONTACT -->
     <section class="block" id="contact">
       <div class="section-head">
-        <div class="eyebrow"><span class="mono">10</span> Contact</div>
+        <div class="eyebrow"><span class="mono">09</span> Contact</div>
         <h2>Have a problem worth <em>solving?</em></h2>
       </div>
 
@@ -1073,14 +1002,14 @@
             <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
           </div>
           <h3>Hiring for both</h3>
-          <p>Industrial AI systems secured from the network up — my core daily focus at C4i4 Lab. Let's talk.</p>
+          <p>Industrial AI systems secured from the network up — my core daily focus. Let's talk.</p>
           <a href="mailto:pranav.pankhawala@gmail.com" class="fit-link">Get in touch ↗</a>
         </div>
       </div>
       <div class="contact-grid">
         <aside class="hero-side reveal" aria-label="Contact details" style="padding-top:0">
           <div class="status"><span class="dot"></span> Open to AI / Vision / Security roles</div>
-          <a href="mailto:pranav.pankhawala@gmail.com?subject=Meeting+Request" class="book-call">Book a call ↗</a>
+          <a href="mailto:pranav.pankhawala@gmail.com" class="book-call">Email me ↗</a>
           <div class="mono" style="font-size:11px;color:var(--ink-3);line-height:1.7">
             Best for:<br/>
             // industrial AI &amp; computer vision<br/>
@@ -1160,7 +1089,8 @@
       <input type="text" id="cmdkInput" placeholder="Jump to a section, project, or contact…" autocomplete="off"/>
       <kbd>esc</kbd>
     </div>
-    <div class="cmdk-list" id="cmdkList"></div>
+    <!-- [html-validate-disable-next prefer-native-element -- live search results, a native select cannot do this] -->
+    <div class="cmdk-list" id="cmdkList" role="listbox" aria-label="Results"></div>
   </div>
 </div>
 
@@ -1172,14 +1102,13 @@
 <nav class="section-dots" id="sectionDots" aria-label="Page sections">
   <a href="#about" class="section-dot-item" data-section="about"><span class="section-dot-label">About</span><span class="section-dot-pip"></span></a>
   <a href="#work" class="section-dot-item" data-section="work"><span class="section-dot-label">Work</span><span class="section-dot-pip"></span></a>
+  <a href="#recommendations" class="section-dot-item" data-section="recommendations"><span class="section-dot-label">Recs</span><span class="section-dot-pip"></span></a>
   <a href="#capabilities" class="section-dot-item" data-section="capabilities"><span class="section-dot-label">Capabilities</span><span class="section-dot-pip"></span></a>
   <a href="#projects" class="section-dot-item" data-section="projects"><span class="section-dot-label">Projects</span><span class="section-dot-pip"></span></a>
   <a href="#publications" class="section-dot-item" data-section="publications"><span class="section-dot-label">Publications</span><span class="section-dot-pip"></span></a>
-  <a href="#blog" class="section-dot-item" data-section="blog"><span class="section-dot-label">Blog</span><span class="section-dot-pip"></span></a>
   <a href="#skills" class="section-dot-item" data-section="skills"><span class="section-dot-label">Skills</span><span class="section-dot-pip"></span></a>
   <a href="#certifications" class="section-dot-item" data-section="certifications"><span class="section-dot-label">Certifications</span><span class="section-dot-pip"></span></a>
   <a href="#interests" class="section-dot-item" data-section="interests"><span class="section-dot-label">Interests</span><span class="section-dot-pip"></span></a>
-  <a href="#recommendations" class="section-dot-item" data-section="recommendations"><span class="section-dot-label">Recs</span><span class="section-dot-pip"></span></a>
   <a href="#contact" class="section-dot-item" data-section="contact"><span class="section-dot-label">Contact</span><span class="section-dot-pip"></span></a>
 </nav>
 
@@ -1204,7 +1133,7 @@
     </div>
     <div class="help-list">
       <div class="help-section">Global</div>
-      <div class="help-item"><span>Open search</span><kbd class="help-item-key">s</kbd></div>
+      <div class="help-item"><span>Open search</span><kbd class="help-item-key">s · ⌘K</kbd></div>
       <div class="help-item"><span>Show shortcuts</span><kbd class="help-item-key">?</kbd></div>
       <div class="help-item"><span>Open terminal</span><kbd class="help-item-key">` (backtick)</kbd></div>
       <div class="help-item"><span>Close / dismiss</span><kbd class="help-item-key">esc</kbd></div>
@@ -1231,26 +1160,7 @@
   </div>
 </div>
 
-<!-- Video Demo Modal -->
-<div class="demo-backdrop" id="demoBackdrop">
-  <div class="demo-modal" role="dialog" aria-modal="true" aria-label="Project Demo">
-    <div class="demo-modal-bar">
-      <span class="demo-modal-title" id="demoModalTitle">Project Demo</span>
-      <button class="icon-btn demo-modal-close" id="demoModalClose" aria-label="Close demo">
-        <svg class="i" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
-      </button>
-    </div>
-    <div class="demo-modal-body">
-      <div class="demo-coming-soon">
-        <div class="demo-play-icon">▶</div>
-        <p class="demo-coming-text">Demo video coming soon</p>
-        <p class="demo-coming-sub">Check the project on GitHub for the latest updates.</p>
-      </div>
-    </div>
-  </div>
-</div>
-
 <script src="theme.js?v=1"></script>
-<script src="index.js?v=1"></script>
+<script src="index.js?v=3"></script>
 </body>
 </html>
